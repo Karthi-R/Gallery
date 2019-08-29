@@ -394,7 +394,6 @@ class ImageGridFragment(mActivity: Activity) : Fragment(), View.OnClickListener,
                     recycler.adapter = adapter
 
             }
-
     }
 
     override fun onDestroy() {
