@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:gravity="center_vertical"
+android:orientation="vertical">
+
+<FrameLayout
+    android:layout_width="78dp"
+    android:layout_height="78dp"
+    android:background="@drawable/bg_image_folder"
+    android:layout_margin="12dp">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="78dp"
+        android:layout_height="78dp"
+        android:layout_marginBottom="6dp"
+        android:layout_marginRight="6dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_default_image" />
+
+</FrameLayout>
+
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:layout_gravity="center_horizontal"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/ip_all_images"
+        android:textColor="#212121"
+        android:textSize="14sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="4dp"
+        android:text="("
+        android:textColor="#999999"
+        android:textSize="14sp" />
+
+
+    <TextView
+        android:id="@+id/tv_image_count"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="4dp"
+        android:text="共0张"
+        android:textColor="#999999"
+        android:textSize="14sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="4dp"
+        android:text=")"
+        android:textColor="#999999"
+        android:textSize="14sp" />
+
+</LinearLayout>
+
+
+</LinearLayout>

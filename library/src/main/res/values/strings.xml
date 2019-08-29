@@ -1,0 +1,45 @@
+<resources>
+    <string name="ip_all_images">ALL</string>
+    <string name="ip_folder_image_count">%1$d</string>
+    <string name="ip_preview_image_count">%1$d/%2$d</string>
+    <string name="ip_select_limit">selection limit%1$d</string>
+    <string name="ip_complete">complete</string>
+    <string name="ip_select_complete">Selected(%1$d/%2$d)</string>
+    <string name="ip_preview">preview</string>
+    <string name="ip_preview_count">preview_count(%1$d)</string>
+    <string name="ip_photo_crop">photo_crop</string>
+    <string name="ip_origin">origin</string>
+    <string name="ip_origin_size">origin_size(%1$s)</string>
+    <string name="select">SELECT</string>
+    <string name="date">Date</string>
+    <string name="camera">Camera</string>
+
+    <string name="crop_image_activity_title"></string>
+    <string name="crop_image_menu_rotate_left">Rotate counter clockwise</string>
+    <string name="crop_image_menu_rotate_right">Rotate</string>
+    <string name="crop_image_menu_crop">Crop</string>
+    <string name="crop_image_menu_flip">Flip</string>
+    <string name="crop_image_menu_flip_horizontally">Flip horizontally</string>
+    <string name="crop_image_menu_flip_vertically">Flip vertically</string>
+
+    <string name="pick_image_intent_chooser_title">Select source</string>
+
+    <string name="crop_image_activity_no_permissions">Cancelling, required permissions are not granted</string>
+
+</resources>
+
+    <!--<resources>
+    <string name="ip_all_images">所有图片</string>
+    <string name="ip_folder_image_count">共%1$d张</string>
+    <string name="ip_preview_image_count">%1$d/%2$d</string>
+    <string name="ip_select_limit">最多选择%1$d张图片</string>
+    <string name="ip_complete">完成</string>
+    <string name="ip_select_complete">完成(%1$d/%2$d)</string>
+    <string name="ip_preview">预览</string>
+    <string name="ip_preview_count">预览(%1$d)</string>
+    <string name="ip_photo_crop">图片裁剪</string>
+    <string name="ip_origin">原图</string>
+    <string name="ip_origin_size">原图(%1$s)</string>
+
+    </resources>-->
+
