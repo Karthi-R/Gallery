@@ -1,17 +1,11 @@
 package com.huburt.library.ui
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.ContentUris
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.os.Environment
-import android.provider.DocumentsContract
-import android.provider.MediaStore
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -22,7 +16,6 @@ import android.widget.AdapterView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.huburt.library.*
@@ -51,7 +44,8 @@ import java.util.*
  *
  * Created on 2017/10/12.
  */
-class ImageGridFragment(mActivity: Activity) : Fragment(), View.OnClickListener, ImageDataSource.OnImagesLoadedListener, ImageRecyclerAdapter.OnImageItemClickListener {
+//class ImageGridFragment(mActivity: Activity, imageDataSource: MutableList<ImageFolder>?) : Fragment(), View.OnClickListener, ImageDataSource.OnImagesLoadedListener, ImageRecyclerAdapter.OnImageItemClickListener {
+class ImageGridFragment(mActivity: Activity, imgFolderList: MutableList<ImageFolder>?) : Fragment(), View.OnClickListener, ImageRecyclerAdapter.OnImageItemClickListener {
     companion object {
 
         val REQUEST_PERMISSION_STORAGE = 0x12
@@ -75,7 +69,9 @@ class ImageGridFragment(mActivity: Activity) : Fragment(), View.OnClickListener,
 
     private val pickerHelper: PickHelper = ImagePicker.pickHelper
    // position=mPosition
-    private val imageDataSource = mActivity?.let { ImageDataSource(it as FragmentActivity) }
+    //private val imageDataSource = imageDataSource
+    private val imgFolderList = imgFolderList
+   // private val imageDataSource = mActivity?.let { ImageDataSource(it as FragmentActivity) }
     private lateinit var adapter: ImageRecyclerAdapter
     private lateinit var mFolderPopupWindow: FolderPopUpWindow
     private lateinit var mImageFolderAdapter: ImageFolderAdapter
@@ -128,9 +124,13 @@ class ImageGridFragment(mActivity: Activity) : Fragment(), View.OnClickListener,
             ActivityCompat.requestPermissions(this.requireActivity(),
                     arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), REQUEST_PERMISSION_STORAGE)
         } else {
+            adapter.refreshData(arguments?.getInt("Selected_position")?.let { imgFolderList?.get(it)?.images })
+
+/*
             if (imageDataSource != null) {
                 imageDataSource.loadImage(this)
             }
+*/
         }
     }
 
@@ -143,11 +143,11 @@ class ImageGridFragment(mActivity: Activity) : Fragment(), View.OnClickListener,
 
     private fun initView() {
 
-
         recycler.layoutManager = GridLayoutManager(this.requireActivity(), 3)
         recycler.addItemDecoration(GridSpacingItemDecoration(3, Utils.dp2px(this.requireActivity(), 2f), false))
         adapter = ImageRecyclerAdapter(this.requireActivity(), pickerHelper)
         recycler.adapter = adapter
+
         adapter.listener = this
         recycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -170,7 +170,7 @@ class ImageGridFragment(mActivity: Activity) : Fragment(), View.OnClickListener,
                         val calendar = Calendar.getInstance()
                         calendar.timeInMillis = addTime * 1000
                         if (isSameDate(calendar.time, Calendar.getInstance().time)) {
-                            tv_date.text = "本周"
+                            tv_date.text = "Today"
                         } else {
                             val format = SimpleDateFormat("yyyy/MM", Locale.getDefault())
                             tv_date.text = format.format(calendar.time)
@@ -290,9 +290,12 @@ class ImageGridFragment(mActivity: Activity) : Fragment(), View.OnClickListener,
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_PERMISSION_STORAGE) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                adapter.refreshData(arguments?.getInt("Selected_position")?.let { imgFolderList?.get(it)?.images })
+/*
                 if (imageDataSource != null) {
                     imageDataSource.loadImage(this)
                 }
+*/
             } else {
                 showToast("权限被禁止，无法选择本地图片")
             }
@@ -374,33 +377,41 @@ class ImageGridFragment(mActivity: Activity) : Fragment(), View.OnClickListener,
         }
     }
 
+/*
     override fun onImagesLoaded(imageFolders: List<ImageFolder>) {
         this.imageFolders = imageFolders
         //showPopupFolderList()
 
         if (imageFolders.isNotEmpty())
-           /* adapter?.let {
+            adapter?.let {
                 arguments?.getInt("Selected_position")
                 arguments?.getInt("Selected_position")?.let {
                     adapter.refreshData(imageFolders[arguments?.getInt("Selected_position") as Int].images)
                     tv_dir.text = imageFolders[arguments?.getInt("Selected_position") as Int].name
                     recycler.adapter = adapter
                 }
-            } */
+            }
 
+*/
+/*
         adapter?.let {
                     adapter.refreshData(imageFolders[0].images)
                     tv_dir.text = imageFolders[0].name
                     recycler.adapter = adapter
 
             }
+*//*
+
     }
+*/
 
     override fun onDestroy() {
         super.onDestroy()
+/*
         if (imageDataSource != null) {
             imageDataSource.destroyLoader()
         }
+*/
     }
 
 }

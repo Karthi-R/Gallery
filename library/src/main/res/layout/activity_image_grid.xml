@@ -3,7 +3,7 @@
     android:id="@+id/content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000"
+
     android:orientation="vertical">
 
     <include
@@ -14,11 +14,11 @@
         android:id="@+id/footer_bar"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_alignParentBottom="true"
-        android:background="@color/ip_color_primary">
+       >
 
         <RelativeLayout
             android:id="@+id/ll_dir"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_centerVertical="true"
@@ -34,7 +34,7 @@
                 android:includeFontPadding="false"
                 android:maxLines="1"
                 android:text="@string/ip_all_images"
-                android:textColor="#CFCFCF"
+                android:textColor="@color/ip_color_primary"
                 android:textSize="16sp" />
 
             <ImageView
@@ -44,6 +44,7 @@
                 android:layout_marginBottom="2dp"
                 android:layout_marginLeft="4dp"
                 android:layout_toRightOf="@id/tv_dir"
+                android:tint="@color/ip_color_primary"
                 android:src="@mipmap/text_indicator" />
 
         </RelativeLayout>
@@ -53,13 +54,12 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
-            android:background="@null"
             android:gravity="center"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
-            android:text="预览(3)"
+            android:text="Preview(3)"
             android:textAllCaps="false"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/ip_color_primary"
             android:textSize="16sp" />
 
     </RelativeLayout>
@@ -68,7 +68,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#111111">
+       >
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler"

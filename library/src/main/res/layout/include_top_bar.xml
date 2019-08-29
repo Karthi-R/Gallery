@@ -3,16 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="48dp"
-    android:background="@color/ip_color_primary"
     android:clickable="true">
 
     <ImageView
         android:id="@+id/btn_back"
+        android:visibility="gone"
         android:layout_width="48dp"
         android:layout_height="match_parent"
         android:layout_centerVertical="true"
         android:background="@drawable/selector_back_press"
         android:padding="12dp"
+        android:tint="@color/ip_color_primary"
         app:srcCompat="@drawable/ic_arrow_back" />
 
     <View
@@ -36,12 +37,13 @@
 
     <TextView
         android:id="@+id/crop"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@+id/btn_ok"
         android:text="Crop"
         android:padding="10dp"
-        android:textColor="@android:color/white"
+        android:textColor="@android:color/black"
         />
 
     <Button
@@ -57,7 +59,7 @@
         android:minWidth="48dp"
         android:paddingRight="16.0dp"
         android:paddingLeft="16.0dp"
-        android:textColor="#ffffff"
+        android:textColor="@android:color/black"
         android:textSize="14sp" />
 
     <androidx.appcompat.widget.AppCompatImageView
@@ -68,6 +70,7 @@
         android:layout_centerVertical="true"
         android:background="@drawable/selector_back_press"
         android:padding="12dp"
+        android:tint="@color/ip_color_primary"
         app:srcCompat="@drawable/ic_vector_delete"
         android:visibility="gone" />
 </RelativeLayout>

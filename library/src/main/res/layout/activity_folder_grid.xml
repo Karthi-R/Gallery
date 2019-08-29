@@ -7,17 +7,30 @@
     android:orientation="vertical"
     >
 
+    <TextView
+        android:id="@+id/btn_preview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:text="Preview"
+        android:textAllCaps="false"
+        android:textColor="@color/ip_color_primary"
+        android:textSize="16sp" />
+
+
     <com.google.android.material.tabs.TabLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/tabLayout"
+        app:tabTextAppearance="@style/TabLayoutTextAppearance"
         android:layout_width="match_parent"
-        android:layout_height="?android:attr/actionBarSize"
-        android:background="@color/ip_color_primary"
+        android:layout_height="40dp"
         app:tabGravity="fill"
-        app:tabIndicatorColor="@android:color/white"
+        app:tabIndicatorColor="@color/ip_color_primary"
         app:tabMode="scrollable"
-        app:tabSelectedTextColor="@android:color/white"
-        app:tabTextColor="@android:color/white" />
+        app:tabSelectedTextColor="@color/ip_color_primary"
+        app:tabTextColor="@color/ip_color_primary" />
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/recycleview_pager"

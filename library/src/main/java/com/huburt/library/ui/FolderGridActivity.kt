@@ -7,16 +7,14 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.Gravity
 import android.view.View
 import android.widget.GridView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.fragment.app.FragmentActivity
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
-import com.huburt.library.C
-import com.huburt.library.ImageDataSource
-import com.huburt.library.R
+import com.huburt.library.*
 import com.huburt.library.adapter.PagerAdapter
 import com.huburt.library.bean.ImageFolder
 import com.huburt.library.bean.ImageItem
@@ -46,7 +44,7 @@ class FolderGridActivity : BaseActivity(), View.OnClickListener, ImageDataSource
         }
     }
 
-
+    private val pickerHelper: PickHelper = ImagePicker.pickHelper
     private lateinit var imageFolders: List<ImageFolder>
     private val imageDataSource = ImageDataSource(this)
     private lateinit var takeImageFile: File
@@ -70,6 +68,10 @@ class FolderGridActivity : BaseActivity(), View.OnClickListener, ImageDataSource
         //Find View By Id For GridView
         val gridView = findViewById(R.id.gridView) as GridView
         loadData()
+
+        btn_preview.setOnClickListener {
+            ImagePreviewActivity.startForResult(this, ImageGridFragment.REQUEST_PREVIEW, 0, pickerHelper.selectedImages)
+        }
 
         /*Create and ArrayList of Integer Type To Store Images From drawable.Here we add Images to ArrayList.
         We have Images of Android Icons of Different versions.
@@ -112,7 +114,9 @@ class FolderGridActivity : BaseActivity(), View.OnClickListener, ImageDataSource
          var adapter: PagerAdapter? = null
         viewPager = findViewById(R.id.recycleview_pager)
 
-        adapter = PagerAdapter(this,supportFragmentManager, imageFolders.toMutableList())
+      //x  val imageDataSource = this?.let { ImageDataSource(it as FragmentActivity) }
+
+        adapter = PagerAdapter(this,supportFragmentManager, imageFolders.toMutableList(),imageDataSource)
         viewPager!!.setAdapter(adapter)
 
         Toast.makeText(this, ""+viewPager.currentItem, Toast.LENGTH_SHORT).show()
@@ -120,7 +124,11 @@ class FolderGridActivity : BaseActivity(), View.OnClickListener, ImageDataSource
         tabLayout.tabMode =  TabLayout.MODE_SCROLLABLE
         tabLayout.setupWithViewPager(viewPager)
 
-       // viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
+
+        viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
+
+
+
       /*  tabLayout.onTabSelected {
             trackTabChange(tabLayout.getTabAt(it))
         }
