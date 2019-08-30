@@ -3,21 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="48dp"
+    android:background="@color/blue"
     android:clickable="true">
 
     <ImageView
         android:id="@+id/btn_back"
-        android:visibility="gone"
         android:layout_width="48dp"
         android:layout_height="match_parent"
         android:layout_centerVertical="true"
         android:background="@drawable/selector_back_press"
         android:padding="12dp"
-        android:tint="@color/ip_color_primary"
+        android:tint="@android:color/white"
         app:srcCompat="@drawable/ic_arrow_back" />
 
     <View
         android:layout_width="2px"
+        android:visibility="gone"
         android:layout_height="match_parent"
         android:layout_marginBottom="12dp"
         android:layout_marginTop="12dp"
@@ -46,8 +47,22 @@
         android:textColor="@android:color/black"
         />
 
+    <ImageView
+        android:id="@+id/edit"
+        android:layout_width="48dp"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:background="@drawable/selector_back_press"
+        android:padding="12dp"
+        android:layout_marginRight="20dp"
+        android:layout_alignParentRight="true"
+        android:tint="@android:color/white"
+        app:srcCompat="@drawable/ic_edit" />
+
+
     <Button
         android:id="@+id/btn_ok"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"

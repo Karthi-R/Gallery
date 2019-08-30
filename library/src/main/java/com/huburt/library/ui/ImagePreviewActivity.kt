@@ -9,6 +9,9 @@ import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager.widget.ViewPager
 import com.huburt.library.C
+import com.huburt.library.Crop.CropImage
+import com.huburt.library.Crop.CropImageActivity
+import com.huburt.library.Crop.CropImageOptions
 import com.huburt.library.R
 import com.huburt.library.adapter.SmallPreviewAdapter
 import com.huburt.library.bean.ImageItem
@@ -21,12 +24,7 @@ import uk.co.senab.photoview.PhotoViewAttacher
  *
  * Created on 2017/10/19.
  */
-class ImagePreviewActivity : ImagePreviewBaseActivity(), View.OnClickListener, PhotoViewAttacher.OnPhotoTapListener, com.huburt.library.Crop.CropImageView.OnSetImageUriCompleteListener, com.huburt.library.Crop.CropImageView.OnCropImageCompleteListener {
-    override fun onSetImageUriComplete(view: com.huburt.library.Crop.CropImageView, uri: Uri, error: Exception?) {
-    }
-
-    override fun onCropImageComplete(view: com.huburt.library.Crop.CropImageView, result: com.huburt.library.Crop.CropImageView.CropResult) {
-    }
+class ImagePreviewActivity : ImagePreviewBaseActivity(), View.OnClickListener, PhotoViewAttacher.OnPhotoTapListener {
 
     private lateinit var imageItems: ArrayList<ImageItem>
     private var current: Int = 0
@@ -52,6 +50,27 @@ class ImagePreviewActivity : ImagePreviewBaseActivity(), View.OnClickListener, P
     private fun init() {
         btn_ok.setOnClickListener(this)
         crop.setOnClickListener(this)
+        edit.setOnClickListener {
+          //  ImagePicker.imageLoader?.displayImagePreview(mActivity, imageItem.path!!, photoView, screenWidth, screenHeight)
+            val intent = Intent()
+            intent.setClass(this, CropActivity::class.java)
+            val bundle = Bundle()
+
+           // bundle.putParcelable(CropImage.CROP_IMAGE_EXTRA_SOURCE, mSource)
+            bundle.putParcelable(CropImage.CROP_IMAGE_EXTRA_OPTIONS, CropImageOptions())
+            intent.putExtra(CropImage.CROP_IMAGE_EXTRA_BUNDLE, bundle)
+            intent.putExtra("Path", imageItems[current].path!!)
+            startActivity(intent)
+
+           /* val mSource = Uri.parse(imageItems[current].path)
+            val intent = Intent()
+            intent.setClass(this, CropImageActivity::class.java)
+            val bundle = Bundle()
+            bundle.putParcelable(CropImage.CROP_IMAGE_EXTRA_SOURCE, mSource)
+            bundle.putParcelable(CropImage.CROP_IMAGE_EXTRA_OPTIONS, CropImageOptions())
+            intent.putExtra(CropImage.CROP_IMAGE_EXTRA_BUNDLE, bundle)
+            startActivity(intent)*/
+        }
         bottom_bar.visibility = View.VISIBLE
 
         tv_des.text = getString(R.string.ip_preview_image_count, current + 1, imageItems.size)

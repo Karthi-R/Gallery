@@ -10,7 +10,7 @@ interface ImageLoader : Serializable {
 
     fun displayImage(activity: Activity, path: String, imageView: ImageView, width: Int, height: Int)
 
-    fun displayImagePreview(activity: Activity, path: String, imageView: CropImageView, width: Int, height: Int)
+    fun displayImagePreview(activity: Activity, path: String, imageView: ImageView, width: Int, height: Int)
 
     fun clearMemoryCache()
 }

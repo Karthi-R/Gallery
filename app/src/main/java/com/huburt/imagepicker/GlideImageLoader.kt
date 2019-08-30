@@ -26,13 +26,13 @@ class GlideImageLoader : ImageLoader {
                 .into(imageView)
     }
 
-    override fun displayImagePreview(activity: Activity, path: String, imageView: CropImageView, width: Int, height: Int) {
-       /* Glide.with(activity)
+    override fun displayImagePreview(activity: Activity, path: String, imageView: ImageView, width: Int, height: Int) {
+        Glide.with(activity)
                 .load(Uri.fromFile(File(path)))
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(imageView)*/
+                .into(imageView)
 
-        imageView.setImageUriAsync(Uri.fromFile(File(path)))
+        //imageView.setImageUriAsync(Uri.fromFile(File(path)))
     }
 
     override fun clearMemoryCache() {

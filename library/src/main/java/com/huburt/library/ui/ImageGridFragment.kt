@@ -138,7 +138,7 @@ class ImageGridFragment(mActivity: Activity, imgFolderList: MutableList<ImageFol
         super.onResume()
         //数据刷新
         adapter.notifyDataSetChanged()
-        onCheckChanged(pickerHelper.selectedImages.size, pickerHelper.limit)
+      //  onCheckChanged(pickerHelper.selectedImages.size, pickerHelper.limit)
     }
 
     private fun initView() {
@@ -207,7 +207,7 @@ class ImageGridFragment(mActivity: Activity, imgFolderList: MutableList<ImageFol
                 tv_dir.text = imageFolder.name
             }
         })
-        footer_bar.post({ mFolderPopupWindow.setMargin(footer_bar.height) })
+       // footer_bar.post({ mFolderPopupWindow.setMargin(footer_bar.height) })
     }
 
     private fun showPopupFolderList() {
@@ -260,6 +260,7 @@ class ImageGridFragment(mActivity: Activity, imgFolderList: MutableList<ImageFol
     }
 
     override fun onCheckChanged(selected: Int, limit: Int) {
+/*
         if (selected == 0) {
             btn_ok.isEnabled = false
             btn_ok.text = getString(R.string.ip_complete)
@@ -275,6 +276,7 @@ class ImageGridFragment(mActivity: Activity, imgFolderList: MutableList<ImageFol
             btn_preview.text = getString(R.string.ip_preview_count, selected)
             btn_preview.setTextColor(resources.getColor(R.color.ip_text_primary_inverted))
         }
+*/
     }
 
     override fun onCameraClick() {

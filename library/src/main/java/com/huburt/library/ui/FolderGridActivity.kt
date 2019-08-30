@@ -20,6 +20,8 @@ import com.huburt.library.bean.ImageFolder
 import com.huburt.library.bean.ImageItem
 import com.huburt.library.util.CameraUtil
 import kotlinx.android.synthetic.main.activity_folder_grid.*
+import kotlinx.android.synthetic.main.activity_folder_grid.btn_ok
+import kotlinx.android.synthetic.main.include_top_bar.*
 import java.io.File
 
 
@@ -49,7 +51,8 @@ class FolderGridActivity : BaseActivity(), View.OnClickListener, ImageDataSource
     private val imageDataSource = ImageDataSource(this)
     private lateinit var takeImageFile: File
     private var takePhoto: Boolean = false
-
+    var viewPager: ViewPager? = null
+    var adapter: PagerAdapter? = null
 
 
     override fun onClick(p0: View?) {
@@ -69,9 +72,25 @@ class FolderGridActivity : BaseActivity(), View.OnClickListener, ImageDataSource
         val gridView = findViewById(R.id.gridView) as GridView
         loadData()
 
+
+
         btn_preview.setOnClickListener {
-            ImagePreviewActivity.startForResult(this, ImageGridFragment.REQUEST_PREVIEW, 0, pickerHelper.selectedImages)
+            if(pickerHelper.selectedImages.size>0){
+                ImagePreviewActivity.startForResult(this, ImageGridFragment.REQUEST_PREVIEW, 0, pickerHelper.selectedImages)
+            } else{
+                showToast("Select image to preview")
+            }
         }
+
+
+        btn_ok.setOnClickListener {
+                val result = Intent()
+                result.putExtra(C.EXTRA_IMAGE_ITEMS, pickerHelper.selectedImages)
+                this.setResult(Activity.RESULT_OK, result)
+                this.finish()
+        }
+
+
 
         /*Create and ArrayList of Integer Type To Store Images From drawable.Here we add Images to ArrayList.
         We have Images of Android Icons of Different versions.
@@ -105,13 +124,12 @@ class FolderGridActivity : BaseActivity(), View.OnClickListener, ImageDataSource
 
     override fun onResume() {
         super.onResume()
-
-        // adapter.notifyDataSetChanged()
+        loadData()
+       // showPopupFolderList()
     }
 
     private fun showPopupFolderList() {
-         var viewPager: ViewPager? = null
-         var adapter: PagerAdapter? = null
+
         viewPager = findViewById(R.id.recycleview_pager)
 
       //x  val imageDataSource = this?.let { ImageDataSource(it as FragmentActivity) }
@@ -119,13 +137,13 @@ class FolderGridActivity : BaseActivity(), View.OnClickListener, ImageDataSource
         adapter = PagerAdapter(this,supportFragmentManager, imageFolders.toMutableList(),imageDataSource)
         viewPager!!.setAdapter(adapter)
 
-        Toast.makeText(this, ""+viewPager.currentItem, Toast.LENGTH_SHORT).show()
+       // Toast.makeText(this, ""+ viewPager!!.currentItem, Toast.LENGTH_SHORT).show()
 
         tabLayout.tabMode =  TabLayout.MODE_SCROLLABLE
         tabLayout.setupWithViewPager(viewPager)
 
 
-        viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
+        viewPager!!.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
 
 
 
@@ -178,6 +196,8 @@ class FolderGridActivity : BaseActivity(), View.OnClickListener, ImageDataSource
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == FolderGridActivity.REQUEST_CAMERA) {//相机返回
             if (resultCode == Activity.RESULT_OK) {
+                takeImageFile = CameraUtil.takePicture(this, FolderGridActivity.REQUEST_CAMERA)
+
                 Log.e("hubert", takeImageFile.absolutePath)
                 //广播通知新增图片
                 val mediaScanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
@@ -209,7 +229,7 @@ class FolderGridActivity : BaseActivity(), View.OnClickListener, ImageDataSource
 
     private fun setResult() {
         val result = Intent()
-        //result.putExtra(C.EXTRA_IMAGE_ITEMS, pickerHelper.selectedImages)
+        result.putExtra(C.EXTRA_IMAGE_ITEMS, pickerHelper.selectedImages)
         setResult(Activity.RESULT_OK, result)
         finish()
     }

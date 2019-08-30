@@ -35,11 +35,11 @@ class ImagePagerAdapter(
     }
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
-       // val photoView = PhotoView(mActivity)
-        val photoView = CropImageView(mActivity)
+        val photoView = PhotoView(mActivity)
+        //val photoView = CropImageView(mActivity)
         val imageItem = images[position]
         ImagePicker.imageLoader?.displayImagePreview(mActivity, imageItem.path!!, photoView, screenWidth, screenHeight)
-       // photoView.setOnPhotoTapListener(listener)
+        photoView.setOnPhotoTapListener(listener)
         container.addView(photoView)
         return photoView
     }

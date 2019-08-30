@@ -8,12 +8,14 @@
 
     <include
         android:id="@+id/top_bar"
+        android:visibility="gone"
         layout="@layout/include_top_bar" />
 
     <RelativeLayout
         android:id="@+id/footer_bar"
         android:layout_width="match_parent"
         android:layout_height="48dp"
+        android:visibility="gone"
        >
 
         <RelativeLayout

@@ -9,6 +9,8 @@
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="6dp"
+        android:layout_below="@+id/top_bar"
         />
 
     <include
@@ -20,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="#cc22292c"
+        android:background="@android:color/white"
         android:orientation="vertical"
         android:visibility="gone"
         tools:visibility="visible">
@@ -42,6 +44,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
+            android:visibility="gone"
             android:layout_height="48dp">
 
             <androidx.appcompat.widget.AppCompatCheckBox

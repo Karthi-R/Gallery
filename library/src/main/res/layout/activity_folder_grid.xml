@@ -7,17 +7,58 @@
     android:orientation="vertical"
     >
 
-    <TextView
-        android:id="@+id/btn_preview"
-        android:layout_width="match_parent"
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/selector_top_ok"
+
+    >
+
+    <Button
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="right"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
+        android:padding="16dp"
+        android:text="Gallery"
+        android:textStyle="bold"
+        android:textAllCaps="false"
+        android:layout_alignParentLeft="true"
+        android:background="@drawable/selector_top_ok"
+        android:textColor="@android:color/white"
+        android:textSize="16sp" />
+
+
+
+    <TextView
+        android:id="@+id/btn_ok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:padding="16dp"
+        android:text="Select"
+        android:visibility="gone"
+        android:textAllCaps="false"
+        android:layout_marginRight="20dp"
+        android:layout_toLeftOf="@+id/btn_preview"
+        android:textColor="@android:color/white"
+        android:textSize="16sp" />
+
+
+    <TextView
+        android:id="@+id/btn_preview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:padding="16dp"
         android:text="Preview"
         android:textAllCaps="false"
-        android:textColor="@color/ip_color_primary"
+        android:layout_alignParentRight="true"
+        android:textColor="@android:color/white"
         android:textSize="16sp" />
+
+
+</RelativeLayout>
 
 
     <com.google.android.material.tabs.TabLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -27,10 +68,10 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         app:tabGravity="fill"
-        app:tabIndicatorColor="@color/ip_color_primary"
+        app:tabIndicatorColor="#303135"
         app:tabMode="scrollable"
         app:tabSelectedTextColor="@color/ip_color_primary"
-        app:tabTextColor="@color/ip_color_primary" />
+        app:tabTextColor="#303135" />
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/recycleview_pager"

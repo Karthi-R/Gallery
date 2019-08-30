@@ -23,8 +23,6 @@ import java.util.*
 /** Custom view that provides cropping capabilities to an image.  */
 class CropImageView : FrameLayout {
 
-
-
     // region: Fields and Consts
 
     /** Image view widget used to show the image for cropping.  */
