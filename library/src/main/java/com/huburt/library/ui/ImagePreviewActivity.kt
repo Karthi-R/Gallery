@@ -2,16 +2,15 @@ package com.huburt.library.ui
 
 import android.app.Activity
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager.widget.ViewPager
 import com.huburt.library.C
-import com.huburt.library.Crop.CropImage
+import com.huburt.library.Edit.CropImage
 import com.huburt.library.Crop.CropImageActivity
-import com.huburt.library.Crop.CropImageOptions
+import com.huburt.library.Edit.CropImageOptions
 import com.huburt.library.R
 import com.huburt.library.adapter.SmallPreviewAdapter
 import com.huburt.library.bean.ImageItem

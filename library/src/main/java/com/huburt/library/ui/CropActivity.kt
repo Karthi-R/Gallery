@@ -11,15 +11,15 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.core.content.ContextCompat
-import com.huburt.library.Crop.CropImage
-import com.huburt.library.Crop.CropImageOptions
-import com.huburt.library.Crop.CropImageView
+import com.huburt.library.Edit.CropImage
+import com.huburt.library.Edit.CropImageOptions
+import com.huburt.library.Edit.CropImageView
 import com.huburt.library.R
 import kotlinx.android.synthetic.main.activity_crop.*
 import java.io.File
 import java.io.IOException
 
-class CropActivity : AppCompatActivity(),com.huburt.library.Crop.CropImageView.OnSetImageUriCompleteListener, com.huburt.library.Crop.CropImageView.OnCropImageCompleteListener {
+class CropActivity : AppCompatActivity(),com.huburt.library.Edit.CropImageView.OnSetImageUriCompleteListener, com.huburt.library.Edit.CropImageView.OnCropImageCompleteListener {
 
     /** The crop image view library widget used in the activity  */
     private var mCropImageView: CropImageView? = null
