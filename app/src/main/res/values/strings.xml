@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ImagePicker</string>
+    <string name="app_name">Gallery</string>
 
     <string name="crop_image_activity_title"></string>
     <string name="crop_image_menu_rotate_left">Rotate counter clockwise</string>

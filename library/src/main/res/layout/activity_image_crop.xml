@@ -6,7 +6,7 @@
 
     <include layout="@layout/include_top_bar" />
 
-    <com.huburt.library.view.CropImageView
+    <com.custom.library.view.CropImageView
         android:id="@+id/cv_crop_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

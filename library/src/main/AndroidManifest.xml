@@ -1,34 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.huburt.library">
+    package="com.custom.library">
     <!-- 往SDCard写入数据权限 -->
     <application
         android:allowBackup="true"
         android:supportsRtl="true">
-        <activity android:name=".ui.SaveEditedImage"></activity>
+        <activity android:name="com.custom.library.ui.SaveEditedImage"></activity>
         <activity
-            android:name=".ui.CropActivity"
+            android:name="com.custom.library.ui.CropActivity"
             android:theme="@style/CropTheme" />
-        <activity android:name=".ui.ShadowActivity" />
+        <activity android:name="com.custom.library.ui.ShadowActivity" />
         <activity
-            android:name=".ui.ImageGridActivity"
+            android:name="com.custom.library.ui.ImageGridActivity"
             android:theme="@style/ImagePickerTheme" />
         <activity
-            android:name=".ui.ImagePreviewActivity"
+            android:name="com.custom.library.ui.ImagePreviewActivity"
             android:theme="@style/ImagePickerTheme" />
         <activity
-            android:name=".ui.ImagePreviewDelActivity"
+            android:name="com.custom.library.ui.ImagePreviewDelActivity"
             android:theme="@style/ImagePickerTheme" />
         <activity
-            android:name=".ui.ImageCropActivity"
+            android:name="com.custom.library.ui.ImageCropActivity"
             android:theme="@style/ImagePickerTheme" />
-        <activity android:name=".ui.FolderGridActivity" />
-        <activity android:name=".Crop.CropImageActivity" />
-        <activity android:name=".Edit.CropImageActivity" />
-        <activity android:name=".ui.ImagePagerActivity" />
+        <activity android:name="com.custom.library.ui.FolderGridActivity" />
+        <activity android:name="com.custom.library.Crop.CropImageActivity" />
+        <activity android:name="com.custom.library.Edit.CropImageActivity" />
+        <activity android:name="com.custom.library.ui.ImagePagerActivity" />
 
         <provider
-            android:name=".ImagePickerProvider"
+            android:name="com.custom.library.ImagePickerProvider"
             android:authorities="${applicationId}.provider"
             android:exported="false"
             android:grantUriPermissions="true">
