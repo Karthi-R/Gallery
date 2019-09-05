@@ -390,7 +390,12 @@ internal object BitmapUtils {
         try {
             var needSave = true
             if (uri == null) {
-                uri = Uri.fromFile(File.createTempFile("aic_state_store_temp", ".jpg", context.cacheDir))
+              //  uri = Uri.fromFile(File.createTempFile("aic_state_store_temp", ".jpg", context.cacheDir))
+
+              //  uri = Uri.fromFile(getCropCacheFolder(context))
+
+                uri = Uri.fromFile(File.createTempFile("aic_state_store_temp", ".jpg", getCropCacheFolder(context)))
+              //  uri = Uri.fromFile(getCropCacheFolder(context)+"" + ".jpg")
                // uri = Uri.fromFile(getCropCacheFolder(context))
             } else if (File(uri!!.path!!).exists()) {
                 needSave = false

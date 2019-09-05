@@ -32,6 +32,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.custom.library.R
+import com.custom.library.util.FileUtil
 
 import java.io.File
 import java.io.IOException
@@ -63,7 +64,13 @@ class CropImageActivity : AppCompatActivity(), CropImageView.OnSetImageUriComple
                     val ext = if (mOptions!!.outputCompressFormat === Bitmap.CompressFormat.JPEG)
                         ".jpg"
                     else if (mOptions!!.outputCompressFormat === Bitmap.CompressFormat.PNG) ".png" else ".webp"
-                    outputUri = Uri.fromFile(File.createTempFile("cropped", ext, getCacheDir()))
+                   // outputUri = Uri.fromFile(File.createTempFile("cropped", ext, getCacheDir()))
+
+                    outputUri = Uri.fromFile(File.createTempFile("cropped", ".jpg", FileUtil.getCropCacheFolder(this)))
+
+                  //  outputUri = Uri.fromFile(File(FileUtil.getCropCacheFolder(this).path+"cropped"+ext))
+
+                    //outputUri = Uri.fromFile(File.createTempFile("cropped", ext, FileUtil.getCropCacheFolder(this)))
                 } catch (e: IOException) {
                     throw RuntimeException("Failed to create temp file for output image", e)
                 }

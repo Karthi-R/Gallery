@@ -44,7 +44,7 @@ import java.util.*
 //class ImageGridFragment(mActivity: Activity, imageDataSource: MutableList<ImageFolder>?) : Fragment(), View.OnClickListener, ImageDataSource.OnImagesLoadedListener, ImageRecyclerAdapter.OnImageItemClickListener {
 class ImageGridFragment(mActivity: Activity, imgFolderList: MutableList<ImageFolder>?) : Fragment(), View.OnClickListener, ImageRecyclerAdapter.OnImageItemClickListener {
     companion object {
-
+//Uri.fromFile(File.createTempFile
         val REQUEST_PERMISSION_STORAGE = 0x12
         val REQUEST_PERMISSION_CAMERA = 0x13
         val REQUEST_CAMERA = 0x23

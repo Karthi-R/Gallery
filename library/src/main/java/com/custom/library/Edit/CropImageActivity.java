@@ -33,6 +33,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.custom.library.R;
+import com.custom.library.util.FileUtil;
 
 
 import java.io.File;
@@ -296,13 +297,20 @@ public class CropImageActivity extends AppCompatActivity
             mOptions.outputCompressFormat == Bitmap.CompressFormat.JPEG
                 ? ".jpg"
                 : mOptions.outputCompressFormat == Bitmap.CompressFormat.PNG ? ".png" : ".webp";
+      //  outputUri = Uri.fromFile(File.createTempFile("cropped", ext, getCacheDir()));
         outputUri = Uri.fromFile(File.createTempFile("cropped", ext, getCacheDir()));
+
+
+
+       //  outputUri = Uri.fromFile(File.createTempFile("cropped", ext, FileUtil.getCropCacheFolder(this)));
       } catch (IOException e) {
         throw new RuntimeException("Failed to create temp file for output image", e);
       }
     }
     return outputUri;
   }
+
+
 
   /** Result with cropped image data or error if failed. */
   protected void setResult(Uri uri, Exception error, int sampleSize) {
