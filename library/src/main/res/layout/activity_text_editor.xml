@@ -56,14 +56,23 @@
 
 
     </RelativeLayout>
-
-    <ImageView
-        android:id="@+id/adjustment_iv"
+    <LinearLayout
+        android:id="@+id/image_lay"
         android:layout_width="match_parent"
-        android:layout_below="@+id/header"
         android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_below="@+id/header"
         android:layout_above="@+id/text_writer"
-        />
+        >
+        <ImageView
+            android:id="@+id/edit_iv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            />
+    </LinearLayout>
+
+
 
     <TextView
         android:id="@+id/text_preview"

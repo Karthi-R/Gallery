@@ -8,11 +8,9 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import com.custom.library.Crop.BitmapUtils
-import com.custom.library.R
 import com.custom.library.ui.ImageEditActivity
 import com.custom.library.util.Utils.calculateInSampleSize
-import kotlinx.android.synthetic.main.activity_adjustment.*
-import kotlinx.android.synthetic.main.activity_adjustment.adjustment_iv
+
 import kotlinx.android.synthetic.main.activity_text_editor.*
 import android.graphics.Bitmap
 import android.view.View.DragShadowBuilder
@@ -22,10 +20,21 @@ import android.view.DragEvent
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
+import android.R
+import android.R.attr.y
+import android.R.attr.x
 
 
-class TextEditorActivity : AppCompatActivity() {
+
+
+
+class TextEditorActivity : AppCompatActivity(){
+
+
+    private var _xDelta: Int = 0
+    private var _yDelta: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,8 +42,14 @@ class TextEditorActivity : AppCompatActivity() {
 
         val path = Uri.parse(intent.getStringExtra("Path"))
 
-        adjustment_iv.setImageURI(path)
+        edit_iv.setImageURI(path)
 
+
+        image_lay.tag = "img"
+        text_preview.tag = "txt"
+
+      //  image_lay.setOnDragListener(this)
+       // text_preview.setOnTouchListener(this)
 
 
         text_writer.addTextChangedListener(object : TextWatcher {
@@ -47,15 +62,17 @@ class TextEditorActivity : AppCompatActivity() {
             }
         })
 
+        var options = BitmapFactory.Options()
+        options.inJustDecodeBounds = true
+        BitmapFactory.decodeFile(intent.getStringExtra("Path"), options)
+        var displayMetrics = resources.displayMetrics
+        options.inSampleSize = calculateInSampleSize(options, displayMetrics.widthPixels, displayMetrics.heightPixels)
+        options.inJustDecodeBounds = false
+        options.inMutable = true
+        var bitmap = BitmapFactory.decodeFile(intent.getStringExtra("Path"), options)
+
         save.setOnClickListener {
-            var options = BitmapFactory.Options()
-            options.inJustDecodeBounds = true
-            BitmapFactory.decodeFile(intent.getStringExtra("Path"), options)
-            var displayMetrics = resources.displayMetrics
-            options.inSampleSize = calculateInSampleSize(options, displayMetrics.widthPixels, displayMetrics.heightPixels)
-            options.inJustDecodeBounds = false
-            options.inMutable = true
-            var bitmap = BitmapFactory.decodeFile(intent.getStringExtra("Path"), options)
+
 
            // val mBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), bitmap.getConfig())
            // bitmap.recycle()
@@ -63,7 +80,7 @@ class TextEditorActivity : AppCompatActivity() {
 
             var canvas  = Canvas(mutableBitmap)
             var paint =  Paint()
-            paint.color = resources.getColor(R.color.blue)
+            paint.color = resources.getColor(com.custom.library.R.color.blue)
             paint.typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
             paint.textSize = 100F
           //  canvas.drawText(text_preview.text.toString(), (mutableBitmap.width / 2).toFloat(), (mutableBitmap.height / 2).toFloat(), paint)
@@ -83,7 +100,7 @@ class TextEditorActivity : AppCompatActivity() {
 
         }
 
-        var listener = View.OnTouchListener(function = {view, motionEvent ->
+      /*  var listener = View.OnTouchListener(function = {view, motionEvent ->
 
             if (motionEvent.action == MotionEvent.ACTION_MOVE) {
 
@@ -93,55 +110,140 @@ class TextEditorActivity : AppCompatActivity() {
 
             true
 
+        })*/
+
+        var listener = View.OnTouchListener(function = {view, motionEvent ->
+
+            if (motionEvent.action == MotionEvent.ACTION_MOVE) {
+
+                //working
+
+            /*    val location = IntArray(2)
+                edit_iv.getLocationOnScreen(location)
+                val x = location[0]
+                val y = location[1]
+
+                val eventX = motionEvent.rawX
+                val eventY = motionEvent.rawY
+
+                val eventX1 = motionEvent.x
+                val eventY1 = motionEvent.y
+
+                val v_x = edit_iv.getTop()
+                val v_y =edit_iv.getLeft()
+
+
+              //  if(((eventX > edit_iv.left) && (eventX < edit_iv.right)) && ((eventY > edit_iv.top) && (eventY < edit_iv.bottom)))     {
+                if(((eventX > edit_iv.left) && (eventX < edit_iv.right)) && ((eventY > edit_iv.top) && (eventY < edit_iv.bottom)))     {
+                    view.y = motionEvent.rawY - view.height/2
+                    view.x = motionEvent.rawX - view.width/2
+                }*/
+   val location = IntArray(2)
+                edit_iv.getLocationOnScreen(location)
+                val x = location[0]
+                val y = location[1]
+
+                val txt_location = IntArray(2)
+                text_preview.getLocationOnScreen(txt_location)
+                val x1 = txt_location[0]
+                val y1 = txt_location[1]
+
+                val eventX = motionEvent.rawX
+                val eventY = motionEvent.rawY
+
+                val eventX1 = motionEvent.x
+                val eventY1 = motionEvent.y
+
+                val v_x = edit_iv.getTop()
+                val v_y =edit_iv.getLeft()
+
+
+              //  if(((eventX > edit_iv.left) && (eventX < edit_iv.right)) && ((eventY > edit_iv.top) && (eventY < edit_iv.bottom)))     {
+                if((x1 < bitmap.width)&& (y1 < bitmap.height))     {
+                    view.y = motionEvent.rawY - view.height/2
+                    view.x = motionEvent.rawX - view.width/2
+                }
+
+
+            }
+
+            true
+
         })
 
-        // Declared in our activity_shapes_view.xml file.
         text_preview.setOnTouchListener(listener)
 
-/*
-        text_preview.setOnTouchListener(object : View.OnTouchListener {
-            override fun onTouch(view: View?, event: MotionEvent?): Boolean {
-                if(view == null) return false
-
-                val item = ClipData.Item(view.getTag() as CharSequence)
-
-                val mimeTypes = arrayOf(ClipDescription.MIMETYPE_TEXT_PLAIN)
-                val data = ClipData(view.getTag().toString(), mimeTypes, item)
-                val shadowBuilder = View.DragShadowBuilder(view)
-
-                view.startDrag(data, //data to be dragged
-                        shadowBuilder, //drag shadow
-                        view, //local data about the drag and drop operation
-                        0   //no needed flags
-                )
-                view.visibility = View.INVISIBLE
-                return view?.onTouchEvent(event) ?: true
-            }
-        })
-*/
 
 
-      /*  text_preview.setOnTouchListener { view, event ->
+        // Declared in our activity_shapes_view.xml file.
 
-            val item = ClipData.Item(view.getTag() as CharSequence)
 
-            val mimeTypes = arrayOf(ClipDescription.MIMETYPE_TEXT_PLAIN)
-            val data = ClipData(view.getTag().toString(), mimeTypes, item)
-            val shadowBuilder = View.DragShadowBuilder(view)
 
-            view.startDrag(data, //data to be dragged
-                    shadowBuilder, //drag shadow
-                    view, //local data about the drag and drop operation
-                    0   //no needed flags
-            )
-            view.visibility = View.INVISIBLE
-            true
-          //  view.visibility = View.INVISIBLE
 
-        }*/
+
 
 
     }
+
+  /*  override fun onTouch(view: View?, motionEvent: MotionEvent?): Boolean {
+        val item = ClipData.Item(view?.tag as String)
+        val mimeTypes = arrayOf(ClipDescription.MIMETYPE_TEXT_PLAIN)
+        val data = ClipData(view.getTag() as String, mimeTypes, item)
+        val shadowBuilder = View.DragShadowBuilder(view)
+        view.startDrag(data, shadowBuilder,view, 0)
+        view.setVisibility(View.INVISIBLE)
+
+                return true
+
+    }
+
+    override fun onDrag(v: View?, event: DragEvent?): Boolean {
+        var action = event!!.getAction()
+        when (action) {
+             DragEvent.ACTION_DRAG_STARTED ->{
+
+             }
+
+             DragEvent.ACTION_DRAG_ENTERED->{
+
+            }
+             DragEvent.ACTION_DRAG_EXITED->{
+
+             }
+
+             DragEvent.ACTION_DROP ->{
+
+                 val textDropped = event.getLocalState() as TextView
+                 textDropped.visibility = View.VISIBLE
+                 val viewDroppedAt = v as ViewGroup
+                 (textDropped.parent as ViewGroup).removeView(textDropped)
+
+                 if (v.getId() === com.custom.library.R.id.image_lay) {
+                     if (textDropped.id == com.custom.library.R.id.text_preview) {
+                         textDropped.text = "Item1 in bottom layer"
+                         textDropped.setTextColor(resources.getColor(com.custom.library.R.color.blue))
+                         textDropped.textSize= 50F
+                         textDropped.typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
+
+                     }
+                 }
+
+                 viewDroppedAt.addView(textDropped)
+
+                // v.setVisibility(View.VISIBLE)
+             }
+
+
+             DragEvent.ACTION_DRAG_ENDED->{
+
+             }
+
+
+
+        }
+        return true
+    }*/
+
 }
 
 
