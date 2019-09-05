@@ -24,11 +24,15 @@ import uk.co.senab.photoview.PhotoViewAttacher
  */
 class ImagePreviewActivity : ImagePreviewBaseActivity(), View.OnClickListener, PhotoViewAttacher.OnPhotoTapListener {
 
+
     private lateinit var imageItems: ArrayList<ImageItem>
     private var current: Int = 0
     private var previewAdapter: SmallPreviewAdapter = SmallPreviewAdapter(this, pickHelper.selectedImages)
 
     companion object {
+
+        const val IMAGE_PREVIEW_REQUEST_CODE = 601
+
 
         fun startForResult(activity: Activity, requestCode: Int, position: Int, imageItems: ArrayList<ImageItem>) {
             val intent = Intent(activity, ImagePreviewActivity::class.java)
@@ -50,9 +54,21 @@ class ImagePreviewActivity : ImagePreviewBaseActivity(), View.OnClickListener, P
         crop.setOnClickListener(this)
         edit.setOnClickListener {
 
-            val intent = Intent(this,ImageEditActivity::class.java)
+            val intent = Intent()
+            intent.setClass(this, ImageEditActivity::class.java)
+            val bundle = Bundle()
+            /* bundle.putParcelable(CropImage.CROP_IMAGE_EXTRA_OPTIONS, CropImageOptions())
+             intent.putExtra(CropImage.CROP_IMAGE_EXTRA_BUNDLE, bundle)*/
             intent.putExtra("Path", imageItems[current].path!!)
-            startActivity(intent)
+            intent.putExtra("position", current)
+            startActivityForResult(intent,IMAGE_PREVIEW_REQUEST_CODE)
+
+
+//            val intent = Intent(this,ImageEditActivity::class.java)
+//            intent.putExtra("Path", imageItems[current].path!!)
+//            startActivityForResult(intent,IMAGE_PREVIEW_REQUEST_CODE)
+
+            //startActivity(intent)
 
 
 
@@ -125,6 +141,23 @@ class ImagePreviewActivity : ImagePreviewBaseActivity(), View.OnClickListener, P
         rv_small.adapter = previewAdapter
         updatePreview()
     }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == IMAGE_PREVIEW_REQUEST_CODE) {
+
+            if (data != null){
+               val path = data.getStringExtra("Path")
+                val position = data.getIntExtra("position",0)
+                pickHelper.selectedImages[position].path = path
+                imageItems[position].path = path
+                init()
+            }
+        }
+    }
+
 
     private fun updatePreview() {
         if (pickHelper.selectedImages.size > 0) {

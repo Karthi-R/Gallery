@@ -15,6 +15,7 @@ import kotlinx.android.synthetic.main.activity_process_edited_image.*
 class ImageEditActivity : AppCompatActivity() {
 
     private var path: String = ""
+    private var position: Int = 0
 
     companion object{
         const val CROP_IMAGE_REQUEST_CODE = 501
@@ -27,6 +28,7 @@ class ImageEditActivity : AppCompatActivity() {
         setContentView(R.layout.activity_image_edit)
 
         path = intent.getStringExtra("Path")
+        position = intent.getIntExtra("position",0)
 
         preview_imageView.setImageURI(Uri.parse(path))
 
@@ -81,5 +83,19 @@ class ImageEditActivity : AppCompatActivity() {
                 preview_imageView.setImageURI(Uri.parse(path))
             }
         }
+    }
+
+    override fun onBackPressed() {
+      //  super.onBackPressed()
+
+        val intent = Intent()
+        intent.putExtras(getIntent())
+        if (path != null) {
+            intent.putExtra("Path",path)
+            intent.putExtra("position",position)
+        }
+
+        setResult(ImagePreviewActivity.IMAGE_PREVIEW_REQUEST_CODE,intent)
+        finish()
     }
 }
