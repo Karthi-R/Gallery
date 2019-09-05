@@ -7,10 +7,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.view.animation.AnimationUtils
 import android.widget.AdapterView
 import android.widget.Toast
@@ -82,7 +79,7 @@ class ImageGridFragment(mActivity: Activity, imgFolderList: MutableList<ImageFol
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         position= arguments?.getInt("Selected_position")!!
-
+        setHasOptionsMenu(true)
         //setContentView(R.layout.activity_image_grid)
         //是否直接打开相机
       //  takePhoto = intent.extras[C.EXTRA_TAKE_PHOTO] as Boolean
@@ -138,7 +135,7 @@ class ImageGridFragment(mActivity: Activity, imgFolderList: MutableList<ImageFol
         super.onResume()
         //数据刷新
         adapter.notifyDataSetChanged()
-      //  onCheckChanged(pickerHelper.selectedImages.size, pickerHelper.limit)
+        onCheckChanged(pickerHelper.selectedImages.size, pickerHelper.limit)
     }
 
     private fun initView() {
@@ -188,6 +185,31 @@ class ImageGridFragment(mActivity: Activity, imgFolderList: MutableList<ImageFol
             btn_preview.visibility = View.GONE
         }
     }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.preview_menu, menu)
+        menu.findItem(R.id.preview).setTitle( getString(R.string.preview,pickerHelper.selectedImages.size, pickerHelper.limit))
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        when (item.itemId) {
+            R.id.preview -> {
+
+               // getString(R.string.preview,pickerHelper.selectedImages.size, pickerHelper.limit)
+                if(pickerHelper.selectedImages.size>0){
+                    ImagePreviewActivity.startForResult(this.requireActivity(), ImageGridFragment.REQUEST_PREVIEW, 0, pickerHelper.selectedImages)
+                } else{
+                    showToast("Select image to preview")
+                }
+            }
+
+        }
+
+        return false
+    }
+
 
     private fun initPopWindow() {
         ll_dir.setOnClickListener(this)
@@ -260,8 +282,8 @@ class ImageGridFragment(mActivity: Activity, imgFolderList: MutableList<ImageFol
     }
 
     override fun onCheckChanged(selected: Int, limit: Int) {
-/*
-        if (selected == 0) {
+        activity?.invalidateOptionsMenu()
+    /*    if (selected == 0) {
             btn_ok.isEnabled = false
             btn_ok.text = getString(R.string.ip_complete)
             btn_ok.setTextColor(resources.getColor(R.color.ip_text_secondary_inverted))
@@ -275,8 +297,8 @@ class ImageGridFragment(mActivity: Activity, imgFolderList: MutableList<ImageFol
             btn_preview.isEnabled = true
             btn_preview.text = getString(R.string.ip_preview_count, selected)
             btn_preview.setTextColor(resources.getColor(R.color.ip_text_primary_inverted))
-        }
-*/
+        }*/
+
     }
 
     override fun onCameraClick() {
@@ -313,9 +335,42 @@ class ImageGridFragment(mActivity: Activity, imgFolderList: MutableList<ImageFol
         Toast.makeText(this.requireActivity(), charSequence, Toast.LENGTH_SHORT).show()
     }
 
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_CAMERA) {//相机返回
+
+        if (requestCode == REQUEST_CAMERA) {
+            if (resultCode == Activity.RESULT_OK) {
+                takeImageFile = CameraUtil.takePicture(this.requireActivity(), REQUEST_CAMERA)
+                Log.e("hubert", takeImageFile.absolutePath)
+
+                val mediaScanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
+                mediaScanIntent.data = Uri.fromFile(takeImageFile)
+                this.requireActivity().sendBroadcast(mediaScanIntent)
+
+                val imageItem = ImageItem(takeImageFile.absolutePath)
+                pickerHelper.selectedImages.clear()
+                pickerHelper.selectedImages.add(imageItem)
+
+                if (pickerHelper.isCrop) {
+                    ImageCropActivity.start(this.requireActivity(), REQUEST_CROP)
+                } else {
+                    setResult()
+                }
+            } else if (takePhoto) {
+                this.requireActivity().finish()
+            }
+        } else if (requestCode == REQUEST_PREVIEW) {
+            if (resultCode == Activity.RESULT_OK) {
+                setResult()
+            }
+        } else if (requestCode == REQUEST_CROP) {
+            if (resultCode == Activity.RESULT_OK) {
+                setResult()
+            }
+        }
+
+    /*    if (requestCode == REQUEST_CAMERA) {
             if (resultCode == Activity.RESULT_OK) {
                 Log.e("hubert", takeImageFile.absolutePath)
                 //广播通知新增图片
@@ -355,7 +410,7 @@ class ImageGridFragment(mActivity: Activity, imgFolderList: MutableList<ImageFol
             if (resultCode == Activity.RESULT_OK) {
                 setResult()
             }
-        }
+        }*/
     }
 
 

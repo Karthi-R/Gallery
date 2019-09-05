@@ -18,7 +18,11 @@ import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.net.Uri;
@@ -774,6 +778,7 @@ public class CropImageView extends FrameLayout {
         return mCropOverlayView.getCropWindowRect();
     }
 
+
     /**
      * Gets the 4 points of crop window's position relative to the source Bitmap (not the image
      * displayed in the CropImageView) using the original image rotation.<br>
@@ -1112,6 +1117,9 @@ public class CropImageView extends FrameLayout {
         }
     }
 
+
+
+
     /**
      * Sets a bitmap loaded from the given Android URI as the content of the CropImageView.<br>
      * Can be used with URI from gallery or camera source.<br>
@@ -1227,6 +1235,36 @@ public class CropImageView extends FrameLayout {
             // changes
             mCropOverlayView.fixCurrentCropWindowRect();
         }
+    }
+
+    /**
+     *
+     * @param bmp input bitmap
+     * @param contrast 0..10 1 is default
+     * @param brightness -255..255 0 is default
+     * @return new bitmap
+     */
+    public Bitmap changeBitmapContrastBrightness(float contrast, float brightness)
+    {
+        if(mBitmap==null){
+            return null;
+        }
+        ColorMatrix cm = new ColorMatrix(new float[]
+                {
+                        contrast, 0, 0, 0, brightness,
+                        0, contrast, 0, 0, brightness,
+                        0, 0, contrast, 0, brightness,
+                        0, 0, 0, 1, 0
+                });
+
+        Bitmap ret = Bitmap.createBitmap(mBitmap.getWidth(), mBitmap.getHeight(), mBitmap.getConfig());
+
+        Canvas canvas = new Canvas(ret);
+
+        Paint paint = new Paint();
+        paint.setColorFilter(new ColorMatrixColorFilter(cm));
+        canvas.drawBitmap(mBitmap, 0, 0, paint);
+        return ret;
     }
 
     /**

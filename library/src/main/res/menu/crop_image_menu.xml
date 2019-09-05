@@ -31,7 +31,21 @@
 -->
     <item
         android:id="@+id/crop_image_menu_crop"
-        android:title="@string/crop_image_menu_crop"
-        app:showAsAction="always"/>
+        android:icon="@drawable/ic_crop_black"
+        app:showAsAction="always"
+        android:title="@string/crop_image_menu_crop" />
+
+    <item
+        android:id="@+id/brightness"
+        android:icon="@drawable/ic_brightness"
+        app:showAsAction="always"
+        android:title="@string/crop_image_menu_crop" />
+
+    <!--
+        <item
+            android:id="@+id/crop_image_menu_crop"
+            android:title="@string/crop_image_menu_crop"
+            app:showAsAction="always"/>
+    -->
 
 </menu>

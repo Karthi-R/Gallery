@@ -9,6 +9,7 @@ import android.os.Build
 import android.util.Log
 import android.util.Pair
 import androidx.annotation.RequiresApi
+import com.custom.library.util.FileUtil.getCropCacheFolder
 import java.io.*
 import java.lang.ref.WeakReference
 import javax.microedition.khronos.egl.EGL10
@@ -389,8 +390,8 @@ internal object BitmapUtils {
         try {
             var needSave = true
             if (uri == null) {
-                uri = Uri.fromFile(
-                        File.createTempFile("aic_state_store_temp", ".jpg", context.cacheDir))
+                uri = Uri.fromFile(File.createTempFile("aic_state_store_temp", ".jpg", context.cacheDir))
+               // uri = Uri.fromFile(getCropCacheFolder(context))
             } else if (File(uri!!.path!!).exists()) {
                 needSave = false
             }

@@ -18,7 +18,6 @@ class MainActivity : AppCompatActivity(), ImagePicker.OnPickImageResultListener 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         ImagePicker.defaultConfig()
-        btn_camera.visibility = View.GONE
 //        ImagePicker.limit(12);
         cb_crop.setOnCheckedChangeListener({ _, isChecked -> ImagePicker.isCrop(isChecked) })
         cb_multi.isChecked = true
@@ -27,6 +26,7 @@ class MainActivity : AppCompatActivity(), ImagePicker.OnPickImageResultListener 
         btn_pick.setOnClickListener {
             ImagePicker.pick(this@MainActivity, this@MainActivity)
         }
+        btn_camera.visibility = View.GONE
         btn_camera.setOnClickListener {
             CropImage.activity(null).setGuidelines(com.custom.library.Edit.CropImageView.Guidelines.ON).setMaxZoom(3).start(this)
 

@@ -104,4 +104,6 @@ public class BitmapUtil {
         return rotateBitmapByDegree(bitmap,degree);
     }
 
+
+
 }

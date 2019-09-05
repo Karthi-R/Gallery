@@ -49,16 +49,23 @@ class ImagePreviewActivity : ImagePreviewBaseActivity(), View.OnClickListener, P
         btn_ok.setOnClickListener(this)
         crop.setOnClickListener(this)
         edit.setOnClickListener {
+
+            val intent = Intent(this,ImageEditActivity::class.java)
+            intent.putExtra("Path", imageItems[current].path!!)
+            startActivity(intent)
+
+
+
            // CropImage.activity(null).setGuidelines(CropImageView.Guidelines.ON).setMaxZoom(3).start(this)
 
 
-           val intent = Intent()
+          /* val intent = Intent()
             intent.setClass(this, CropActivity::class.java)
             val bundle = Bundle()
             bundle.putParcelable(CropImage.CROP_IMAGE_EXTRA_OPTIONS, CropImageOptions())
             intent.putExtra(CropImage.CROP_IMAGE_EXTRA_BUNDLE, bundle)
             intent.putExtra("Path", imageItems[current].path!!)
-            startActivity(intent)
+            startActivity(intent)*/
 
            /* val mSource = Uri.parse(imageItems[current].path)
             val intent = Intent()
@@ -90,7 +97,6 @@ class ImagePreviewActivity : ImagePreviewBaseActivity(), View.OnClickListener, P
 
         cb_check.isChecked = pickHelper.selectedImages.contains(imageItems[current])
         cb_check.setOnClickListener {
-            //checkBox 点击时会自动处理isCheck的状态转变，也就是说如果是选中状态，点击触发OnclickListener时，isCheck已经变成false了
             //cbCheck.isChecked = !cbCheck.isChecked
             val imageItem = imageItems[current]
             if (cb_check.isChecked) {

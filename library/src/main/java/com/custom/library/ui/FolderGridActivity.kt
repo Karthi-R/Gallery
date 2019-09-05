@@ -20,6 +20,11 @@ import com.custom.library.util.CameraUtil
 import kotlinx.android.synthetic.main.activity_folder_grid.*
 import kotlinx.android.synthetic.main.activity_folder_grid.btn_ok
 import java.io.File
+import android.R.attr.data
+import androidx.core.app.ComponentActivity.ExtraData
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import com.custom.library.adapter.ImageRecyclerAdapter
 
 
 class FolderGridActivity : BaseActivity(), View.OnClickListener, ImageDataSource.OnImagesLoadedListener {
@@ -55,6 +60,13 @@ class FolderGridActivity : BaseActivity(), View.OnClickListener, ImageDataSource
     override fun onClick(p0: View?) {
 
     }
+
+    interface OnImageItemClickListener {
+        fun onImageItemClick(imageItem: ImageItem, position: Int)
+        fun onCheckChanged(selected: Int, limit: Int)
+        fun onCameraClick()
+    }
+
 
     override fun onImagesLoaded(imageFolders: List<ImageFolder>) {
         this.imageFolders = imageFolders
@@ -182,7 +194,7 @@ class FolderGridActivity : BaseActivity(), View.OnClickListener, ImageDataSource
             }
         } else if (requestCode == FolderGridActivity.REQUEST_PERMISSION_CAMERA) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                takeImageFile = CameraUtil.takePicture(this, FolderGridActivity.REQUEST_CAMERA)
+                takeImageFile = CameraUtil.takePicture(this, REQUEST_CAMERA)
             } else {
                 showToast("权限被禁止，无法打开相机")
             }
@@ -191,9 +203,48 @@ class FolderGridActivity : BaseActivity(), View.OnClickListener, ImageDataSource
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == FolderGridActivity.REQUEST_CAMERA) {//相机返回
+
+//supportFragmentManager.getFragments()
+
+        for (fragment in supportFragmentManager.getFragments()) {
+            fragment.onActivityResult(requestCode, resultCode, data)
+        }
+
+
+     /*   if (requestCode == REQUEST_CAMERA) {
             if (resultCode == Activity.RESULT_OK) {
-                takeImageFile = CameraUtil.takePicture(this, FolderGridActivity.REQUEST_CAMERA)
+                Log.e("hubert", takeImageFile.absolutePath)
+
+                val mediaScanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
+                mediaScanIntent.data = Uri.fromFile(takeImageFile)
+                sendBroadcast(mediaScanIntent)
+
+                val imageItem = ImageItem(takeImageFile.absolutePath)
+                pickerHelper.selectedImages.clear()
+                pickerHelper.selectedImages.add(imageItem)
+
+                if (pickerHelper.isCrop) {
+                    ImageCropActivity.start(this, REQUEST_CROP)
+                } else {
+                    setResult()
+                }
+            } else if (takePhoto) {
+                finish()
+            }
+        } else if (requestCode == REQUEST_PREVIEW) {
+            if (resultCode == Activity.RESULT_OK) {
+                setResult()
+            }
+        } else if (requestCode == REQUEST_CROP) {
+            if (resultCode == Activity.RESULT_OK) {
+                setResult()
+            }
+        }*/
+
+/*
+        if (requestCode == REQUEST_CAMERA) {//相机返回
+            if (resultCode == Activity.RESULT_OK) {
+                takeImageFile = CameraUtil.takePicture(this, REQUEST_CAMERA)
 
                 Log.e("hubert", takeImageFile.absolutePath)
                 //广播通知新增图片
@@ -205,9 +256,11 @@ class FolderGridActivity : BaseActivity(), View.OnClickListener, ImageDataSource
                /// pickerHelper.selectedImages.clear()
                // pickerHelper.selectedImages.add(imageItem)
 
-                /*if (pickerHelper.isCrop) {//需要裁剪
+                */
+/*if (pickerHelper.isCrop) {//需要裁剪
                     ImageCropActivity.start(this, FolderGridActivity.REQUEST_CROP)
-                } else {*/
+                } else {*//*
+
                     setResult()
                // }
             } else if (takePhoto) {//直接拍照返回时不再展示列表
@@ -222,6 +275,7 @@ class FolderGridActivity : BaseActivity(), View.OnClickListener, ImageDataSource
                 setResult()
             }
         }
+*/
     }
 
     private fun setResult() {

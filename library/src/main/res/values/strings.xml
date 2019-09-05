@@ -5,6 +5,7 @@
     <string name="ip_select_limit">selection limit%1$d</string>
     <string name="ip_complete">complete</string>
     <string name="ip_select_complete">Selected(%1$d/%2$d)</string>
+    <string name="preview">Preview(%1$d/%2$d)</string>
     <string name="ip_preview">preview</string>
     <string name="ip_preview_count">preview_count(%1$d)</string>
     <string name="ip_photo_crop">photo_crop</string>
@@ -18,6 +19,7 @@
     <string name="crop_image_menu_rotate_left">Rotate counter clockwise</string>
     <string name="crop_image_menu_rotate_right">Rotate</string>
     <string name="crop_image_menu_crop">Crop</string>
+    <string name="brightness_image_menu_crop">Brightness</string>
     <string name="crop_image_menu_flip">Flip</string>
     <string name="crop_image_menu_flip_horizontally">Flip horizontally</string>
     <string name="crop_image_menu_flip_vertically">Flip vertically</string>

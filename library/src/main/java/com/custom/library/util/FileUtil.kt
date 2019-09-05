@@ -18,12 +18,12 @@ object FileUtil {
     }
 
 
-/*
-    fun getCropCacheFolder(context: Context): File {
+
+  /*  fun getCropCacheFolder(context: Context): File {
         return File(context.cacheDir.toString() + "/ImagePicker/cropTemp/")
-    }
-*/
-    fun getCropCacheFolder(context: Context): File {
+    }*/
+
+   fun getCropCacheFolder(context: Context): File {
         return File(getStorageDir(context) + "/ImagePicker/cropTemp/")
     }
 }
