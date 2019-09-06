@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.custom.library.Edit.CropImage
 import com.custom.library.ImagePicker
 import com.custom.library.bean.ImageItem
@@ -26,20 +27,21 @@ class MainActivity : AppCompatActivity(), ImagePicker.OnPickImageResultListener 
         btn_pick.setOnClickListener {
             ImagePicker.pick(this@MainActivity, this@MainActivity)
         }
-        btn_camera.visibility = View.GONE
+      //  btn_camera.visibility = View.GONE
         btn_camera.setOnClickListener {
-            CropImage.activity(null).setGuidelines(com.custom.library.Edit.CropImageView.Guidelines.ON).setMaxZoom(3).start(this)
+            ImagePicker.camera(this@MainActivity, this@MainActivity)
+            //CropImage.activity(null).setGuidelines(com.custom.library.Edit.CropImageView.Guidelines.ON).setMaxZoom(3).start(this)
 
             // ImagePicker.camera(this@MainActivity, this@MainActivity)
         }
-        recycler_view.layoutManager = GridLayoutManager(this, 3)
+        recycler_view.layoutManager = LinearLayoutManager(this)
         val imageAdapter = ImageAdapter(ArrayList())
         imageAdapter.listener = object : ImageAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {
                 ImagePicker.review(this@MainActivity, position, this@MainActivity)
             }
         }
-        recycler_view.addItemDecoration(GridSpacingItemDecoration(3, Utils.dp2px(this, 2f), false))
+       // recycler_view.addItemDecoration(GridSpacingItemDecoration(3, Utils.dp2px(this, 2f), false))
         recycler_view.adapter = imageAdapter
     }
 

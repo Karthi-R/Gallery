@@ -61,6 +61,12 @@ dependencies {
 
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 }
+
+
+androidExtensions {
+    experimental = true
+}
+
 repositories {
     mavenCentral()
 }

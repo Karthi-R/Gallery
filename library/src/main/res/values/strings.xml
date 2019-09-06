@@ -5,7 +5,7 @@
     <string name="ip_select_limit">selection limit%1$d</string>
     <string name="ip_complete">complete</string>
     <string name="ip_select_complete">Selected(%1$d/%2$d)</string>
-    <string name="preview">Preview(%1$d/%2$d)</string>
+    <string name="preview">Selected (%1$d/%2$d)</string>
     <string name="ip_preview">preview</string>
     <string name="ip_preview_count">preview_count(%1$d)</string>
     <string name="ip_photo_crop">photo_crop</string>

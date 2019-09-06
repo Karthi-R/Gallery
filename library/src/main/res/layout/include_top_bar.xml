@@ -54,15 +54,14 @@
         android:layout_centerVertical="true"
         android:background="@drawable/selector_back_press"
         android:padding="12dp"
-        android:layout_marginRight="20dp"
-        android:layout_alignParentRight="true"
+        android:visibility="gone"
+        android:layout_toLeftOf="@+id/btn_ok"
         android:tint="@android:color/white"
         app:srcCompat="@drawable/ic_edit" />
 
 
     <Button
         android:id="@+id/btn_ok"
-        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -72,9 +71,10 @@
         android:background="@drawable/selector_top_ok"
         android:minHeight="30dp"
         android:minWidth="48dp"
+        android:text="Ok"
         android:paddingRight="16.0dp"
         android:paddingLeft="16.0dp"
-        android:textColor="@android:color/black"
+        android:textColor="@android:color/white"
         android:textSize="14sp" />
 
     <androidx.appcompat.widget.AppCompatImageView

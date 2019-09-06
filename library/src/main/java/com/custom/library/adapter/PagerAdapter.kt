@@ -46,8 +46,8 @@ class PagerAdapter(private val mActivity: Activity, fm: FragmentManager, folders
     override fun getItem(position: Int): Fragment {
 
       //  val demoFragment = imageDataSource?.let { ImageGridFragment(mActivity, it) }
+      //  val demoFragment =  ImageGridFragment.newInstance(imageFolders,position)
         val demoFragment =  ImageGridFragment(mActivity, imageFolders)
-
         val bundle = Bundle()
         imageFolders!![position].name
 

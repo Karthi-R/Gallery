@@ -71,6 +71,10 @@ class CropActivity : AppCompatActivity(),com.custom.library.Edit.CropImageView.O
         mCropImageView =  findViewById(com.custom.library.R.id.mCropImageView)
        // mOptions = bundle.getParcelable(CropImage.CROP_IMAGE_EXTRA_OPTIONS)
 
+        cancel.setOnClickListener { finish() }
+
+        btn_back.setOnClickListener { finish() }
+
         val bundle = getIntent().getBundleExtra(CropImage.CROP_IMAGE_EXTRA_BUNDLE)
         mCropImageUri = bundle.getParcelable(CropImage.CROP_IMAGE_EXTRA_SOURCE)
         mOptions = bundle.getParcelable(CropImage.CROP_IMAGE_EXTRA_OPTIONS)
@@ -83,7 +87,7 @@ class CropActivity : AppCompatActivity(),com.custom.library.Edit.CropImageView.O
             finish()
         }
 
-        crop.setOnClickListener {
+        save.setOnClickListener {
             sb_value.visibility = View.GONE
             cropImage()
         }

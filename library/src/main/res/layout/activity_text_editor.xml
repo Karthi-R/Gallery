@@ -32,28 +32,32 @@
             android:layout_toRightOf="@id/btn_back"
             android:background="#2E2E32" />
 
-        <ImageView
-            android:id="@+id/color_picker"
-            android:layout_width="48dp"
+        <TextView
+            android:id="@+id/cancel"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_centerVertical="true"
             android:background="@drawable/selector_back_press"
             android:padding="12dp"
             android:layout_toLeftOf="@+id/save"
-            android:tint="@android:color/white"
-            app:srcCompat="@drawable/ic_colorize" />
+            android:layout_marginRight="20dp"
+            android:text="Cancel"
+            android:textColor="@android:color/white"
+            />
+
+
 
         <TextView
             android:id="@+id/save"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_centerVertical="true"
-            android:text="Save"
-            android:textColor="@android:color/white"
+            android:background="@drawable/selector_back_press"
             android:padding="12dp"
+            android:layout_marginRight="20dp"
             android:layout_alignParentRight="true"
-            />
-
+            android:text="Save"
+            android:textColor="@android:color/white" />
 
     </RelativeLayout>
     <LinearLayout
@@ -89,9 +93,12 @@
 
     <EditText
         android:id="@+id/text_writer"
+        android:background="#CCe4e4e4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="15dp"
         android:layout_alignParentBottom="true" />
+
 
 </RelativeLayout>
 

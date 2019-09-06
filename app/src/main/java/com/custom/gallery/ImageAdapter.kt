@@ -49,9 +49,12 @@ class ImageAdapter constructor(
 
     inner class ImageViewHolder constructor(var rootView: View) : RecyclerView.ViewHolder(rootView) {
         val imageView: ImageView = rootView.findViewById(R.id.iv) as ImageView
+
+/*
         init {
-            rootView.layoutParams = AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Utils.getImageItemWidth(rootView.context as Activity))
+            rootView.layoutParams = AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 150)
         }
+*/
     }
 
     interface OnItemClickListener {

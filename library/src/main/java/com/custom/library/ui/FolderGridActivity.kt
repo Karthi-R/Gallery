@@ -81,11 +81,11 @@ class FolderGridActivity : BaseActivity(), View.OnClickListener, ImageDataSource
         val gridView = findViewById(R.id.gridView) as GridView
         loadData()
 
-
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         btn_preview.setOnClickListener {
             if(pickerHelper.selectedImages.size>0){
-                ImagePreviewActivity.startForResult(this, ImageGridFragment.REQUEST_PREVIEW, 0, pickerHelper.selectedImages)
+                ImagePreviewActivity.startForResult(this, REQUEST_PREVIEW, 0, pickerHelper.selectedImages)
             } else{
                 showToast("Select image to preview")
             }
@@ -189,14 +189,10 @@ class FolderGridActivity : BaseActivity(), View.OnClickListener, ImageDataSource
         if (requestCode == FolderGridActivity.REQUEST_PERMISSION_STORAGE) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 imageDataSource.loadImage(this)
-            } else {
-                showToast("权限被禁止，无法选择本地图片")
             }
         } else if (requestCode == FolderGridActivity.REQUEST_PERMISSION_CAMERA) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 takeImageFile = CameraUtil.takePicture(this, REQUEST_CAMERA)
-            } else {
-                showToast("权限被禁止，无法打开相机")
             }
         }
     }
@@ -205,10 +201,17 @@ class FolderGridActivity : BaseActivity(), View.OnClickListener, ImageDataSource
         super.onActivityResult(requestCode, resultCode, data)
 
 //supportFragmentManager.getFragments()
-
-        for (fragment in supportFragmentManager.getFragments()) {
-            fragment.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_PREVIEW) {
+            if (resultCode == Activity.RESULT_OK) {
+                setResult()
+            }
+        }else{
+            for (fragment in supportFragmentManager.getFragments()) {
+                fragment.onActivityResult(requestCode, resultCode, data)
+            }
         }
+
+
 
 
      /*   if (requestCode == REQUEST_CAMERA) {

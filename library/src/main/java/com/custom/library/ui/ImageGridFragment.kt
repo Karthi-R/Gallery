@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.os.Parcelable
 import android.util.Log
 import android.view.*
 import android.view.animation.AnimationUtils
@@ -52,9 +53,6 @@ class ImageGridFragment(mActivity: Activity, imgFolderList: MutableList<ImageFol
         val REQUEST_CROP = 0x10
         val INTENT_MAX = 1000
 
-        /**
-         * @param takePhoto 是否直接开启拍照
-         */
 
         fun startForResult(activity: Activity, requestCode: Int, takePhoto: Boolean) {
             val intent = Intent(activity, ImageGridFragment::class.java)
@@ -62,6 +60,25 @@ class ImageGridFragment(mActivity: Activity, imgFolderList: MutableList<ImageFol
             activity.startActivityForResult(intent, requestCode)
         }
 
+
+/*
+            fun newInstance(imgFolderList: MutableList<ImageFolder>?, position: Int) = ImageGridFragment().apply {
+                this.imgFolderList = imgFolderList
+                this.position = position
+
+                val bundle = Bundle()
+                bundle.putParcelableArrayList("list", ArrayList<Parcelable>(imgFolderList))
+               // bundle.putParcelableArrayList("list",imgFolderList?.toList() as ArrayList<ImageFolder>)
+                bundle.putInt("Selected_position", position)
+                bundle.putString("test", "test")
+
+
+                val bundle = Bundle()
+                bundle.putInt("Selected_position", position)
+                bundle.putParcelableArrayList("FolderList", imgFolderList?.toList() as ArrayList<ImageFolder>)
+                setArguments(bundle)
+            }
+*/
     }
 
     private val pickerHelper: PickHelper = ImagePicker.pickHelper
@@ -79,9 +96,11 @@ class ImageGridFragment(mActivity: Activity, imgFolderList: MutableList<ImageFol
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         position= arguments?.getInt("Selected_position")!!
+       /* val test= arguments?.getString("test")
+      //  imgFolderList = arguments?.getParcelableArrayList("FolderList")
+        imgFolderList = arguments?.getParcelableArrayList("list")*/
         setHasOptionsMenu(true)
         //setContentView(R.layout.activity_image_grid)
-        //是否直接打开相机
       //  takePhoto = intent.extras[C.EXTRA_TAKE_PHOTO] as Boolean
        /* if (takePhoto) {
             onCameraClick()
@@ -143,6 +162,7 @@ class ImageGridFragment(mActivity: Activity, imgFolderList: MutableList<ImageFol
         recycler.layoutManager = GridLayoutManager(this.requireActivity(), 3)
         recycler.addItemDecoration(GridSpacingItemDecoration(3, Utils.dp2px(this.requireActivity(), 2f), false))
         adapter = ImageRecyclerAdapter(this.requireActivity(), pickerHelper)
+        ImagePicker.showCamera(false)
         recycler.adapter = adapter
 
         adapter.listener = this
@@ -188,7 +208,19 @@ class ImageGridFragment(mActivity: Activity, imgFolderList: MutableList<ImageFol
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.preview_menu, menu)
-        menu.findItem(R.id.preview).setTitle( getString(R.string.preview,pickerHelper.selectedImages.size, pickerHelper.limit))
+        val preview =  menu.findItem(R.id.preview)
+        with(preview){
+            if (pickerHelper.selectedImages.size == 0) {
+                isEnabled = false
+                title = getString(R.string.ip_complete)
+                (resources.getColor(R.color.ip_text_secondary_inverted))
+            } else {
+                isEnabled = true
+                title = getString(R.string.preview,pickerHelper.selectedImages.size, pickerHelper.limit)
+            }
+        }
+
+       // menu.findItem(R.id.preview).setTitle( getString(R.string.preview,pickerHelper.selectedImages.size, pickerHelper.limit))
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -196,13 +228,16 @@ class ImageGridFragment(mActivity: Activity, imgFolderList: MutableList<ImageFol
 
         when (item.itemId) {
             R.id.preview -> {
-
-               // getString(R.string.preview,pickerHelper.selectedImages.size, pickerHelper.limit)
+                // getString(R.string.preview,pickerHelper.selectedImages.size, pickerHelper.limit)
                 if(pickerHelper.selectedImages.size>0){
                     ImagePreviewActivity.startForResult(this.requireActivity(), ImageGridFragment.REQUEST_PREVIEW, 0, pickerHelper.selectedImages)
                 } else{
                     showToast("Select image to preview")
                 }
+            }
+            android.R.id.home ->
+            {
+                this.requireActivity().finish()
             }
 
         }
@@ -283,6 +318,7 @@ class ImageGridFragment(mActivity: Activity, imgFolderList: MutableList<ImageFol
 
     override fun onCheckChanged(selected: Int, limit: Int) {
         activity?.invalidateOptionsMenu()
+
     /*    if (selected == 0) {
             btn_ok.isEnabled = false
             btn_ok.text = getString(R.string.ip_complete)

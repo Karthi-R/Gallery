@@ -53,13 +53,11 @@ class ImageGridActivity : BaseActivity(), View.OnClickListener, ImageDataSource.
         /**
          * @param takePhoto 是否直接开启拍照
          */
-
         fun startForResult(activity: Activity, requestCode: Int, takePhoto: Boolean) {
             val intent = Intent(activity, ImageGridActivity::class.java)
             intent.putExtra(C.EXTRA_TAKE_PHOTO, takePhoto)
             activity.startActivityForResult(intent, requestCode)
         }
-
     }
 
     private val pickerHelper: PickHelper = ImagePicker.pickHelper
@@ -75,7 +73,7 @@ class ImageGridActivity : BaseActivity(), View.OnClickListener, ImageDataSource.
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_image_grid)
         //是否直接打开相机
-      //  takePhoto = intent.extras[C.EXTRA_TAKE_PHOTO] as Boolean
+        takePhoto = intent.extras[C.EXTRA_TAKE_PHOTO] as Boolean
         if (takePhoto) {
             onCameraClick()
         }
@@ -83,8 +81,6 @@ class ImageGridActivity : BaseActivity(), View.OnClickListener, ImageDataSource.
         initView()
         initPopWindow()
         loadData()
-
-
     }
 
     private fun loadData() {
@@ -113,7 +109,6 @@ class ImageGridActivity : BaseActivity(), View.OnClickListener, ImageDataSource.
         recycler.layoutManager = GridLayoutManager(this, 3)
         recycler.addItemDecoration(GridSpacingItemDecoration(3, Utils.dp2px(this, 2f), false))
         adapter = ImageRecyclerAdapter(this, pickerHelper)
-        recycler.adapter = adapter
         adapter.listener = this
         recycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -155,16 +150,10 @@ class ImageGridActivity : BaseActivity(), View.OnClickListener, ImageDataSource.
     }
 
     private fun initPopWindow() {
-        ll_dir.setOnClickListener(this)
-        btn_ok.setOnClickListener(this)
-        btn_back.setOnClickListener(this)
-        btn_preview.setOnClickListener(this)
-
         mImageFolderAdapter = ImageFolderAdapter(this, null)
         mFolderPopupWindow = FolderPopUpWindow(this, mImageFolderAdapter)
         mFolderPopupWindow.setOnItemClickListener(object : FolderPopUpWindow.OnItemClickListener {
             override fun onItemClick(adapterView: AdapterView<*>, view: View, position: Int, l: Long) {
-                // initView()
                 mImageFolderAdapter.selectIndex = position
                 mFolderPopupWindow.dismiss()
                 val imageFolder = adapterView.adapter?.getItem(position) as ImageFolder
@@ -216,7 +205,6 @@ class ImageGridActivity : BaseActivity(), View.OnClickListener, ImageDataSource.
             pickerHelper.selectedImages.clear()
             pickerHelper.selectedImages.add(imageItem)
             if (pickerHelper.isCrop) {//需要裁剪
-
                 ImageCropActivity.start(this, REQUEST_CROP)
             } else {
                 setResult()
@@ -283,19 +271,7 @@ class ImageGridActivity : BaseActivity(), View.OnClickListener, ImageDataSource.
                 pickerHelper.selectedImages.add(imageItem)
 
                 if (pickerHelper.isCrop) {//需要裁剪
-
-                    val mSource = Uri.parse(takeImageFile.absolutePath)
-                    val intent = Intent()
-                    intent.setClass(this, CropImageActivity::class.java)
-                    val bundle = Bundle()
-                    bundle.putParcelable(CROP_IMAGE_EXTRA_SOURCE, mSource)
-                    bundle.putParcelable(CROP_IMAGE_EXTRA_OPTIONS, CropImageOptions())
-                    intent.putExtra(CropImage.CROP_IMAGE_EXTRA_BUNDLE, bundle)
-                    startActivity(intent)
-                    //finish()
-
-
-                    // ImageCropActivity.start(this, REQUEST_CROP)
+                    ImageCropActivity.start(this, REQUEST_CROP)
                 } else {
                     setResult()
                 }
@@ -312,8 +288,6 @@ class ImageGridActivity : BaseActivity(), View.OnClickListener, ImageDataSource.
             }
         }
     }
-
-
 
     private fun setResult() {
         val result = Intent()
@@ -336,17 +310,8 @@ class ImageGridActivity : BaseActivity(), View.OnClickListener, ImageDataSource.
 
     override fun onImagesLoaded(imageFolders: List<ImageFolder>) {
         this.imageFolders = imageFolders
-        //showPopupFolderList()
-
-        if (imageFolders.isNotEmpty())
-            adapter?.let {
-                intent.extras["Selected_position"]?.let {
-                    adapter.refreshData(imageFolders[intent.extras["Selected_position"] as Int].images)
-                    tv_dir.text = imageFolders[intent.extras["Selected_position"] as Int].name
-                    recycler.adapter = adapter
-                }
-            }
-
+        adapter.refreshData(imageFolders[0].images)
+        recycler.adapter = adapter
     }
 
     override fun onDestroy() {

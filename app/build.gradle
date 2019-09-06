@@ -37,6 +37,11 @@ dependencies {
     //api "androidx.appcompat:appcompat:1.0.2"
     implementation "androidx.exifinterface:exifinterface:1.0.0"
 }
+
+androidExtensions {
+    experimental = true
+}
+
 repositories {
     mavenCentral()
 }

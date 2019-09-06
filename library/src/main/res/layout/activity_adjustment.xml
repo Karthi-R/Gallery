@@ -32,31 +32,32 @@
             android:layout_toRightOf="@id/btn_back"
             android:background="#2E2E32" />
 
-        <ImageView
-            android:id="@+id/brightness"
-            android:layout_width="48dp"
+        <TextView
+            android:id="@+id/cancel"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_centerVertical="true"
             android:background="@drawable/selector_back_press"
             android:padding="12dp"
-            android:layout_toLeftOf="@+id/contrast"
+            android:layout_toLeftOf="@+id/save"
             android:layout_marginRight="20dp"
-            android:tint="@android:color/white"
-            app:srcCompat="@drawable/ic_brightness" />
+            android:text="Cancel"
+            android:textColor="@android:color/white"
+            />
 
 
 
-        <ImageView
-            android:id="@+id/contrast"
-            android:layout_width="48dp"
+        <TextView
+            android:id="@+id/save"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_centerVertical="true"
             android:background="@drawable/selector_back_press"
             android:padding="12dp"
             android:layout_marginRight="20dp"
             android:layout_alignParentRight="true"
-            android:tint="@android:color/white"
-            app:srcCompat="@drawable/ic_contrast" />
+            android:text="Save"
+            android:textColor="@android:color/white" />
 
     </RelativeLayout>
 
@@ -75,9 +76,44 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="40dp"
-        android:layout_alignParentBottom="true"
+       android:layout_above="@+id/footer"
         android:max="255"/>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:background="#CCe4e4e4"
+        android:id="@+id/footer">
+
+    <ImageView
+        android:id="@+id/brightness"
+        android:layout_width="48dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/selector_back_press"
+        android:padding="12dp"
+        android:layout_toLeftOf="@+id/contrast"
+        android:layout_marginRight="20dp"
+        android:tint="@android:color/black"
+        app:srcCompat="@drawable/ic_brightness" />
+
+
+
+    <ImageView
+        android:id="@+id/contrast"
+        android:layout_width="48dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/selector_back_press"
+        android:padding="12dp"
+        android:layout_marginRight="20dp"
+        android:layout_alignParentRight="true"
+        android:tint="@android:color/black"
+        app:srcCompat="@drawable/ic_contrast" />
+
+
+    </RelativeLayout>
 
 </RelativeLayout>
 

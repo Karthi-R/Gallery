@@ -1,5 +1,6 @@
 package com.custom.library.Adjustment
 
+import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -12,13 +13,19 @@ import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.BitmapFactory
 import android.graphics.Bitmap
+import com.custom.library.Crop.BitmapUtils
+import com.custom.library.ui.ImageEditActivity
 
 
 class AdjustmentActivity : AppCompatActivity() {
-
+var editedBitmap: Bitmap? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(com.custom.library.R.layout.activity_adjustment)
+
+        cancel.setOnClickListener { finish() }
+
+        btn_back.setOnClickListener { finish() }
 
         val path = Uri.parse(intent.getStringExtra("Path"))
 
@@ -41,7 +48,8 @@ class AdjustmentActivity : AppCompatActivity() {
             sb_value.visibility = View.VISIBLE
             sb_value.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                 override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                     adjustment_iv!!.setImageBitmap(changeBitmapContrastBrightness(bitmap, 1F, progress.toFloat()))
+                    editedBitmap = changeBitmapContrastBrightness(bitmap, 1F, progress.toFloat())
+                     adjustment_iv!!.setImageBitmap(editedBitmap)
                 }
 
                 override fun onStartTrackingTouch(seekBar: SeekBar) {
@@ -57,10 +65,12 @@ class AdjustmentActivity : AppCompatActivity() {
 
         contrast.setOnClickListener {
             sb_value.max = 10
+            sb_value.visibility = View.VISIBLE
             sb_value.progress = 5
             sb_value.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                 override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                    adjustment_iv!!.setImageBitmap(changeBitmapContrastBrightness(bitmap, progress.toFloat(), 1F))
+                    editedBitmap = changeBitmapContrastBrightness(bitmap, progress.toFloat(), 1F)
+                    adjustment_iv!!.setImageBitmap(editedBitmap)
                 }
 
                 override fun onStartTrackingTouch(seekBar: SeekBar) {
@@ -72,6 +82,19 @@ class AdjustmentActivity : AppCompatActivity() {
                 }
             })
 
+        }
+
+        save.setOnClickListener {
+            val uri = editedBitmap?.let { it1 -> BitmapUtils.writeTempStateStoreBitmap(this, it1,null) }
+
+            val intent = Intent()
+            intent.putExtras(getIntent())
+            if (uri != null) {
+                intent.putExtra("Path",uri.path)
+            }
+
+            setResult(ImageEditActivity.ADJUSTMENT_IMAGE_REQUEST_CODE,intent)
+            finish()
         }
 
     }

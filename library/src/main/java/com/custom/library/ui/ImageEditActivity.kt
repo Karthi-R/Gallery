@@ -10,7 +10,6 @@ import com.custom.library.Edit.CropImageOptions
 import com.custom.library.R
 import com.custom.library.TextEdit.TextEditorActivity
 import kotlinx.android.synthetic.main.activity_image_edit.*
-import kotlinx.android.synthetic.main.activity_process_edited_image.*
 
 class ImageEditActivity : AppCompatActivity() {
 
@@ -31,6 +30,8 @@ class ImageEditActivity : AppCompatActivity() {
         position = intent.getIntExtra("position",0)
 
         preview_imageView.setImageURI(Uri.parse(path))
+
+        btn_back.setOnClickListener { finish() }
 
         adjustment.setOnClickListener {
             val intent = Intent()

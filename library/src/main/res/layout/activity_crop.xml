@@ -13,24 +13,81 @@
         android:background="@color/blue"
         android:clickable="true">
 
-    <ImageView
-        android:id="@+id/btn_back"
-        android:layout_width="48dp"
-        android:layout_height="match_parent"
-        android:layout_centerVertical="true"
-        android:background="@drawable/selector_back_press"
-        android:padding="12dp"
-        android:tint="@android:color/white"
-        app:srcCompat="@drawable/ic_arrow_back" />
+        <ImageView
+            android:id="@+id/btn_back"
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:background="@drawable/selector_back_press"
+            android:padding="12dp"
+            android:tint="@android:color/white"
+            app:srcCompat="@drawable/ic_arrow_back" />
 
-    <View
-        android:layout_width="2px"
+        <View
+            android:layout_width="2px"
+            android:visibility="gone"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_toRightOf="@id/btn_back"
+            android:background="#2E2E32" />
+
+        <TextView
+            android:id="@+id/cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:background="@drawable/selector_back_press"
+            android:padding="12dp"
+            android:layout_toLeftOf="@+id/save"
+            android:layout_marginRight="20dp"
+            android:text="Cancel"
+            android:textColor="@android:color/white"
+            />
+
+
+
+        <TextView
+            android:id="@+id/save"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:background="@drawable/selector_back_press"
+            android:padding="12dp"
+            android:layout_marginRight="20dp"
+            android:layout_alignParentRight="true"
+            android:text="Save"
+            android:textColor="@android:color/white" />
+
+    </RelativeLayout>
+
+
+
+
+<com.custom.library.Edit.CropImageView
+        android:id="@+id/mCropImageView"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/header"
+        android:layout_above="@+id/footer"
+        android:layout_height="match_parent"/>
+
+    <SeekBar
+        android:id="@+id/sb_value"
         android:visibility="gone"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="12dp"
-        android:layout_marginTop="12dp"
-        android:layout_toRightOf="@id/btn_back"
-        android:background="#2E2E32" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:layout_alignParentBottom="true"
+        android:max="255"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:background="#CCe4e4e4"
+        android:id="@+id/footer">
 
         <ImageView
             android:id="@+id/brightness"
@@ -50,45 +107,31 @@
         <ImageView
             android:id="@+id/rotate_right"
             android:layout_width="48dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:background="@drawable/selector_back_press"
             android:padding="12dp"
             android:layout_toLeftOf="@+id/crop"
             android:layout_marginRight="20dp"
-            android:tint="@android:color/white"
+            android:tint="@android:color/black"
             app:srcCompat="@drawable/crop_image_menu_rotate_right" />
 
 
-    <ImageView
-        android:id="@+id/crop"
-        android:layout_width="48dp"
-        android:layout_height="match_parent"
-        android:layout_centerVertical="true"
-        android:background="@drawable/selector_back_press"
-        android:padding="12dp"
-        android:layout_marginRight="20dp"
-        android:layout_alignParentRight="true"
-        android:tint="@android:color/white"
-        app:srcCompat="@drawable/ic_crop_black" />
+        <ImageView
+            android:id="@+id/crop"
+            android:layout_width="48dp"
+            android:visibility="gone"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="@drawable/selector_back_press"
+            android:padding="12dp"
+            android:layout_marginRight="20dp"
+            android:layout_alignParentRight="true"
+            android:tint="@android:color/black"
+            app:srcCompat="@drawable/ic_crop_black" />
 
-</RelativeLayout>
+    </RelativeLayout>
 
-
-<com.custom.library.Edit.CropImageView
-        android:id="@+id/mCropImageView"
-        android:layout_width="match_parent"
-        android:layout_below="@+id/header"
-        android:layout_height="match_parent"/>
-
-    <SeekBar
-        android:id="@+id/sb_value"
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="40dp"
-        android:layout_alignParentBottom="true"
-        android:max="255"/>
 
 
 </RelativeLayout>

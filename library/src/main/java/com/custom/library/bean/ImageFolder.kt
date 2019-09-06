@@ -1,14 +1,17 @@
 package com.custom.library.bean
 
+import android.os.Parcelable
 import java.io.Serializable
 import java.util.ArrayList
+import kotlinx.android.parcel.Parcelize
 
 
+@Parcelize
 data class ImageFolder(var name: String?,
                        var path: String?,
                        var cover: ImageItem? = null,
                        var images: ArrayList<ImageItem> = ArrayList()
-) : Serializable {
+) : Serializable, Parcelable {
 
 
     override fun equals(other: Any?): Boolean {

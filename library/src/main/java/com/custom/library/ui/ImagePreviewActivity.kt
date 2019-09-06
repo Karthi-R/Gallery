@@ -50,6 +50,8 @@ class ImagePreviewActivity : ImagePreviewBaseActivity(), View.OnClickListener, P
     }
 
     private fun init() {
+
+        edit.visibility = View.VISIBLE
         btn_ok.setOnClickListener(this)
         crop.setOnClickListener(this)
         edit.setOnClickListener {
@@ -173,7 +175,7 @@ class ImagePreviewActivity : ImagePreviewBaseActivity(), View.OnClickListener, P
     }
 
     private fun onCheckChanged(selected: Int, limit: Int) {
-        if (selected == 0) {
+       /* if (selected == 0) {
             btn_ok.isEnabled = false
             btn_ok.text = getString(R.string.ip_complete)
             btn_ok.setTextColor(resources.getColor(R.color.ip_text_secondary_inverted))
@@ -181,7 +183,7 @@ class ImagePreviewActivity : ImagePreviewBaseActivity(), View.OnClickListener, P
             btn_ok.isEnabled = true
             btn_ok.text = getString(R.string.ip_select_complete, selected, limit)
             btn_ok.setTextColor(resources.getColor(R.color.ip_text_primary_inverted))
-        }
+        }*/
     }
 
     override fun onClick(v: View?) {

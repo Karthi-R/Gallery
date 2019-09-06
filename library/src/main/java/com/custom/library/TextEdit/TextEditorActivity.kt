@@ -25,9 +25,10 @@ import android.widget.TextView
 import android.R
 import android.R.attr.y
 import android.R.attr.x
-
-
-
+import kotlinx.android.synthetic.main.activity_adjustment.*
+import kotlinx.android.synthetic.main.activity_text_editor.btn_back
+import kotlinx.android.synthetic.main.activity_text_editor.cancel
+import kotlinx.android.synthetic.main.activity_text_editor.save
 
 
 class TextEditorActivity : AppCompatActivity(){
@@ -50,6 +51,10 @@ class TextEditorActivity : AppCompatActivity(){
 
       //  image_lay.setOnDragListener(this)
        // text_preview.setOnTouchListener(this)
+
+        cancel.setOnClickListener { finish() }
+
+        btn_back.setOnClickListener { finish() }
 
 
         text_writer.addTextChangedListener(object : TextWatcher {
