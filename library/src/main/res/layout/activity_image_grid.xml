@@ -147,7 +147,7 @@
             android:paddingLeft="5dp"
             android:paddingTop="2dp"
             android:text="@string/date"
-            android:textColor="@android:color/white"
+            android:textColor="@color/colorAccent"
             android:visibility="gone"
             tools:visibility="visible" />
     </RelativeLayout>

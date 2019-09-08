@@ -5,7 +5,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.custom.library.Edit.CropImage
+import com.custom.library.CropView.CropImage
 import com.custom.library.ImagePicker
 import com.custom.library.bean.ImageItem
 import com.custom.library.util.Utils

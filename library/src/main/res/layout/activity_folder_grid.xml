@@ -25,7 +25,7 @@
         android:textAllCaps="false"
         android:layout_alignParentLeft="true"
         android:background="@drawable/selector_top_ok"
-        android:textColor="@android:color/white"
+        android:textColor="@color/colorAccent"
         android:textSize="16sp" />
 
 
@@ -41,7 +41,7 @@
         android:textAllCaps="false"
         android:layout_marginRight="20dp"
         android:layout_toLeftOf="@+id/btn_preview"
-        android:textColor="@android:color/white"
+        android:textColor="@color/colorAccent"
         android:textSize="16sp" />
 
 
@@ -54,7 +54,7 @@
         android:text="Preview"
         android:textAllCaps="false"
         android:layout_alignParentRight="true"
-        android:textColor="@android:color/white"
+        android:textColor="@color/colorAccent"
         android:textSize="16sp" />
 
 
@@ -68,9 +68,9 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         app:tabGravity="fill"
-        app:tabIndicatorColor="#303135"
+        app:tabIndicatorColor="@color/colorAccent"
         app:tabMode="scrollable"
-        app:tabSelectedTextColor="@color/ip_color_primary"
+        app:tabSelectedTextColor="@color/colorAccent"
         app:tabTextColor="#303135" />
 
     <androidx.viewpager.widget.ViewPager

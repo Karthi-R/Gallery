@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="48dp"
-    android:background="@color/blue"
+    android:background="@color/colorPrimary"
     android:clickable="true">
 
     <ImageView
@@ -13,7 +13,7 @@
         android:layout_centerVertical="true"
         android:background="@drawable/selector_back_press"
         android:padding="12dp"
-        android:tint="@android:color/white"
+        android:tint="@color/colorAccent"
         app:srcCompat="@drawable/ic_arrow_back" />
 
     <View
@@ -34,7 +34,7 @@
         android:layout_toRightOf="@id/btn_back"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
         android:textSize="18sp"
-        android:textColor="#ffffff" />
+        android:textColor="@color/text_color" />
 
     <TextView
         android:id="@+id/crop"
@@ -56,11 +56,11 @@
         android:padding="12dp"
         android:visibility="gone"
         android:layout_toLeftOf="@+id/btn_ok"
-        android:tint="@android:color/white"
+        android:tint="@color/colorAccent"
         app:srcCompat="@drawable/ic_edit" />
 
 
-    <Button
+    <ImageView
         android:id="@+id/btn_ok"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -68,14 +68,15 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:background="@drawable/selector_top_ok"
         android:minHeight="30dp"
         android:minWidth="48dp"
-        android:text="Ok"
         android:paddingRight="16.0dp"
         android:paddingLeft="16.0dp"
-        android:textColor="@android:color/white"
-        android:textSize="14sp" />
+        android:textColor="@color/colorAccent"
+        android:textSize="14sp"
+        android:tint="@color/colorAccent"
+        app:srcCompat="@drawable/ic_check_black" />
+
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/btn_del"
@@ -85,7 +86,7 @@
         android:layout_centerVertical="true"
         android:background="@drawable/selector_back_press"
         android:padding="12dp"
-        android:tint="@color/ip_color_primary"
+        android:tint="@color/colorAccent"
         app:srcCompat="@drawable/ic_vector_delete"
         android:visibility="gone" />
 </RelativeLayout>

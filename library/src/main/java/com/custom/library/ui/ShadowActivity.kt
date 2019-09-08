@@ -39,6 +39,7 @@ class ShadowActivity : BaseActivity() {
             0 -> FolderGridActivity.startForResult(this, 101, false)
             1 -> ImagePreviewDelActivity.startForResult(this, 102, position)
             2 -> ImageGridActivity.startForResult(this, 101, true)
+          //  2 ->  ImagePreviewActivity.startForResult(this, ImageGridFragment.REQUEST_PREVIEW, 0, pickerHelper.selectedImages)
         }
     }
 

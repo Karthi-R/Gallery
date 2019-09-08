@@ -10,7 +10,7 @@
 // - Sun Tsu,
 // "The Art of War"
 
-package com.custom.library.Crop
+package com.custom.library.CropView
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -100,8 +100,8 @@ internal class BitmapCroppingWorkerTask : AsyncTask<Void, Void, BitmapCroppingWo
             saveCompressFormat: Bitmap.CompressFormat,
             saveCompressQuality: Int) {
 
-        mCropImageViewReference = WeakReference<CropImageView>(cropImageView)
-        mContext = cropImageView.getContext()
+        mCropImageViewReference = WeakReference(cropImageView)
+        mContext = cropImageView.context
         mBitmap = bitmap
         mCropPoints = cropPoints
         uri = null
@@ -140,8 +140,8 @@ internal class BitmapCroppingWorkerTask : AsyncTask<Void, Void, BitmapCroppingWo
             saveCompressFormat: Bitmap.CompressFormat,
             saveCompressQuality: Int) {
 
-        mCropImageViewReference = WeakReference<CropImageView>(cropImageView)
-        mContext = cropImageView.getContext()
+        mCropImageViewReference = WeakReference(cropImageView)
+        mContext = cropImageView.context
         this.uri = uri
         mCropPoints = cropPoints
         mDegreesRotated = degreesRotated
@@ -196,23 +196,19 @@ internal class BitmapCroppingWorkerTask : AsyncTask<Void, Void, BitmapCroppingWo
                             mAspectRatioX,
                             mAspectRatioY,
                             mFlipHorizontally,
-                            mFlipVertically)!!
+                            mFlipVertically)
                 } else {
-                    return Result(null as Bitmap, 1)
+                    return Result((null as Bitmap?)!!, 1)
                 }
 
-                val bitmap = bitmapSampled.bitmap?.let { BitmapUtils.resizeBitmap(it, mReqWidth, mReqHeight, mReqSizeOptions) }
+                val bitmap = BitmapUtils.resizeBitmap(bitmapSampled.bitmap!!, mReqWidth, mReqHeight, mReqSizeOptions)
 
                 if (mSaveUri == null) {
-                    return bitmap?.let { Result(it, bitmapSampled.sampleSize) }
+                    return Result(bitmap!!, bitmapSampled.sampleSize)
                 } else {
-                    if (bitmap != null) {
-                        BitmapUtils.writeBitmapToUri(
-                                mContext, bitmap, mSaveUri, mSaveCompressFormat, mSaveCompressQuality)
-                    }
-                    if (bitmap != null) {
-                        bitmap!!.recycle()
-                    }
+                    BitmapUtils.writeBitmapToUri(
+                            mContext, bitmap!!, mSaveUri, mSaveCompressFormat, mSaveCompressQuality)
+                    bitmap?.recycle()
                     return Result(mSaveUri, bitmapSampled.sampleSize)
                 }
             }
@@ -235,7 +231,7 @@ internal class BitmapCroppingWorkerTask : AsyncTask<Void, Void, BitmapCroppingWo
                 val cropImageView = mCropImageViewReference.get()
                 if (cropImageView != null) {
                     completeCalled = true
-                    cropImageView!!.onImageCroppingAsyncComplete(result)
+                    cropImageView.onImageCroppingAsyncComplete(result)
                 }
             }
             if (!completeCalled && result.bitmap != null) {

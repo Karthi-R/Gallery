@@ -1,16 +1,31 @@
-package com.custom.library.Crop
+// "Therefore those skilled at the unorthodox
+// are infinite as heaven and earth,
+// inexhaustible as the great rivers.
+// When they come to an end,
+// they begin again,
+// like the days and months;
+// they die and are reborn,
+// like the four seasons."
+//
+// - Sun Tsu,
+// "The Art of War"
+
+package com.custom.library.CropView
 
 import android.annotation.TargetApi
 import android.content.Context
-import android.graphics.*
+import android.graphics.Canvas
+import android.graphics.Paint
+import android.graphics.Path
+import android.graphics.Rect
+import android.graphics.RectF
+import android.graphics.Region
 import android.os.Build
-import android.os.Build.VERSION_CODES
 import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.view.View
-import androidx.annotation.RequiresApi
 
 import java.util.Arrays
 
@@ -150,7 +165,7 @@ class CropOverlayView @JvmOverloads constructor(context: Context, attrs: Attribu
      */
     var guidelines: CropImageView.Guidelines? = null
         set(guidelines) {
-            if (this.guidelines !== guidelines) {
+            if (this.guidelines != guidelines) {
                 field = guidelines
                 if (initializedCropWindow) {
                     invalidate()
@@ -165,10 +180,10 @@ class CropOverlayView @JvmOverloads constructor(context: Context, attrs: Attribu
     // return hardware acceleration back
     var cropShape: CropImageView.CropShape? = null
         set(cropShape) {
-            if (this.cropShape !== cropShape) {
+            if (this.cropShape != cropShape) {
                 field = cropShape
                 if (Build.VERSION.SDK_INT <= 17) {
-                    if (this.cropShape === CropImageView.CropShape.OVAL) {
+                    if (this.cropShape == CropImageView.CropShape.OVAL) {
                         mOriginalLayerType = layerType
                         if (mOriginalLayerType != View.LAYER_TYPE_SOFTWARE) {
                             setLayerType(View.LAYER_TYPE_SOFTWARE, null)
@@ -208,7 +223,7 @@ class CropOverlayView @JvmOverloads constructor(context: Context, attrs: Attribu
     var cropWindowRect: RectF
         get() = mCropWindowHandler.rect
         set(rect) {
-            mCropWindowHandler.rect=rect
+            mCropWindowHandler.rect = rect
         }
 
     /** Is the cropping image has been rotated by NOT 0,90,180 or 270 degrees.  */
@@ -224,7 +239,7 @@ class CropOverlayView @JvmOverloads constructor(context: Context, attrs: Attribu
     fun fixCurrentCropWindowRect() {
         val rect = cropWindowRect
         fixCropWindowRectByRules(rect)
-        mCropWindowHandler.rect=rect
+        mCropWindowHandler.rect = rect
     }
 
     /**
@@ -452,7 +467,7 @@ class CropOverlayView @JvmOverloads constructor(context: Context, attrs: Attribu
 
         fixCropWindowRectByRules(rect)
 
-        mCropWindowHandler.rect=rect
+        mCropWindowHandler.rect = rect
     }
 
     /** Fix the given rect to fit into bitmap rect and follow min, max and aspect ratio rules.  */
@@ -514,7 +529,6 @@ class CropOverlayView @JvmOverloads constructor(context: Context, attrs: Attribu
      * Draw crop overview by drawing background over image not in the cripping area, then borders and
      * guidelines.
      */
-    @RequiresApi(VERSION_CODES.O)
     override fun onDraw(canvas: Canvas) {
 
         super.onDraw(canvas)
@@ -524,9 +538,9 @@ class CropOverlayView @JvmOverloads constructor(context: Context, attrs: Attribu
 
         if (mCropWindowHandler.showGuidelines()) {
             // Determines whether guidelines should be drawn or not
-            if (guidelines === CropImageView.Guidelines.ON) {
+            if (guidelines == CropImageView.Guidelines.ON) {
                 drawGuidelines(canvas)
-            } else if (guidelines === CropImageView.Guidelines.ON_TOUCH && mMoveHandler != null) {
+            } else if (guidelines == CropImageView.Guidelines.ON_TOUCH && mMoveHandler != null) {
                 // Draw only when resizing
                 drawGuidelines(canvas)
             }
@@ -538,7 +552,6 @@ class CropOverlayView @JvmOverloads constructor(context: Context, attrs: Attribu
     }
 
     /** Draw shadow background over the image not including the crop area.  */
-    @RequiresApi(VERSION_CODES.O)
     private fun drawBackground(canvas: Canvas) {
 
         val rect = mCropWindowHandler.rect
@@ -548,7 +561,7 @@ class CropOverlayView @JvmOverloads constructor(context: Context, attrs: Attribu
         val right = Math.min(BitmapUtils.getRectRight(mBoundsPoints), width.toFloat())
         val bottom = Math.min(BitmapUtils.getRectBottom(mBoundsPoints), height.toFloat())
 
-        if (cropShape === CropImageView.CropShape.RECTANGLE) {
+        if (cropShape == CropImageView.CropShape.RECTANGLE) {
             if (!isNonStraightAngleRotated || Build.VERSION.SDK_INT <= 17) {
                 canvas.drawRect(left, top, right, rect.top, mBackgroundPaint!!)
                 canvas.drawRect(left, rect.bottom, right, bottom, mBackgroundPaint!!)
@@ -574,14 +587,14 @@ class CropOverlayView @JvmOverloads constructor(context: Context, attrs: Attribu
             }
         } else {
             mPath.reset()
-            if (Build.VERSION.SDK_INT <= 17 && cropShape === CropImageView.CropShape.OVAL) {
+            if (Build.VERSION.SDK_INT <= 17 && cropShape == CropImageView.CropShape.OVAL) {
                 mDrawRect.set(rect.left + 2, rect.top + 2, rect.right - 2, rect.bottom - 2)
             } else {
                 mDrawRect.set(rect.left, rect.top, rect.right, rect.bottom)
             }
             mPath.addOval(mDrawRect, Path.Direction.CW)
             canvas.save()
-            if (Build.VERSION.SDK_INT >= VERSION_CODES.O) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 canvas.clipOutPath(mPath)
             } else {
                 canvas.clipPath(mPath, Region.Op.XOR)
@@ -597,14 +610,14 @@ class CropOverlayView @JvmOverloads constructor(context: Context, attrs: Attribu
      */
     private fun drawGuidelines(canvas: Canvas) {
         if (mGuidelinePaint != null) {
-            val sw:Float = if (mBorderPaint != null) mBorderPaint!!.strokeWidth else 0.0F
+            val sw = if (mBorderPaint != null) mBorderPaint!!.strokeWidth else 0
             val rect = mCropWindowHandler.rect
-            rect.inset(sw, sw)
+            rect.inset(sw as Float, sw)
 
             val oneThirdCropWidth = rect.width() / 3
             val oneThirdCropHeight = rect.height() / 3
 
-            if (cropShape === CropImageView.CropShape.OVAL) {
+            if (cropShape == CropImageView.CropShape.OVAL) {
 
                 val w = rect.width() / 2 - sw
                 val h = rect.height() / 2 - sw
@@ -646,7 +659,7 @@ class CropOverlayView @JvmOverloads constructor(context: Context, attrs: Attribu
             val rect = mCropWindowHandler.rect
             rect.inset(w / 2, w / 2)
 
-            if (cropShape === CropImageView.CropShape.RECTANGLE) {
+            if (cropShape == CropImageView.CropShape.RECTANGLE) {
                 // Draw rectangle crop window border.
                 canvas.drawRect(rect, mBorderPaint!!)
             } else {
@@ -660,11 +673,11 @@ class CropOverlayView @JvmOverloads constructor(context: Context, attrs: Attribu
     private fun drawCorners(canvas: Canvas) {
         if (mBorderCornerPaint != null) {
 
-            val lineWidth: Float = if (mBorderPaint != null) mBorderPaint!!.strokeWidth else 0F
-            val cornerWidth = mBorderCornerPaint!!.strokeWidth
+            val lineWidth = if (mBorderPaint != null) mBorderPaint!!.strokeWidth.toFloat() else 0F
+            val cornerWidth = mBorderCornerPaint!!.strokeWidth.toFloat()
 
             // for rectangle crop shape we allow the corners to be offset from the borders
-            val w = cornerWidth / 2 + if (cropShape === CropImageView.CropShape.RECTANGLE) mBorderCornerOffset else 0F
+            val w = cornerWidth / 2 + if (cropShape == CropImageView.CropShape.RECTANGLE) mBorderCornerOffset else 0F
 
             val rect = mCropWindowHandler.rect
             rect.inset(w, w)
@@ -785,7 +798,7 @@ class CropOverlayView @JvmOverloads constructor(context: Context, attrs: Attribu
      * if press is far from crop window then no move handler is returned (null).
      */
     private fun onActionDown(x: Float, y: Float) {
-        mMoveHandler = cropShape?.let { mCropWindowHandler.getMoveHandler(x, y, mTouchRadius, it) }
+        mMoveHandler = mCropWindowHandler.getMoveHandler(x, y, mTouchRadius, this!!.cropShape!!)
         if (mMoveHandler != null) {
             invalidate()
         }
@@ -823,7 +836,7 @@ class CropOverlayView @JvmOverloads constructor(context: Context, attrs: Attribu
                     snapRadius,
                     isFixAspectRatio,
                     mTargetAspectRatio)
-            mCropWindowHandler.rect=rect
+            mCropWindowHandler.rect = rect
             callOnCropWindowChanged(true)
             invalidate()
         }
@@ -944,7 +957,7 @@ class CropOverlayView @JvmOverloads constructor(context: Context, attrs: Attribu
     /** Handle scaling the rectangle based on two finger input  */
     private inner class ScaleListener : ScaleGestureDetector.SimpleOnScaleGestureListener() {
 
-        @TargetApi(VERSION_CODES.HONEYCOMB)
+        @TargetApi(Build.VERSION_CODES.HONEYCOMB)
         override fun onScale(detector: ScaleGestureDetector): Boolean {
             val rect = mCropWindowHandler.rect
 
@@ -966,7 +979,7 @@ class CropOverlayView @JvmOverloads constructor(context: Context, attrs: Attribu
                     && newBottom <= mCropWindowHandler.maxCropHeight) {
 
                 rect.set(newLeft, newTop, newRight, newBottom)
-                mCropWindowHandler.rect=rect
+                mCropWindowHandler.rect = rect
                 invalidate()
             }
 

@@ -10,7 +10,7 @@
 // - Sun Tsu;
 // "The Art of War"
 
-package com.custom.library.Crop
+package com.custom.library.CropView
 
 import android.content.res.Resources
 import android.graphics.Bitmap
@@ -158,7 +158,7 @@ class CropImageOptions : Parcelable {
     var activityMenuIconColor: Int = 0
 
     /** the Android Uri to save the cropped image to  */
-    var outputUri: Uri
+    var outputUri: Uri? = null
 
     /** the compression format to use when writing the image  */
     var outputCompressFormat: Bitmap.CompressFormat
@@ -453,13 +453,12 @@ class CropImageOptions : Parcelable {
                 return CropImageOptions(`in`)
             }
 
-            override fun newArray(size: Int): Array<CropImageOptions?> {
+            override fun newArray(size: Int): Array<CropImageOptions> {
                 return arrayOfNulls(size)
             }
         }
     }
 */
-
 
     companion object CREATOR : Parcelable.Creator<CropImageOptions> {
         override fun createFromParcel(parcel: Parcel): CropImageOptions {
@@ -470,5 +469,4 @@ class CropImageOptions : Parcelable {
             return arrayOfNulls(size)
         }
     }
-
 }

@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.os.Parcelable
 import android.util.Log
 import android.view.*
 import android.view.animation.AnimationUtils
@@ -17,11 +16,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.custom.library.*
-import com.custom.library.Crop.CropImage
-import com.custom.library.Crop.CropImage.CROP_IMAGE_EXTRA_OPTIONS
-import com.custom.library.Crop.CropImage.CROP_IMAGE_EXTRA_SOURCE
-import com.custom.library.Crop.CropImageActivity
-import com.custom.library.Crop.CropImageOptions
 import com.custom.library.adapter.ImageFolderAdapter
 import com.custom.library.adapter.ImageRecyclerAdapter
 import com.custom.library.bean.ImageFolder
@@ -212,11 +206,13 @@ class ImageGridFragment(mActivity: Activity, imgFolderList: MutableList<ImageFol
         with(preview){
             if (pickerHelper.selectedImages.size == 0) {
                 isEnabled = false
-                title = getString(R.string.ip_complete)
+                title = getString(R.string.select)
                 (resources.getColor(R.color.ip_text_secondary_inverted))
             } else {
                 isEnabled = true
                 title = getString(R.string.preview,pickerHelper.selectedImages.size, pickerHelper.limit)
+                (resources.getColor(R.color.colorAccent))
+
             }
         }
 

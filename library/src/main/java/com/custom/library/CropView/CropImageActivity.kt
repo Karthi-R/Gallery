@@ -10,7 +10,7 @@
 // - Sun Tsu,
 // "The Art of War"
 
-package com.custom.library.Crop
+package com.custom.library.CropView
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -21,18 +21,17 @@ import android.graphics.Bitmap
 import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
-import androidx.annotation.NonNull
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+
 import com.custom.library.R
 import com.custom.library.util.FileUtil
+
 
 import java.io.File
 import java.io.IOException
@@ -56,37 +55,33 @@ class CropImageActivity : AppCompatActivity(), CropImageView.OnSetImageUriComple
      * Get Android uri to save the cropped image into.<br></br>
      * Use the given in options or create a temp file.
      */
-    protected val outputUri: Uri
+    protected//  outputUri = Uri.fromFile(File.createTempFile("cropped", ext, getCacheDir()));
+    //  outputUri = Uri.fromFile(File.createTempFile("cropped", ext, FileUtil.getCropCacheFolder(this)));
+    val outputUri: Uri
         get() {
-            var outputUri = mOptions!!.outputUri
+            var outputUri: Uri? = mOptions!!.outputUri
             if (outputUri == null || outputUri == Uri.EMPTY) {
                 try {
-                    val ext = if (mOptions!!.outputCompressFormat === Bitmap.CompressFormat.JPEG)
+                    val ext = if (mOptions!!.outputCompressFormat == Bitmap.CompressFormat.JPEG)
                         ".jpg"
-                    else if (mOptions!!.outputCompressFormat === Bitmap.CompressFormat.PNG) ".png" else ".webp"
-                   // outputUri = Uri.fromFile(File.createTempFile("cropped", ext, getCacheDir()))
-
-                    outputUri = Uri.fromFile(File.createTempFile("cropped", ".jpg", FileUtil.getCropCacheFolder(this)))
-
-                  //  outputUri = Uri.fromFile(File(FileUtil.getCropCacheFolder(this).path+"cropped"+ext))
-
-                    //outputUri = Uri.fromFile(File.createTempFile("cropped", ext, FileUtil.getCropCacheFolder(this)))
+                    else if (mOptions!!.outputCompressFormat == Bitmap.CompressFormat.PNG) ".png" else ".webp"
+                    outputUri = Uri.fromFile(File.createTempFile("cropped", ext, FileUtil.getCropCacheFolder(this)))
                 } catch (e: IOException) {
                     throw RuntimeException("Failed to create temp file for output image", e)
                 }
 
             }
-            return outputUri
+            return outputUri!!
         }
 
     @SuppressLint("NewApi")
-    override fun onCreate(savedInstanceState: Bundle?) {
+    public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.crop_activity)
+        setContentView(R.layout.edit_image_activity)
 
         mCropImageView = findViewById(R.id.cropImageView)
 
-        val bundle = getIntent().getBundleExtra(CropImage.CROP_IMAGE_EXTRA_BUNDLE)
+        val bundle = intent.getBundleExtra(CropImage.CROP_IMAGE_EXTRA_BUNDLE)
         mCropImageUri = bundle.getParcelable(CropImage.CROP_IMAGE_EXTRA_SOURCE)
         mOptions = bundle.getParcelable(CropImage.CROP_IMAGE_EXTRA_OPTIONS)
 
@@ -107,38 +102,36 @@ class CropImageActivity : AppCompatActivity(), CropImageView.OnSetImageUriComple
                         CropImage.PICK_IMAGE_PERMISSIONS_REQUEST_CODE)
             } else {
                 // no permissions required or already grunted, can start crop image activity
-                ImageUtils.getPath(mCropImageUri!!,this)
                 mCropImageView!!.setImageUriAsync(mCropImageUri)
-                //mCropImageView!!.setImageUriAsync(Uri.fromFile(File(mCropImageUri!!.path)))
             }
         }
 
-        val actionBar = getSupportActionBar()
+        val actionBar = supportActionBar
         if (actionBar != null) {
             val title = if (mOptions != null &&
                     mOptions!!.activityTitle != null && mOptions!!.activityTitle.length > 0)
                 mOptions!!.activityTitle
             else
-                getResources().getString(R.string.crop_image_activity_title)
-            actionBar!!.setTitle(title)
-            actionBar!!.setDisplayHomeAsUpEnabled(true)
+                resources.getString(R.string.crop_image_activity_title)
+            actionBar.title = title
+            actionBar.setDisplayHomeAsUpEnabled(true)
         }
     }
 
-    protected override fun onStart() {
+    override fun onStart() {
         super.onStart()
         mCropImageView!!.setOnSetImageUriCompleteListener(this)
         mCropImageView!!.setOnCropImageCompleteListener(this)
     }
 
-    protected override fun onStop() {
+    override fun onStop() {
         super.onStop()
         mCropImageView!!.setOnSetImageUriCompleteListener(null)
         mCropImageView!!.setOnCropImageCompleteListener(null)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        getMenuInflater().inflate(R.menu.crop_image_menu, menu)
+        menuInflater.inflate(R.menu.crop_image_menu, menu)
 
         if (!mOptions!!.allowRotation) {
             menu.removeItem(R.id.crop_image_menu_rotate_left)
@@ -152,12 +145,12 @@ class CropImageActivity : AppCompatActivity(), CropImageView.OnSetImageUriComple
     }*/
 
         if (mOptions!!.cropMenuCropButtonTitle != null) {
-            menu.findItem(R.id.crop_image_menu_crop).setTitle(mOptions!!.cropMenuCropButtonTitle)
+            menu.findItem(R.id.crop_image_menu_crop).title = mOptions!!.cropMenuCropButtonTitle
         }
 
         var cropIcon: Drawable? = null
         try {
-            if (mOptions!!.cropMenuCropButtonIcon !== 0) {
+            if (mOptions!!.cropMenuCropButtonIcon != 0) {
                 cropIcon = ContextCompat.getDrawable(this, mOptions!!.cropMenuCropButtonIcon)
                 menu.findItem(R.id.crop_image_menu_crop).icon = cropIcon
             }
@@ -165,7 +158,7 @@ class CropImageActivity : AppCompatActivity(), CropImageView.OnSetImageUriComple
             Log.w("AIC", "Failed to read menu crop drawable", e)
         }
 
-        if (mOptions!!.activityMenuIconColor !== 0) {
+        if (mOptions!!.activityMenuIconColor != 0) {
             updateMenuItemIconColor(
                     menu, R.id.crop_image_menu_rotate_left, mOptions!!.activityMenuIconColor)
             updateMenuItemIconColor(
@@ -211,8 +204,10 @@ class CropImageActivity : AppCompatActivity(), CropImageView.OnSetImageUriComple
         setResultCancel()
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
+    @SuppressLint("NewApi")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+
+        // handle result of pick image chooser
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_CANCELED) {
@@ -236,12 +231,10 @@ class CropImageActivity : AppCompatActivity(), CropImageView.OnSetImageUriComple
                 }
             }
         }
-
     }
 
-
     override fun onRequestPermissionsResult(
-            requestCode: Int, @NonNull permissions: Array<String>, @NonNull grantResults: IntArray) {
+            requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         if (requestCode == CropImage.PICK_IMAGE_PERMISSIONS_REQUEST_CODE) {
             if (mCropImageUri != null
                     && grantResults.size > 0
@@ -261,18 +254,35 @@ class CropImageActivity : AppCompatActivity(), CropImageView.OnSetImageUriComple
         }
     }
 
-    override fun onSetImageUriComplete(view: CropImageView, uri: Uri, error: Exception?) {
+
+    override fun onSetImageUriComplete(view: CropImageView, uri: Uri, error: Exception) {
         if (error == null) {
             if (mOptions!!.initialCropWindowRectangle != null) {
-                mCropImageView!!.cropRect=(mOptions!!.initialCropWindowRectangle)
+                mCropImageView!!.cropRect = mOptions!!.initialCropWindowRectangle
             }
             if (mOptions!!.initialRotation > -1) {
-                mCropImageView!!.rotatedDegrees=(mOptions!!.initialRotation)
+                mCropImageView!!.rotatedDegrees = mOptions!!.initialRotation
             }
         } else {
             setResult(null, error, 1)
         }
     }
+
+
+/*
+    override fun onSetImageUriComplete(view: CropImageView, uri: Uri, error: Exception?) {
+        if (error == null) {
+            if (mOptions!!.initialCropWindowRectangle != null) {
+                mCropImageView!!.cropRect = mOptions!!.initialCropWindowRectangle
+            }
+            if (mOptions!!.initialRotation > -1) {
+                mCropImageView!!.rotatedDegrees = mOptions!!.initialRotation
+            }
+        } else {
+            setResult(null, error, 1)
+        }
+    }
+*/
 
     override fun onCropImageComplete(view: CropImageView, result: CropImageView.CropResult) {
         setResult(result.uri, result.error, result.sampleSize)
@@ -301,36 +311,31 @@ class CropImageActivity : AppCompatActivity(), CropImageView.OnSetImageUriComple
         mCropImageView!!.rotateImage(degrees)
     }
 
+
     /** Result with cropped image data or error if failed.  */
     protected fun setResult(uri: Uri?, error: Exception?, sampleSize: Int) {
-        val resultCode = if (error == null) RESULT_OK else CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE
+        val resultCode = if (error == null) Activity.RESULT_OK else CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE
         setResult(resultCode, getResultIntent(uri, error, sampleSize))
         finish()
     }
 
     /** Cancel of cropping activity.  */
     protected fun setResultCancel() {
-        setResult(RESULT_CANCELED)
+        setResult(Activity.RESULT_CANCELED)
         finish()
     }
 
     /** Get intent instance to be used for the result of this activity.  */
     protected fun getResultIntent(uri: Uri?, error: Exception?, sampleSize: Int): Intent {
-        val result = mCropImageView!!.imageUri?.let {
-            mCropImageView!!.cropRect?.let { it1 ->
-                mCropImageView!!.wholeImageRect?.let { it2 ->
-                    CropImage.ActivityResult(
-                            it,
-                            uri!!,
-                            error!!,
-                            mCropImageView!!.cropPoints,
-                            it1,
-                            mCropImageView!!.rotatedDegrees,
-                            it2,
-                            sampleSize)
-                }
-            }
-        }
+        val result = CropImage.ActivityResult(
+                mCropImageView!!.imageUri!!,
+                uri!!,
+                error!!,
+                mCropImageView!!.cropPoints,
+                mCropImageView!!.cropRect!!,
+                mCropImageView!!.rotatedDegrees,
+                mCropImageView!!.wholeImageRect!!,
+                sampleSize)
         val intent = Intent()
         intent.putExtras(getIntent())
         intent.putExtra(CropImage.CROP_IMAGE_EXTRA_RESULT, result)

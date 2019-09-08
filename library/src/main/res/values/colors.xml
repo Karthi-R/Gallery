@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="colorPrimary">#ffffff</color>
+    <color name="colorPrimaryDark">#A51307</color>
+    <color name="colorAccent">#A51307</color>
+    <color name="text_color">#000</color>
+
     <color name="ic_back_press">#323336</color>
     <color name="ip_color_primary">#393A3F</color>
     <color name="ip_color_primary_dark">#303135</color>

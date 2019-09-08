@@ -10,7 +10,7 @@
 // - Sun Tsu,
 // "The Art of War"
 
-package com.custom.library.Crop
+package com.custom.library.CropView
 
 import android.graphics.Matrix
 import android.graphics.PointF

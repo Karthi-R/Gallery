@@ -1,11 +1,21 @@
-package com.custom.library.Crop
+// "Therefore those skilled at the unorthodox
+// are infinite as heaven and earth,
+// inexhaustible as the great rivers.
+// When they come to an end,
+// they begin again,
+// like the days and months;
+// they die and are reborn,
+// like the four seasons."
+//
+// - Sun Tsu,
+// "The Art of War"
+
+package com.custom.library.CropView
 
 import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.AsyncTask
-import android.os.Build
-import androidx.annotation.RequiresApi
 
 import java.lang.ref.WeakReference
 
@@ -33,14 +43,19 @@ internal class BitmapLoadingWorkerTask
     private val mHeight: Int
 
     init {
-        mCropImageViewReference = WeakReference<CropImageView>(cropImageView)
+        mCropImageViewReference = WeakReference(cropImageView)
 
-        mContext = cropImageView.getContext()
+        mContext = cropImageView.context
 
-        val metrics = cropImageView.getResources().getDisplayMetrics()
-        val densityAdj:Int = (if (metrics.density > 1) (1 / metrics.density).toInt() else 1)
+        val metrics = cropImageView.resources.displayMetrics
+        val densityAdj:Float = (if (metrics.density > 1) 1 / metrics.density else 1F)
         mWidth = (metrics.widthPixels * densityAdj).toInt()
         mHeight = (metrics.heightPixels * densityAdj).toInt()
+
+    /*    val metrics = cropImageView.resources.displayMetrics
+        val densityAdj = (if (metrics.density > 1) 1 / metrics.density else 1).toDouble()
+        mWidth = (metrics.widthPixels * densityAdj).toInt()
+        mHeight = (metrics.heightPixels * densityAdj).toInt()*/
     }
 
     /**
@@ -49,7 +64,6 @@ internal class BitmapLoadingWorkerTask
      * @param params ignored
      * @return the decoded bitmap data
      */
-    @RequiresApi(Build.VERSION_CODES.N)
     override fun doInBackground(vararg params: Void): Result? {
         try {
             if (!isCancelled) {
@@ -58,12 +72,10 @@ internal class BitmapLoadingWorkerTask
 
                 if (!isCancelled) {
 
-                    val rotateResult = decodeResult.bitmap?.let { BitmapUtils.rotateBitmapByExif(it, mContext, uri) }
+                    val rotateResult = BitmapUtils.rotateBitmapByExif(decodeResult.bitmap!!, mContext, uri)
 
-                    return rotateResult?.bitmap?.let {
-                        Result(
-                                uri, it, decodeResult.sampleSize, rotateResult.degrees)
-                    }
+                    return Result(
+                            uri, rotateResult.bitmap, decodeResult.sampleSize, rotateResult.degrees)
                 }
             }
             return null
@@ -85,7 +97,7 @@ internal class BitmapLoadingWorkerTask
                 val cropImageView = mCropImageViewReference.get()
                 if (cropImageView != null) {
                     completeCalled = true
-                    cropImageView!!.onSetImageUriAsyncComplete(result)
+                    cropImageView.onSetImageUriAsyncComplete(result)
                 }
             }
             if (!completeCalled && result.bitmap != null) {

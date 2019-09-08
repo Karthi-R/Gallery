@@ -13,7 +13,7 @@ import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.BitmapFactory
 import android.graphics.Bitmap
-import com.custom.library.Crop.BitmapUtils
+import com.custom.library.CropView.BitmapUtils
 import com.custom.library.ui.ImageEditActivity
 
 
@@ -44,7 +44,7 @@ var editedBitmap: Bitmap? = null
 
         brightness.setOnClickListener {
             sb_value.max = 255
-            sb_value.progress = 125
+            sb_value.progress = 1
             sb_value.visibility = View.VISIBLE
             sb_value.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                 override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
@@ -66,7 +66,7 @@ var editedBitmap: Bitmap? = null
         contrast.setOnClickListener {
             sb_value.max = 10
             sb_value.visibility = View.VISIBLE
-            sb_value.progress = 5
+            sb_value.progress = 1
             sb_value.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                 override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                     editedBitmap = changeBitmapContrastBrightness(bitmap, progress.toFloat(), 1F)

@@ -15,11 +15,6 @@ import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.custom.library.*
-import com.custom.library.Crop.CropImage
-import com.custom.library.Crop.CropImage.CROP_IMAGE_EXTRA_OPTIONS
-import com.custom.library.Crop.CropImage.CROP_IMAGE_EXTRA_SOURCE
-import com.custom.library.Crop.CropImageActivity
-import com.custom.library.Crop.CropImageOptions
 import com.custom.library.adapter.ImageFolderAdapter
 import com.custom.library.adapter.ImageRecyclerAdapter
 import com.custom.library.bean.ImageFolder
@@ -40,7 +35,7 @@ import java.util.*
  *
  * Created on 2017/10/12.
  */
-class ImageGridActivity : BaseActivity(), View.OnClickListener, ImageDataSource.OnImagesLoadedListener, ImageRecyclerAdapter.OnImageItemClickListener {
+class ImageGridActivity : BaseActivity(), View.OnClickListener {
     companion object {
 
         val REQUEST_PERMISSION_STORAGE = 0x12
@@ -57,6 +52,7 @@ class ImageGridActivity : BaseActivity(), View.OnClickListener, ImageDataSource.
             val intent = Intent(activity, ImageGridActivity::class.java)
             intent.putExtra(C.EXTRA_TAKE_PHOTO, takePhoto)
             activity.startActivityForResult(intent, requestCode)
+            activity.finish()
         }
     }
 
@@ -78,11 +74,12 @@ class ImageGridActivity : BaseActivity(), View.OnClickListener, ImageDataSource.
             onCameraClick()
         }
 
-        initView()
-        initPopWindow()
-        loadData()
+      //  initView()
+      //  initPopWindow()
+       // loadData()
     }
 
+/*
     private fun loadData() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -92,14 +89,16 @@ class ImageGridActivity : BaseActivity(), View.OnClickListener, ImageDataSource.
             imageDataSource.loadImage(this)
         }
     }
+*/
 
     override fun onResume() {
         super.onResume()
         //数据刷新
-        adapter.notifyDataSetChanged()
-        onCheckChanged(pickerHelper.selectedImages.size, pickerHelper.limit)
+       // adapter.notifyDataSetChanged()
+        //onCheckChanged(pickerHelper.selectedImages.size, pickerHelper.limit)
     }
 
+/*
     private fun initView() {
         ll_dir.setOnClickListener(this)
         btn_ok.setOnClickListener(this)
@@ -148,6 +147,7 @@ class ImageGridActivity : BaseActivity(), View.OnClickListener, ImageDataSource.
             btn_preview.visibility = View.GONE
         }
     }
+*/
 
     private fun initPopWindow() {
         mImageFolderAdapter = ImageFolderAdapter(this, null)
@@ -177,7 +177,7 @@ class ImageGridActivity : BaseActivity(), View.OnClickListener, ImageDataSource.
         }
     }
 
-    override fun onImageItemClick(imageItem: ImageItem, position: Int) {
+/*    override fun onImageItemClick(imageItem: ImageItem, position: Int) {
         if (pickerHelper.isMultiMode) {
             var images = adapter.images
             var p = position
@@ -228,9 +228,9 @@ class ImageGridActivity : BaseActivity(), View.OnClickListener, ImageDataSource.
             btn_preview.text = getString(R.string.ip_preview_count, selected)
             btn_preview.setTextColor(resources.getColor(R.color.ip_text_primary_inverted))
         }
-    }
+    }*/
 
-    override fun onCameraClick() {
+     fun onCameraClick() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA),
                     ImageGridActivity.REQUEST_PERMISSION_CAMERA)
@@ -242,16 +242,17 @@ class ImageGridActivity : BaseActivity(), View.OnClickListener, ImageDataSource.
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_PERMISSION_STORAGE) {
+/*
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 imageDataSource.loadImage(this)
             } else {
                 showToast("权限被禁止，无法选择本地图片")
             }
+*/
+
         } else if (requestCode == REQUEST_PERMISSION_CAMERA) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 takeImageFile = CameraUtil.takePicture(this, REQUEST_CAMERA)
-            } else {
-                showToast("权限被禁止，无法打开相机")
             }
         }
     }
@@ -271,10 +272,13 @@ class ImageGridActivity : BaseActivity(), View.OnClickListener, ImageDataSource.
                 pickerHelper.selectedImages.add(imageItem)
 
                 if (pickerHelper.isCrop) {//需要裁剪
-                    ImageCropActivity.start(this, REQUEST_CROP)
-                } else {
-                    setResult()
+                    ImagePreviewActivity.startForResult(this, REQUEST_PREVIEW, 0, pickerHelper.selectedImages)
+                    finish()
+                   // ImageCropActivity.start(this, REQUEST_CROP)
                 }
+                /*else {
+                    setResult()
+                }*/
             } else if (takePhoto) {//直接拍照返回时不再展示列表
                 finish()
             }
@@ -302,17 +306,21 @@ class ImageGridActivity : BaseActivity(), View.OnClickListener, ImageDataSource.
             R.id.btn_ok -> setResult()
             R.id.btn_preview -> ImagePreviewActivity.startForResult(this, REQUEST_PREVIEW, 0, pickerHelper.selectedImages)
             R.id.btn_back -> {
-                setResult(Activity.RESULT_CANCELED)
+               // setResult(Activity.RESULT_CANCELED)
                 finish()
             }
         }
     }
 
+/*
     override fun onImagesLoaded(imageFolders: List<ImageFolder>) {
-        this.imageFolders = imageFolders
-        adapter.refreshData(imageFolders[0].images)
-        recycler.adapter = adapter
+        if(imageFolders.size>0){
+            this.imageFolders = imageFolders
+            adapter.refreshData(imageFolders[0].images)
+            recycler.adapter = adapter
+        }
     }
+*/
 
     override fun onDestroy() {
         super.onDestroy()

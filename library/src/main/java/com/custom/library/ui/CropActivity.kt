@@ -3,35 +3,27 @@ package com.custom.library.ui
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.PorterDuff
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
-import android.view.MenuItem
 import android.view.View
-import androidx.core.content.ContextCompat
-import com.custom.library.Edit.CropImage
-import com.custom.library.Edit.CropImageOptions
-import com.custom.library.Edit.CropImageView
+import com.custom.library.CropView.CropImage
+import com.custom.library.CropView.CropImageOptions
+import com.custom.library.CropView.CropImageView
 import kotlinx.android.synthetic.main.activity_crop.*
 import java.io.File
 import java.io.IOException
-import android.graphics.PorterDuffColorFilter
-import androidx.core.app.ComponentActivity.ExtraData
-import androidx.core.content.ContextCompat.getSystemService
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-import android.graphics.Color
 import android.widget.SeekBar
 
-import android.R
 import com.custom.library.ui.ImageEditActivity.Companion.CROP_IMAGE_REQUEST_CODE
-import com.custom.library.util.FileUtil
 import com.custom.library.util.FileUtil.getCropCacheFolder
 
 
-class CropActivity : AppCompatActivity(),com.custom.library.Edit.CropImageView.OnSetImageUriCompleteListener, com.custom.library.Edit.CropImageView.OnCropImageCompleteListener {
+class CropActivity : AppCompatActivity(),com.custom.library.CropView.CropImageView.OnSetImageUriCompleteListener, com.custom.library.CropView.CropImageView.OnCropImageCompleteListener {
+
+
 
     /** The crop image view library widget used in the activity  */
     private var mCropImageView: CropImageView? = null
@@ -59,7 +51,7 @@ class CropActivity : AppCompatActivity(),com.custom.library.Edit.CropImageView.O
                 }
 
             }
-            return outputUri
+            return outputUri!!
         }
 
 
@@ -108,7 +100,7 @@ class CropActivity : AppCompatActivity(),com.custom.library.Edit.CropImageView.O
                 //mCropImageView!!.setImageBitmap(changeBitmapContrastBrightness(progress / 100f, 1))
               //  mCropImageView!!.changeBitmapContrastBrightness(progress / 100f, 1F)
 
-                mCropImageView!!.setImageBitmap(mCropImageView!!.changeBitmapContrastBrightness(progress / 100f, 1F))
+                mCropImageView!!.changeBitmapContrastBrightness(progress / 100f, 1F)?.let { mCropImageView!!.setImageBitmap(it) }
 
               //  mCropImageView.setColorFilter(setBrightness(progress))
 
@@ -225,7 +217,7 @@ class CropActivity : AppCompatActivity(),com.custom.library.Edit.CropImageView.O
         super.onBackPressed()
         setResultCancel()
     }
-    override fun onSetImageUriComplete(view: CropImageView, uri: Uri, error: Exception?) {
+    override fun onSetImageUriComplete(view: CropImageView, uri: Uri, error: Exception) {
         if (error == null) {
             if (mOptions!!.initialCropWindowRectangle != null) {
                 mCropImageView!!.cropRect=(mOptions!!.initialCropWindowRectangle)
@@ -237,9 +229,12 @@ class CropActivity : AppCompatActivity(),com.custom.library.Edit.CropImageView.O
             setResult(null, error, 1)
         }
     }
+
     override fun onCropImageComplete(view: CropImageView, result: CropImageView.CropResult) {
-        setResult(result.uri, result.error, result.sampleSize)
+        setResult(result!!.uri, result.error, result.sampleSize)
     }
+
+
     /** Execute crop image and save the result tou output uri.  */
 
     protected fun cropImage() {
@@ -290,15 +285,17 @@ class CropActivity : AppCompatActivity(),com.custom.library.Edit.CropImageView.O
         val result = mCropImageView!!.imageUri?.let {
             mCropImageView!!.cropRect?.let { it1 ->
                 mCropImageView!!.wholeImageRect?.let { it2 ->
-                    CropImage.ActivityResult(
-                            it,
-                            uri!!,
-                            error,
-                            mCropImageView!!.cropPoints,
-                            it1,
-                            mCropImageView!!.rotatedDegrees,
-                            it2,
-                            sampleSize)
+                    error?.let { it3 ->
+                        CropImage.ActivityResult(
+                                it,
+                                uri!!,
+                                it3,
+                                mCropImageView!!.cropPoints,
+                                it1,
+                                mCropImageView!!.rotatedDegrees,
+                                it2,
+                                sampleSize)
+                    }
                 }
             }
         }

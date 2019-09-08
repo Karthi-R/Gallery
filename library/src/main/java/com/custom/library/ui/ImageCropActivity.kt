@@ -39,7 +39,7 @@ class ImageCropActivity : BaseActivity(), View.OnClickListener, CropImageView.On
     private fun initView() {
         btn_back.setOnClickListener(this)
         tv_des.text = getString(R.string.ip_photo_crop)
-        btn_ok.text = getString(R.string.ip_complete)
+      //  btn_ok.text = getString(R.string.ip_complete)
         btn_ok.setOnClickListener(this)
         cv_crop_image.setOnBitmapSaveCompleteListener(this)
         cv_crop_image.focusStyle = pickHelper.focusStyle

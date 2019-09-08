@@ -3,9 +3,7 @@ package com.custom.library.ui
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.custom.library.ImagePicker.pickHelper
 import com.custom.library.R
-import com.custom.library.util.FileUtil
 import kotlinx.android.synthetic.main.activity_process_edited_image.*
 
 class SaveEditedImage : AppCompatActivity() {

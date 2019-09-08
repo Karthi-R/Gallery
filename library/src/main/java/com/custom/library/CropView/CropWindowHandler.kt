@@ -1,4 +1,16 @@
-package com.custom.library.Crop
+// "Therefore those skilled at the unorthodox
+// are infinite as heaven and earth,
+// inexhaustible as the great rivers.
+// When they come to an end,
+// they begin again,
+// like the days and months;
+// they die and are reborn,
+// like the four seasons."
+//
+// - Sun Tsu,
+// "The Art of War"
+
+package com.custom.library.CropView
 
 import android.graphics.RectF
 
@@ -149,7 +161,7 @@ internal class CropWindowHandler {
      */
     fun getMoveHandler(
             x: Float, y: Float, targetRadius: Float, cropShape: CropImageView.CropShape): CropWindowMoveHandler? {
-        val type = if (cropShape === CropImageView.CropShape.OVAL)
+        val type = if (cropShape == CropImageView.CropShape.OVAL)
             getOvalPressedMoveType(x, y)
         else
             getRectanglePressedMoveType(x, y, targetRadius)
@@ -276,7 +288,7 @@ internal class CropWindowHandler {
      * @param targetRadius the target radius in pixels
      * @return true if the touch point is in the target touch zone; false otherwise
      */
-    private fun isInCornerTargetZone(
+     fun isInCornerTargetZone(
             x: Float, y: Float, handleX: Float, handleY: Float, targetRadius: Float): Boolean {
         return Math.abs(x - handleX) <= targetRadius && Math.abs(y - handleY) <= targetRadius
     }

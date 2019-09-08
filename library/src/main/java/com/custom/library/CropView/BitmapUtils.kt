@@ -1,17 +1,40 @@
-package com.custom.library.Crop
+// "Therefore those skilled at the unorthodox
+// are infinite as heaven and earth,
+// inexhaustible as the great rivers.
+// When they come to an end,
+// they begin again,
+// like the days and months;
+// they die and are reborn,
+// like the four seasons."
+//
+// - Sun Tsu,
+// "The Art of War"
+
+package com.custom.library.CropView
 
 import android.content.ContentResolver
 import android.content.Context
-import android.graphics.*
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.BitmapRegionDecoder
+import android.graphics.Matrix
+import android.graphics.Rect
+import android.graphics.RectF
 import androidx.exifinterface.media.ExifInterface
 import android.net.Uri
-import android.os.Build
 import android.util.Log
 import android.util.Pair
-import androidx.annotation.RequiresApi
-import com.custom.library.util.FileUtil.getCropCacheFolder
-import java.io.*
+import com.custom.library.util.FileUtil
+
+
+import java.io.Closeable
+import java.io.File
+import java.io.FileNotFoundException
+import java.io.IOException
+import java.io.InputStream
+import java.io.OutputStream
 import java.lang.ref.WeakReference
+
 import javax.microedition.khronos.egl.EGL10
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.egl.EGLContext
@@ -93,7 +116,7 @@ internal object BitmapUtils {
         try {
             val `is` = context.contentResolver.openInputStream(uri)
             if (`is` != null) {
-                ei = ExifInterface(`is`)
+                ei = ExifInterface(`is`!!)
                 `is`!!.close()
             }
         } catch (ignored: Exception) {
@@ -140,7 +163,7 @@ internal object BitmapUtils {
             // Decode bitmap with inSampleSize set
             val bitmap = decodeImage(resolver, uri, options)
 
-            return bitmap?.let { BitmapSampled(it, options.inSampleSize) }!!
+            return BitmapSampled(bitmap!!, options.inSampleSize)
 
         } catch (e: Exception) {
             throw RuntimeException(
@@ -165,7 +188,7 @@ internal object BitmapUtils {
             aspectRatioX: Int,
             aspectRatioY: Int,
             flipHorizontally: Boolean,
-            flipVertically: Boolean): BitmapSampled? {
+            flipVertically: Boolean): BitmapSampled {
         var scale = 1
         while (true) {
             try {
@@ -179,7 +202,7 @@ internal object BitmapUtils {
                         1 / scale.toFloat(),
                         flipHorizontally,
                         flipVertically)
-                return cropBitmap?.let { BitmapSampled(it, scale) }
+                return BitmapSampled(cropBitmap!!, scale)
             } catch (e: OutOfMemoryError) {
                 scale *= 2
                 if (scale > 8) {
@@ -390,18 +413,13 @@ internal object BitmapUtils {
         try {
             var needSave = true
             if (uri == null) {
-              //  uri = Uri.fromFile(File.createTempFile("aic_state_store_temp", ".jpg", context.cacheDir))
-
-              //  uri = Uri.fromFile(getCropCacheFolder(context))
-
-                uri = Uri.fromFile(File.createTempFile("aic_state_store_temp", ".jpg", getCropCacheFolder(context)))
-              //  uri = Uri.fromFile(getCropCacheFolder(context)+"" + ".jpg")
-               // uri = Uri.fromFile(getCropCacheFolder(context))
+                uri = Uri.fromFile(
+                        File.createTempFile("aic_state_store_temp", ".jpg", FileUtil.getCropCacheFolder(context)))
             } else if (File(uri!!.path!!).exists()) {
                 needSave = false
             }
             if (needSave) {
-                uri?.let { writeBitmapToUri(context, bitmap, it, Bitmap.CompressFormat.JPEG, 95) }
+                writeBitmapToUri(context, bitmap, uri!!, Bitmap.CompressFormat.JPEG, 95)
             }
             return uri
         } catch (e: Exception) {
@@ -434,18 +452,18 @@ internal object BitmapUtils {
         try {
             if ((reqWidth > 0
                             && reqHeight > 0
-                            && ((options === CropImageView.RequestSizeOptions.RESIZE_FIT
-                            || options === CropImageView.RequestSizeOptions.RESIZE_INSIDE
-                            || options === CropImageView.RequestSizeOptions.RESIZE_EXACT)))) {
+                            && ((options == CropImageView.RequestSizeOptions.RESIZE_FIT
+                            || options == CropImageView.RequestSizeOptions.RESIZE_INSIDE
+                            || options == CropImageView.RequestSizeOptions.RESIZE_EXACT)))) {
 
                 var resized: Bitmap? = null
-                if (options === CropImageView.RequestSizeOptions.RESIZE_EXACT) {
+                if (options == CropImageView.RequestSizeOptions.RESIZE_EXACT) {
                     resized = Bitmap.createScaledBitmap(bitmap, reqWidth, reqHeight, false)
                 } else {
                     val width = bitmap.width
                     val height = bitmap.height
                     val scale = Math.max(width / reqWidth.toFloat(), height / reqHeight.toFloat())
-                    if (scale > 1 || options === CropImageView.RequestSizeOptions.RESIZE_FIT) {
+                    if (scale > 1 || options == CropImageView.RequestSizeOptions.RESIZE_FIT) {
                         resized = Bitmap.createScaledBitmap(
                                 bitmap, (width / scale).toInt(), (height / scale).toInt(), false)
                     }
@@ -474,7 +492,6 @@ internal object BitmapUtils {
      * @param orgHeight used to get rectangle from points (handle edge cases to limit rectangle)
      * @param sampleMulti used to increase the sampling of the image to handle memory issues.
      */
-    @RequiresApi(Build.VERSION_CODES.GINGERBREAD_MR1)
     private fun cropBitmap(
             context: Context,
             loadedImageUri: Uri,
@@ -529,7 +546,7 @@ internal object BitmapUtils {
                 throw e
             }
 
-            return result?.let { BitmapSampled(it, sampleSize) }!!
+            return BitmapSampled(result!!, sampleSize)
         } else {
             // failed to decode region, may be skia issue, try full decode and then crop
             return cropBitmap(
@@ -610,7 +627,7 @@ internal object BitmapUtils {
                     "Failed to load sampled bitmap: " + loadedImageUri + "\r\n" + e.message, e)
         }
 
-        return result?.let { BitmapSampled(it, sampleSize) }!!
+        return BitmapSampled(result!!, sampleSize)
     }
 
     /** Decode image from uri using "inJustDecodeBounds" to get the image dimensions.  */
@@ -656,7 +673,6 @@ internal object BitmapUtils {
      *
      * @param sampleMulti used to increase the sampling of the image to handle memory issues.
      */
-    @RequiresApi(Build.VERSION_CODES.GINGERBREAD_MR1)
     private fun decodeSampledBitmapRegion(
             context: Context, uri: Uri, rect: Rect, reqWidth: Int, reqHeight: Int, sampleMulti: Int): BitmapSampled {
         var stream: InputStream? = null

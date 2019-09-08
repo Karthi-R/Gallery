@@ -10,7 +10,7 @@
 // - Sun Tsu,
 // "The Art of War"
 
-package com.custom.library.Crop
+package com.custom.library.CropView
 
 import android.Manifest
 import android.app.Activity
@@ -18,19 +18,26 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.*
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Paint
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffXfermode
+import android.graphics.Rect
+import android.graphics.RectF
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Parcel
 import android.os.Parcelable
 import android.provider.MediaStore
+
 import androidx.annotation.DrawableRes
-import androidx.annotation.NonNull
-import androidx.annotation.Nullable
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+
 import com.custom.library.R
+
 
 import java.io.File
 import java.util.ArrayList
@@ -86,7 +93,7 @@ object CropImage {
      * Create a new bitmap that has all pixels beyond the oval shape transparent. Old bitmap is
      * recycled.
      */
-    fun toOvalBitmap(@NonNull bitmap: Bitmap): Bitmap {
+    fun toOvalBitmap(bitmap: Bitmap): Bitmap {
         val width = bitmap.width
         val height = bitmap.height
         val output = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
@@ -118,7 +125,7 @@ object CropImage {
      *
      * @param activity the activity to be used to start activity from
      */
-    fun startPickImageActivity(@NonNull activity: Activity) {
+    fun startPickImageActivity(activity: Activity) {
         activity.startActivityForResult(
                 getPickImageChooserIntent(activity), PICK_IMAGE_CHOOSER_REQUEST_CODE)
     }
@@ -130,7 +137,7 @@ object CropImage {
      * @param context The Fragments context. Use getContext()
      * @param fragment The calling Fragment to start and return the image to
      */
-    fun startPickImageActivity(@NonNull context: Context, @NonNull fragment: Fragment) {
+    fun startPickImageActivity(context: Context, fragment: Fragment) {
         fragment.startActivityForResult(
                 getPickImageChooserIntent(context), PICK_IMAGE_CHOOSER_REQUEST_CODE)
     }
@@ -148,7 +155,7 @@ object CropImage {
      */
     @JvmOverloads
     fun getPickImageChooserIntent(
-            @NonNull context: Context,
+            context: Context,
             title: CharSequence = context.getString(R.string.pick_image_intent_chooser_title),
             includeDocuments: Boolean = false,
             includeCamera: Boolean = true): Intent {
@@ -196,7 +203,7 @@ object CropImage {
      * activity/fragment/widget.
      * @param outputFileUri the Uri where the picture will be placed.
      */
-    fun getCameraIntent(@NonNull context: Context, outputFileUri: Uri?): Intent {
+    fun getCameraIntent(context: Context, outputFileUri: Uri?): Intent {
         var outputFileUri = outputFileUri
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         if (outputFileUri ==
@@ -209,7 +216,7 @@ object CropImage {
 
     /** Get all Camera intents for capturing image using device camera apps.  */
     fun getCameraIntents(
-            @NonNull context: Context, @NonNull packageManager: PackageManager): List<Intent> {
+            context: Context, packageManager: PackageManager): List<Intent> {
 
         val allIntents = ArrayList<Intent>()
 
@@ -236,7 +243,7 @@ object CropImage {
      * images.
      */
     fun getGalleryIntents(
-            @NonNull packageManager: PackageManager, action: String, includeDocuments: Boolean): List<Intent> {
+            packageManager: PackageManager, action: String, includeDocuments: Boolean): List<Intent> {
         val intents = ArrayList<Intent>()
         val galleryIntent = if (action === Intent.ACTION_GET_CONTENT)
             Intent(action)
@@ -272,7 +279,7 @@ object CropImage {
      * See [StackOverflow
  * question](http://stackoverflow.com/questions/32789027/android-m-camera-intent-permission-bug).
      */
-    fun isExplicitCameraPermissionRequired(@NonNull context: Context): Boolean {
+    fun isExplicitCameraPermissionRequired(context: Context): Boolean {
         return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
                 && hasPermissionInManifest(context, "android.permission.CAMERA")
                 && context.checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
@@ -285,7 +292,7 @@ object CropImage {
      * @return true - the permission in requested in manifest, false - not.
      */
     fun hasPermissionInManifest(
-            @NonNull context: Context, @NonNull permissionName: String): Boolean {
+            context: Context, permissionName: String): Boolean {
         val packageName = context.packageName
         try {
             val packageInfo = context.packageManager.getPackageInfo(packageName, PackageManager.GET_PERMISSIONS)
@@ -309,7 +316,7 @@ object CropImage {
      * @param context used to access Android APIs, like content resolve, it is your
      * activity/fragment/widget.
      */
-    fun getCaptureImageOutputUri(@NonNull context: Context): Uri? {
+    fun getCaptureImageOutputUri(context: Context): Uri? {
         var outputFileUri: Uri? = null
         val getImage = context.externalCacheDir
         if (getImage != null) {
@@ -326,7 +333,7 @@ object CropImage {
      * activity/fragment/widget.
      * @param data the returned data of the activity result
      */
-    fun getPickImageResultUri(@NonNull context: Context, @Nullable data: Intent?): Uri? {
+    fun getPickImageResultUri(context: Context, data: Intent?): Uri? {
         var isCamera = true
         if (data != null && data.data != null) {
             val action = data.action
@@ -348,7 +355,7 @@ object CropImage {
      * they are granted
      */
     fun isReadExternalStoragePermissionsRequired(
-            @NonNull context: Context, @NonNull uri: Uri): Boolean {
+            context: Context, uri: Uri): Boolean {
         return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
                 && context.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
                 && isUriRequiresPermissions(context, uri))
@@ -362,7 +369,7 @@ object CropImage {
      * activity/fragment/widget.
      * @param uri the result URI of image pick.
      */
-    fun isUriRequiresPermissions(@NonNull context: Context, @NonNull uri: Uri): Boolean {
+    fun isUriRequiresPermissions(context: Context, uri: Uri): Boolean {
         try {
             val resolver = context.contentResolver
             val stream = resolver.openInputStream(uri)
@@ -394,7 +401,7 @@ object CropImage {
      * @param uri the image Android uri source to crop or null to start a picker
      * @return builder for Crop Image Activity
      */
-    fun activity(@Nullable uri: Uri?): ActivityBuilder {
+    fun activity(uri: Uri?): ActivityBuilder {
         return ActivityBuilder(uri)
     }
 
@@ -404,7 +411,7 @@ object CropImage {
      * @param data result data intent as received in [Activity.onActivityResult].
      * @return Crop Image Activity Result object or null if none exists
      */
-    fun getActivityResult(@Nullable data: Intent?): ActivityResult? {
+    fun getActivityResult(data: Intent?): ActivityResult? {
         return if (data != null) data.getParcelableExtra<Parcelable>(CROP_IMAGE_EXTRA_RESULT) as ActivityResult else null
     }
 
@@ -413,7 +420,7 @@ object CropImage {
     /** Builder used for creating Image Crop Activity by user request.  */
     class ActivityBuilder(
             /** The image to crop source Android uri.  */
-            @param:Nullable @field:Nullable private val mSource: Uri?) {
+            private val mSource: Uri?) {
 
         /** Options for image crop UX  */
         private val mOptions: CropImageOptions
@@ -424,11 +431,11 @@ object CropImage {
 
         /** Get [CropImageActivity] intent to start the activity.  */
         @JvmOverloads
-        fun getIntent(@NonNull context: Context, @Nullable cls: Class<*> = CropImageActivity::class.java): Intent {
+        fun getIntent(context: Context, cls: Class<*>? = CropImageActivity::class.java): Intent {
             mOptions.validate()
 
             val intent = Intent()
-            intent.setClass(context, cls)
+            intent.setClass(context, cls!!)
             val bundle = Bundle()
             bundle.putParcelable(CROP_IMAGE_EXTRA_SOURCE, mSource)
             bundle.putParcelable(CROP_IMAGE_EXTRA_OPTIONS, mOptions)
@@ -441,7 +448,7 @@ object CropImage {
          *
          * @param activity activity to receive result
          */
-        fun start(@NonNull activity: Activity) {
+        fun start(activity: Activity) {
             mOptions.validate()
             activity.startActivityForResult(getIntent(activity), CROP_IMAGE_ACTIVITY_REQUEST_CODE)
         }
@@ -451,7 +458,7 @@ object CropImage {
          *
          * @param activity activity to receive result
          */
-        fun start(@NonNull activity: Activity, @Nullable cls: Class<*>) {
+        fun start(activity: Activity, cls: Class<*>?) {
             mOptions.validate()
             activity.startActivityForResult(getIntent(activity, cls), CROP_IMAGE_ACTIVITY_REQUEST_CODE)
         }
@@ -461,7 +468,7 @@ object CropImage {
          *
          * @param fragment fragment to receive result
          */
-        fun start(@NonNull context: Context, @NonNull fragment: Fragment) {
+        fun start(context: Context, fragment: Fragment) {
             fragment.startActivityForResult(getIntent(context), CROP_IMAGE_ACTIVITY_REQUEST_CODE)
         }
 
@@ -471,7 +478,7 @@ object CropImage {
          * @param fragment fragment to receive result
          */
         @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
-        fun start(@NonNull context: Context, @NonNull fragment: android.app.Fragment) {
+        fun start(context: Context, fragment: android.app.Fragment) {
             fragment.startActivityForResult(getIntent(context), CROP_IMAGE_ACTIVITY_REQUEST_CODE)
         }
 
@@ -481,7 +488,7 @@ object CropImage {
          * @param fragment fragment to receive result
          */
         fun start(
-                @NonNull context: Context, @NonNull fragment: Fragment, @Nullable cls: Class<*>) {
+                context: Context, fragment: Fragment, cls: Class<*>?) {
             fragment.startActivityForResult(getIntent(context, cls), CROP_IMAGE_ACTIVITY_REQUEST_CODE)
         }
 
@@ -492,7 +499,7 @@ object CropImage {
          */
         @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
         fun start(
-                @NonNull context: Context, @NonNull fragment: android.app.Fragment, @Nullable cls: Class<*>) {
+                context: Context, fragment: android.app.Fragment, cls: Class<*>?) {
             fragment.startActivityForResult(getIntent(context, cls), CROP_IMAGE_ACTIVITY_REQUEST_CODE)
         }
 
@@ -501,7 +508,7 @@ object CropImage {
          * To set square/circle crop shape set aspect ratio to 1:1.<br></br>
          * *Default: RECTANGLE*
          */
-        fun setCropShape(@NonNull cropShape: CropImageView.CropShape): ActivityBuilder {
+        fun setCropShape(cropShape: CropImageView.CropShape): ActivityBuilder {
             mOptions.cropShape = cropShape
             return this
         }
@@ -532,7 +539,7 @@ object CropImage {
          * whether the guidelines should be on, off, or only showing when resizing.<br></br>
          * *Default: ON_TOUCH*
          */
-        fun setGuidelines(@NonNull guidelines: CropImageView.Guidelines): ActivityBuilder {
+        fun setGuidelines(guidelines: CropImageView.Guidelines): ActivityBuilder {
             mOptions.guidelines = guidelines
             return this
         }
@@ -541,7 +548,7 @@ object CropImage {
          * The initial scale type of the image in the crop image view<br></br>
          * *Default: FIT_CENTER*
          */
-        fun setScaleType(@NonNull scaleType: CropImageView.ScaleType): ActivityBuilder {
+        fun setScaleType(scaleType: CropImageView.ScaleType): ActivityBuilder {
             mOptions.scaleType = scaleType
             return this
         }
@@ -950,20 +957,18 @@ object CropImage {
             return 0
         }
 
-/*
-        companion object {
-
-            val CREATOR: Parcelable.Creator<ActivityResult> = object : Parcelable.Creator<ActivityResult> {
-                override fun createFromParcel(`in`: Parcel): ActivityResult {
-                    return ActivityResult(`in`)
-                }
-
-                override fun newArray(size: Int): Array<ActivityResult> {
-                    return arrayOfNulls(size)
-                }
-            }
-        }
-*/
+//        companion object {
+//
+//            val CREATOR: Parcelable.Creator<ActivityResult> = object : Parcelable.Creator<ActivityResult> {
+//                override fun createFromParcel(`in`: Parcel): ActivityResult {
+//                    return ActivityResult(`in`)
+//                }
+//
+//                override fun newArray(size: Int): Array<ActivityResult> {
+//                    return arrayOfNulls(size)
+//                }
+//            }
+//        }
 
         companion object CREATOR : Parcelable.Creator<ActivityResult> {
             override fun createFromParcel(parcel: Parcel): ActivityResult {

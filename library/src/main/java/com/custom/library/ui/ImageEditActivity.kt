@@ -5,8 +5,8 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.custom.library.Adjustment.AdjustmentActivity
-import com.custom.library.Edit.CropImage
-import com.custom.library.Edit.CropImageOptions
+import com.custom.library.CropView.CropImage
+import com.custom.library.CropView.CropImageOptions
 import com.custom.library.R
 import com.custom.library.TextEdit.TextEditorActivity
 import kotlinx.android.synthetic.main.activity_image_edit.*
@@ -31,7 +31,7 @@ class ImageEditActivity : AppCompatActivity() {
 
         preview_imageView.setImageURI(Uri.parse(path))
 
-        btn_back.setOnClickListener { finish() }
+        btn_back.setOnClickListener { setResult() }
 
         adjustment.setOnClickListener {
             val intent = Intent()
@@ -87,8 +87,10 @@ class ImageEditActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-      //  super.onBackPressed()
+        setResult()
+    }
 
+    private fun setResult(){
         val intent = Intent()
         intent.putExtras(getIntent())
         if (path != null) {

@@ -8,8 +8,6 @@ import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager.widget.ViewPager
 import com.custom.library.C
-import com.custom.library.Edit.CropImage
-import com.custom.library.Edit.CropImageOptions
 import com.custom.library.R
 import com.custom.library.adapter.SmallPreviewAdapter
 import com.custom.library.bean.ImageItem

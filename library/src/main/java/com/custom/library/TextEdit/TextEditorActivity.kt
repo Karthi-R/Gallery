@@ -7,25 +7,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import com.custom.library.Crop.BitmapUtils
+import com.custom.library.CropView.BitmapUtils
 import com.custom.library.ui.ImageEditActivity
 import com.custom.library.util.Utils.calculateInSampleSize
 
 import kotlinx.android.synthetic.main.activity_text_editor.*
 import android.graphics.Bitmap
-import android.view.View.DragShadowBuilder
-import android.content.ClipData
-import android.content.ClipDescription
-import android.view.DragEvent
 import android.view.MotionEvent
 import android.view.View
-import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.TextView
-import android.R
-import android.R.attr.y
-import android.R.attr.x
-import kotlinx.android.synthetic.main.activity_adjustment.*
 import kotlinx.android.synthetic.main.activity_text_editor.btn_back
 import kotlinx.android.synthetic.main.activity_text_editor.cancel
 import kotlinx.android.synthetic.main.activity_text_editor.save

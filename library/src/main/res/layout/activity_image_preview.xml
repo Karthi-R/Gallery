@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@android:color/white"
+        android:background="@color/colorPrimary"
         android:orientation="vertical"
         android:visibility="gone"
         tools:visibility="visible">

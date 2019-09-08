@@ -4,11 +4,11 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
+import android.graphics.PorterDuff
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.GridView
+import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
@@ -20,11 +20,6 @@ import com.custom.library.util.CameraUtil
 import kotlinx.android.synthetic.main.activity_folder_grid.*
 import kotlinx.android.synthetic.main.activity_folder_grid.btn_ok
 import java.io.File
-import android.R.attr.data
-import androidx.core.app.ComponentActivity.ExtraData
-import androidx.core.content.ContextCompat.getSystemService
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-import com.custom.library.adapter.ImageRecyclerAdapter
 
 
 class FolderGridActivity : BaseActivity(), View.OnClickListener, ImageDataSource.OnImagesLoadedListener {
@@ -82,6 +77,18 @@ class FolderGridActivity : BaseActivity(), View.OnClickListener, ImageDataSource
         loadData()
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        var upArrow = getResources().getDrawable(R.drawable.ic_arrow_back)
+        upArrow.setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_ATOP)
+        getSupportActionBar()?.setHomeAsUpIndicator(upArrow)
+
+
+
+/*
+        val titleId = resources.getIdentifier("action_bar_title","id","android")
+        val title= findViewById<TextView>(titleId)
+        title.setTextColor(resources.getColor(R.color.colorAccent))
+*/
 
         btn_preview.setOnClickListener {
             if(pickerHelper.selectedImages.size>0){
