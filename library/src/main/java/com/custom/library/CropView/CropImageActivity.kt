@@ -1,15 +1,3 @@
-// "Therefore those skilled at the unorthodox
-// are infinite as heaven and earth,
-// inexhaustible as the great rivers.
-// When they come to an end,
-// they begin again,
-// like the days and months;
-// they die and are reborn,
-// like the four seasons."
-//
-// - Sun Tsu,
-// "The Art of War"
-
 package com.custom.library.CropView
 
 import android.Manifest
@@ -35,6 +23,7 @@ import com.custom.library.util.FileUtil
 
 import java.io.File
 import java.io.IOException
+import kotlin.random.Random
 
 /**
  * Built-in activity for image cropping.<br></br>
@@ -65,7 +54,7 @@ class CropImageActivity : AppCompatActivity(), CropImageView.OnSetImageUriComple
                     val ext = if (mOptions!!.outputCompressFormat == Bitmap.CompressFormat.JPEG)
                         ".jpg"
                     else if (mOptions!!.outputCompressFormat == Bitmap.CompressFormat.PNG) ".png" else ".webp"
-                    outputUri = Uri.fromFile(File.createTempFile("cropped", ext, FileUtil.getCropCacheFolder(this)))
+                    outputUri = Uri.fromFile(File.createTempFile(Random.nextInt().toString(), ext, FileUtil.getCropCacheFolder(this)))
                 } catch (e: IOException) {
                     throw RuntimeException("Failed to create temp file for output image", e)
                 }

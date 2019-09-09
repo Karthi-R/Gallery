@@ -1,15 +1,3 @@
-// "Therefore those skilled at the unorthodox
-// are infinite as heaven and earth,
-// inexhaustible as the great rivers.
-// When they come to an end,
-// they begin again,
-// like the days and months;
-// they die and are reborn,
-// like the four seasons."
-//
-// - Sun Tsu,
-// "The Art of War"
-
 package com.custom.library.CropView
 
 import android.content.ContentResolver
@@ -38,6 +26,7 @@ import java.lang.ref.WeakReference
 import javax.microedition.khronos.egl.EGL10
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.egl.EGLContext
+import kotlin.random.Random
 
 /** Utility class that deals with operations with an ImageView.  */
 internal object BitmapUtils {
@@ -414,7 +403,7 @@ internal object BitmapUtils {
             var needSave = true
             if (uri == null) {
                 uri = Uri.fromFile(
-                        File.createTempFile("aic_state_store_temp", ".jpg", FileUtil.getCropCacheFolder(context)))
+                        File.createTempFile(Random.nextInt().toString(), ".jpg", FileUtil.getCropCacheFolder(context)))
             } else if (File(uri!!.path!!).exists()) {
                 needSave = false
             }

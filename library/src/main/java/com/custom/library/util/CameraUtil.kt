@@ -37,7 +37,6 @@ object CameraUtil {
                         .map { it.activityInfo.packageName }
                         .forEach { activity.grantUriPermission(it, uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION or Intent.FLAG_GRANT_READ_URI_PERMISSION) }
             }
-            Log.e("nanchen", ProviderUtil.getFileProviderName(activity))
             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri)
         }
         activity.startActivityForResult(takePictureIntent, requestCode)

@@ -1,11 +1,6 @@
 package com.custom.library
 
-/**
- * Created by hubert
- *
- *
- * Created on 2017/10/19.
- */
+
 
 object C {
     val EXTRA_IMAGE_ITEMS = "extra_image_items"

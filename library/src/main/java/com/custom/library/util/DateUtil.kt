@@ -4,15 +4,11 @@ package com.custom.library.util
 
 import java.util.*
 
-/**
- * Created by hubert
- *
- * Created on 2017/11/2.
- */
+
 fun isSameDate(date1: Date, date2: Date): Boolean {
     val cal1 = Calendar.getInstance()
     val cal2 = Calendar.getInstance()
-    cal1.firstDayOfWeek = Calendar.MONDAY//西方周日为一周的第一天，咱得将周一设为一周第一天
+    cal1.firstDayOfWeek = Calendar.MONDAY
     cal2.firstDayOfWeek = Calendar.MONDAY
     cal1.time = date1
     cal2.time = date2

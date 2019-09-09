@@ -41,7 +41,7 @@ class FolderPopUpWindow(context: Context, adapter: BaseAdapter
         listView.adapter = adapter
 
         contentView = view
-        width = ViewGroup.LayoutParams.MATCH_PARENT  //如果不设置，就是 AnchorView 的宽度
+        width = ViewGroup.LayoutParams.MATCH_PARENT
         height = ViewGroup.LayoutParams.MATCH_PARENT
         isFocusable = true
         isOutsideTouchable = true
@@ -50,7 +50,7 @@ class FolderPopUpWindow(context: Context, adapter: BaseAdapter
         view.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
                 view.viewTreeObserver.removeOnGlobalLayoutListener(this)
-                Log.e("hubert", "view created")
+
                // val maxHeight = view.height
                // val realHeight = listView.height
                 val maxHeight = view.height * 5 / 8
@@ -105,7 +105,7 @@ class FolderPopUpWindow(context: Context, adapter: BaseAdapter
                 }
             })
         }
-        //防止重复点击
+
         if (outSet!!.isRunning) {
             return
         }

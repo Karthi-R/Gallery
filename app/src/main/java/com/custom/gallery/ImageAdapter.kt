@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.custom.library.bean.ImageItem
 import java.io.File
 
@@ -31,9 +30,7 @@ class ImageAdapter constructor(
             listener?.onItemClick(position)
         })
         holder?.imageView?.context?.let {
-            Glide.with(it)
-                .load(Uri.fromFile(File(images[position].path)))
-                .into(holder?.imageView)
+            App.picInstance.load(Uri.fromFile(File(images[position].path))).fit().centerCrop().placeholder(com.custom.library.R.drawable.ic_default_image).into(holder?.imageView)
         }
 
     }

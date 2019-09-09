@@ -21,16 +21,16 @@ class ImageDataSource(private val activity: FragmentActivity) : LoaderManager.Lo
 //        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
 //    }
 
-    private val IMAGE_PROJECTION = arrayOf(//查询图片需要的数据列
-            MediaStore.Images.Media.DISPLAY_NAME, //图片的显示名称  aaa.jpg
-            MediaStore.Images.Media.DATA, //图片的真实路径  /storage/emulated/0/pp/downloader/wallpaper/aaa.jpg
-            MediaStore.Images.Media.SIZE, //图片的大小，long型  132492
-            MediaStore.Images.Media.WIDTH, //图片的宽度，int型  1920
-            MediaStore.Images.Media.HEIGHT, //图片的高度，int型  1080
-            MediaStore.Images.Media.MIME_TYPE, //图片的类型     image/jpeg
-            MediaStore.Images.Media.DATE_ADDED)    //图片被添加的时间，long型  1450518608
-    private var loadedListener: OnImagesLoadedListener? = null                     //图片加载完成的回调接口
-    private val imageFolders = ArrayList<ImageFolder>()   //所有的图片文件夹
+    private val IMAGE_PROJECTION = arrayOf(
+            MediaStore.Images.Media.DISPLAY_NAME,
+            MediaStore.Images.Media.DATA, //  /storage/emulated/0/pp/downloader/wallpaper/aaa.jpg
+            MediaStore.Images.Media.SIZE, //long型  132492
+            MediaStore.Images.Media.WIDTH, // 1920
+            MediaStore.Images.Media.HEIGHT, //  1080
+            MediaStore.Images.Media.MIME_TYPE, //    image/jpeg
+            MediaStore.Images.Media.DATE_ADDED)    //，long 1450518608
+    private var loadedListener: OnImagesLoadedListener? = null
+    private val imageFolders = ArrayList<ImageFolder>()
     private var currentMode: Int? = null
 
     fun loadImage(loadedListener: OnImagesLoadedListener) {
@@ -38,8 +38,8 @@ class ImageDataSource(private val activity: FragmentActivity) : LoaderManager.Lo
     }
 
     /**
-     * @param path           指定扫描的文件夹目录，可以为 null，表示扫描所有图片
-     * @param loadedListener 图片加载完成的监听
+     * @param path
+     * @param loadedListener
      */
     fun loadImage(path: String?, loadedListener: OnImagesLoadedListener) {
         this.loadedListener = loadedListener
@@ -60,11 +60,11 @@ class ImageDataSource(private val activity: FragmentActivity) : LoaderManager.Lo
 
     override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor> {
         var cursorLoader: CursorLoader? = null
-        //扫描所有图片
+
         if (id == LOADER_ALL)
             cursorLoader = CursorLoader(activity, MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                     IMAGE_PROJECTION, null, null, IMAGE_PROJECTION[6] + " DESC")
-        //扫描某个图片文件夹
+
         if (id == LOADER_CATEGORY)
             if (args != null) {
                 cursorLoader = CursorLoader(activity, MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
@@ -78,9 +78,9 @@ class ImageDataSource(private val activity: FragmentActivity) : LoaderManager.Lo
     override fun onLoadFinished(loader: Loader<Cursor>, data: Cursor?) {
         imageFolders.clear()
         if (data != null) {
-            val allImages = ArrayList<ImageItem>()   //所有图片的集合,不分文件夹
+            val allImages = ArrayList<ImageItem>()
             while (data.moveToNext()) {
-                //查询数据
+
                 val imageName = data.getString(data.getColumnIndexOrThrow(IMAGE_PROJECTION[0]))
                 val imagePath = data.getString(data.getColumnIndexOrThrow(IMAGE_PROJECTION[1]))
 
@@ -94,7 +94,7 @@ class ImageDataSource(private val activity: FragmentActivity) : LoaderManager.Lo
                 val imageHeight = data.getInt(data.getColumnIndexOrThrow(IMAGE_PROJECTION[4]))
                 val imageMimeType = data.getString(data.getColumnIndexOrThrow(IMAGE_PROJECTION[5]))
                 val imageAddTime = data.getLong(data.getColumnIndexOrThrow(IMAGE_PROJECTION[6]))
-                //封装实体
+
                 val imageItem = ImageItem(imagePath)
                 imageItem.size = imageSize
                 imageItem.addTime = imageAddTime
@@ -102,7 +102,7 @@ class ImageDataSource(private val activity: FragmentActivity) : LoaderManager.Lo
                 imageItem.width = imageWidth
                 imageItem.mimeType = imageMimeType
                 allImages.add(imageItem)
-                //根据父路径分类存放图片
+
                 val imageFile = File(imagePath)
                 val imageParentFile = imageFile.parentFile
                 val imageFolder = ImageFolder(imageParentFile.name, imageParentFile.absolutePath)
@@ -117,9 +117,9 @@ class ImageDataSource(private val activity: FragmentActivity) : LoaderManager.Lo
                     imageFolders[imageFolders.indexOf(imageFolder)].images.add(imageItem)
                 }
             }
-            //防止没有图片报异常
+
             if (data.count > 0 && allImages.size > 0) {
-                //构造所有图片的集合
+
                 val allImagesFolder = ImageFolder(activity.resources.getString(R.string.ip_all_images), "/")
                 allImagesFolder.cover = allImages[0]
                 allImagesFolder.images = allImages
@@ -127,7 +127,7 @@ class ImageDataSource(private val activity: FragmentActivity) : LoaderManager.Lo
             }
         }
 
-        //回调接口，通知图片数据准备完成
+
         loadedListener?.onImagesLoaded(imageFolders)
     }
 
@@ -142,16 +142,14 @@ class ImageDataSource(private val activity: FragmentActivity) : LoaderManager.Lo
         }
     }
 
-    /**
-     * 所有图片加载完成的回调接口
-     */
+
     interface OnImagesLoadedListener {
         fun onImagesLoaded(imageFolders: List<ImageFolder>)
     }
 
     companion object {
 
-        val LOADER_ALL = 0         //加载所有图片
-        val LOADER_CATEGORY = 1    //分类加载图片
+        val LOADER_ALL = 0
+        val LOADER_CATEGORY = 1
     }
 }

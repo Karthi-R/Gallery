@@ -17,17 +17,7 @@ class SmallPreviewAdapter(
         private val mActivity: Activity,
         var images: List<ImageItem> = ArrayList()
 ) : RecyclerView.Adapter<SmallPreviewAdapter.SmallPreviewViewHolder>() {
-/*
-    override fun onBindViewHolder(holder: SmallPreviewViewHolder, position: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-*/
 
-/*
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SmallPreviewViewHolder {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-*/
 
     var current: ImageItem? = null
         set(value) {

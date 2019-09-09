@@ -24,9 +24,9 @@ class ImageRecyclerAdapter(
         var images: ArrayList<ImageItem> = ArrayList()
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private val mImageSize: Int = Utils.getImageItemWidth(mActivity)  //每个条目的大小
+    private val mImageSize: Int = Utils.getImageItemWidth(mActivity)
     private val mInflater: LayoutInflater = LayoutInflater.from(mActivity)
-    internal var listener: OnImageItemClickListener? = null   //图片被点击的监听
+    internal var listener: OnImageItemClickListener? = null
 
     interface OnImageItemClickListener {
         fun onImageItemClick(imageItem: ImageItem, position: Int)
@@ -71,7 +71,7 @@ class ImageRecyclerAdapter(
         internal var cbCheck: AppCompatCheckBox = rootView.findViewById(R.id.cb_check) as AppCompatCheckBox
 
         init {
-            rootView.layoutParams = AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, mImageSize) //让图片是个正方形
+            rootView.layoutParams = AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, mImageSize)
         }
 
         internal fun bind(position: Int) {
@@ -107,7 +107,7 @@ class ImageRecyclerAdapter(
                 cbCheck.visibility = View.GONE
             }
             if (imageItem?.path != null) {
-                ImagePicker.imageLoader.displayImage(mActivity, imageItem.path!!, ivThumb, mImageSize, mImageSize) //显示图片
+                ImagePicker.imageLoader.displayImage(mActivity, imageItem.path!!, ivThumb, mImageSize, mImageSize)
             }
         }
 
@@ -125,7 +125,7 @@ class ImageRecyclerAdapter(
     private inner class CameraViewHolder internal constructor(internal var mItemView: View) : RecyclerView.ViewHolder(mItemView) {
 
         internal fun bindCamera() {
-            mItemView.layoutParams = AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, mImageSize) //让图片是个正方形
+            mItemView.layoutParams = AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, mImageSize)
             mItemView.tag = null
             mItemView.setOnClickListener {
                 listener?.onCameraClick()

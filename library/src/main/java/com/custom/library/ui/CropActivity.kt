@@ -19,6 +19,8 @@ import android.widget.SeekBar
 
 import com.custom.library.ui.ImageEditActivity.Companion.CROP_IMAGE_REQUEST_CODE
 import com.custom.library.util.FileUtil.getCropCacheFolder
+import java.util.*
+import kotlin.random.Random
 
 
 class CropActivity : AppCompatActivity(),com.custom.library.CropView.CropImageView.OnSetImageUriCompleteListener, com.custom.library.CropView.CropImageView.OnCropImageCompleteListener {
@@ -42,7 +44,7 @@ class CropActivity : AppCompatActivity(),com.custom.library.CropView.CropImageVi
                     val ext = if (mOptions!!.outputCompressFormat === Bitmap.CompressFormat.JPEG)
                         ".jpg"
                     else if (mOptions!!.outputCompressFormat === Bitmap.CompressFormat.PNG) ".png" else ".webp"
-                    outputUri = Uri.fromFile(File.createTempFile("cropped", ".jpg", getCropCacheFolder(this)))
+                    outputUri = Uri.fromFile(File.createTempFile(Random.nextInt().toString(), ".jpg", getCropCacheFolder(this)))
 
                 } catch (e: IOException) {
                     throw RuntimeException("Failed to create temp file for output image", e)
