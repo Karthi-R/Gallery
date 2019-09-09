@@ -8,11 +8,7 @@ import com.custom.library.C
 import com.custom.library.ImagePicker
 import com.custom.library.bean.ImageItem
 
-/**
- * Created by hubert
- *
- * Created on 2017/10/20.
- */
+
 class ShadowActivity : BaseActivity() {
 
     private var type: Int = 0//0pick 1review 2camera
@@ -36,10 +32,9 @@ class ShadowActivity : BaseActivity() {
 
     private fun startPick() {
         when (type) {
-            0 -> FolderGridActivity.startForResult(this, 101, false)
+            0 -> GalleryDetailActivity.startForResult(this, 101, false)
             1 -> ImagePreviewDelActivity.startForResult(this, 102, position)
-            2 -> ImageGridActivity.startForResult(this, 101, true)
-          //  2 ->  ImagePreviewActivity.startForResult(this, ImageGridFragment.REQUEST_PREVIEW, 0, pickerHelper.selectedImages)
+            2 -> ImageCameraActivity.startForResult(this, 101, true)
         }
     }
 

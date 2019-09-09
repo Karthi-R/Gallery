@@ -15,13 +15,8 @@ import kotlinx.android.synthetic.main.activity_image_preview.*
 import kotlinx.android.synthetic.main.include_top_bar.*
 import uk.co.senab.photoview.PhotoViewAttacher
 
-/**
- * Created by hubert
- *
- * Created on 2017/10/19.
- */
-class ImagePreviewActivity : ImagePreviewBaseActivity(), View.OnClickListener, PhotoViewAttacher.OnPhotoTapListener {
 
+class ImagePreviewActivity : ImagePreviewBaseActivity(), View.OnClickListener, PhotoViewAttacher.OnPhotoTapListener {
 
     private lateinit var imageItems: ArrayList<ImageItem>
     private var current: Int = 0
@@ -30,7 +25,6 @@ class ImagePreviewActivity : ImagePreviewBaseActivity(), View.OnClickListener, P
     companion object {
 
         const val IMAGE_PREVIEW_REQUEST_CODE = 601
-
 
         fun startForResult(activity: Activity, requestCode: Int, position: Int, imageItems: ArrayList<ImageItem>) {
             val intent = Intent(activity, ImagePreviewActivity::class.java)
@@ -54,43 +48,10 @@ class ImagePreviewActivity : ImagePreviewBaseActivity(), View.OnClickListener, P
         crop.setOnClickListener(this)
         edit.setOnClickListener {
 
-            val intent = Intent()
-            intent.setClass(this, ImageEditActivity::class.java)
-            val bundle = Bundle()
-            /* bundle.putParcelable(CropImage.CROP_IMAGE_EXTRA_OPTIONS, CropImageOptions())
-             intent.putExtra(CropImage.CROP_IMAGE_EXTRA_BUNDLE, bundle)*/
+            val intent = Intent(this, ImageEditActivity::class.java)
             intent.putExtra("Path", imageItems[current].path!!)
             intent.putExtra("position", current)
             startActivityForResult(intent,IMAGE_PREVIEW_REQUEST_CODE)
-
-
-//            val intent = Intent(this,ImageEditActivity::class.java)
-//            intent.putExtra("Path", imageItems[current].path!!)
-//            startActivityForResult(intent,IMAGE_PREVIEW_REQUEST_CODE)
-
-            //startActivity(intent)
-
-
-
-           // CropImage.activity(null).setGuidelines(CropImageView.Guidelines.ON).setMaxZoom(3).start(this)
-
-
-          /* val intent = Intent()
-            intent.setClass(this, CropActivity::class.java)
-            val bundle = Bundle()
-            bundle.putParcelable(CropImage.CROP_IMAGE_EXTRA_OPTIONS, CropImageOptions())
-            intent.putExtra(CropImage.CROP_IMAGE_EXTRA_BUNDLE, bundle)
-            intent.putExtra("Path", imageItems[current].path!!)
-            startActivity(intent)*/
-
-           /* val mSource = Uri.parse(imageItems[current].path)
-            val intent = Intent()
-            intent.setClass(this, CropImageActivity::class.java)
-            val bundle = Bundle()
-            bundle.putParcelable(CropImage.CROP_IMAGE_EXTRA_SOURCE, mSource)
-            bundle.putParcelable(CropImage.CROP_IMAGE_EXTRA_OPTIONS, CropImageOptions())
-            intent.putExtra(CropImage.CROP_IMAGE_EXTRA_BUNDLE, bundle)
-            startActivity(intent)*/
         }
         bottom_bar.visibility = View.VISIBLE
 
@@ -173,31 +134,23 @@ class ImagePreviewActivity : ImagePreviewBaseActivity(), View.OnClickListener, P
     }
 
     private fun onCheckChanged(selected: Int, limit: Int) {
-       /* if (selected == 0) {
-            btn_ok.isEnabled = false
-            btn_ok.text = getString(R.string.ip_complete)
-            btn_ok.setTextColor(resources.getColor(R.color.ip_text_secondary_inverted))
-        } else {
-            btn_ok.isEnabled = true
-            btn_ok.text = getString(R.string.ip_select_complete, selected, limit)
-            btn_ok.setTextColor(resources.getColor(R.color.ip_text_primary_inverted))
-        }*/
     }
 
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btn_ok -> {
-                setResult(Activity.RESULT_OK)
-                finish()
-            }
-            R.id.crop -> {
-               // CropImageActivity().cropImage()
-
-                //CropImage.activity(null).setGuidelines(com.huburt.library.Crop.CropImageView.Guidelines.ON).setMaxZoom(3).start(this)
-                 //ImageCropActivity.start(this, ImageGridActivity.REQUEST_CROP)
+                setResult()
             }
         }
     }
+
+    private fun setResult() {
+        val result = intent
+        result.putExtra(C.EXTRA_IMAGE_ITEMS, pickHelper.selectedImages)
+        setResult(Activity.RESULT_OK, result)
+        finish()
+    }
+
 
     override fun onOutsidePhotoTap() {
         changeTopAndBottomBar()

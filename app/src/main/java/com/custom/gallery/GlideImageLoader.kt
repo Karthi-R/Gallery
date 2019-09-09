@@ -7,7 +7,9 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.custom.library.R
 import com.custom.library.loader.ImageLoader
+import com.squareup.picasso.Picasso
 import java.io.File
+import java.lang.Exception
 
 
 class GlideImageLoader : ImageLoader {
@@ -26,8 +28,6 @@ class GlideImageLoader : ImageLoader {
                 .load(Uri.fromFile(File(path)))
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(imageView)
-
-        //imageView.setImageUriAsync(Uri.fromFile(File(path)))
     }
 
     override fun clearMemoryCache() {

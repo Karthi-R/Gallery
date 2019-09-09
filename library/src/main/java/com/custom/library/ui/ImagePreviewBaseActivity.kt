@@ -9,11 +9,6 @@ import kotlinx.android.synthetic.main.activity_image_preview.*
 import kotlinx.android.synthetic.main.include_top_bar.*
 import uk.co.senab.photoview.PhotoViewAttacher
 
-/**
- * Created by hubert
- *
- * Created on 2017/10/24.
- */
 abstract class ImagePreviewBaseActivity : BaseActivity(), PhotoViewAttacher.OnPhotoTapListener {
 
 

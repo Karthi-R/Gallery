@@ -34,8 +34,7 @@ class ImageEditActivity : AppCompatActivity() {
         btn_back.setOnClickListener { setResult() }
 
         adjustment.setOnClickListener {
-            val intent = Intent()
-            intent.setClass(this, CropActivity::class.java)
+            val intent = Intent(this, CropActivity::class.java)
             val bundle = Bundle()
             bundle.putParcelable(CropImage.CROP_IMAGE_EXTRA_OPTIONS, CropImageOptions())
             intent.putExtra(CropImage.CROP_IMAGE_EXTRA_BUNDLE, bundle)
@@ -44,21 +43,13 @@ class ImageEditActivity : AppCompatActivity() {
         }
 
         tone.setOnClickListener {
-            val intent = Intent()
-            intent.setClass(this, AdjustmentActivity::class.java)
-            val bundle = Bundle()
-           /* bundle.putParcelable(CropImage.CROP_IMAGE_EXTRA_OPTIONS, CropImageOptions())
-            intent.putExtra(CropImage.CROP_IMAGE_EXTRA_BUNDLE, bundle)*/
+            val intent = Intent(this, AdjustmentActivity::class.java)
             intent.putExtra("Path", path)
             startActivityForResult(intent,ADJUSTMENT_IMAGE_REQUEST_CODE)
         }
 
         text_edit.setOnClickListener {
-            val intent = Intent()
-            intent.setClass(this, TextEditorActivity::class.java)
-            val bundle = Bundle()
-           /* bundle.putParcelable(CropImage.CROP_IMAGE_EXTRA_OPTIONS, CropImageOptions())
-            intent.putExtra(CropImage.CROP_IMAGE_EXTRA_BUNDLE, bundle)*/
+            val intent = Intent(this, TextEditorActivity::class.java)
             intent.putExtra("Path", path)
             startActivityForResult(intent,TEXT_EDIT_IMAGE_REQUEST_CODE)
         }

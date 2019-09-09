@@ -9,33 +9,24 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
 import android.view.View
-import android.view.animation.AnimationUtils
 import android.widget.AdapterView
 import androidx.core.app.ActivityCompat
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.custom.library.*
 import com.custom.library.adapter.ImageFolderAdapter
 import com.custom.library.adapter.ImageRecyclerAdapter
 import com.custom.library.bean.ImageFolder
 import com.custom.library.bean.ImageItem
 import com.custom.library.util.CameraUtil
-import com.custom.library.util.Utils
-import com.custom.library.util.isSameDate
 import com.custom.library.view.FolderPopUpWindow
-import com.custom.library.view.GridSpacingItemDecoration
 import kotlinx.android.synthetic.main.activity_image_grid.*
-import kotlinx.android.synthetic.main.include_top_bar.*
 import java.io.File
-import java.text.SimpleDateFormat
-import java.util.*
 
 /**
  * Created by hubert
  *
  * Created on 2017/10/12.
  */
-class ImageGridActivity : BaseActivity(), View.OnClickListener {
+class ImageCameraActivity : BaseActivity(), View.OnClickListener {
     companion object {
 
         val REQUEST_PERMISSION_STORAGE = 0x12
@@ -49,10 +40,10 @@ class ImageGridActivity : BaseActivity(), View.OnClickListener {
          * @param takePhoto 是否直接开启拍照
          */
         fun startForResult(activity: Activity, requestCode: Int, takePhoto: Boolean) {
-            val intent = Intent(activity, ImageGridActivity::class.java)
+            val intent = Intent(activity, ImageCameraActivity::class.java)
             intent.putExtra(C.EXTRA_TAKE_PHOTO, takePhoto)
             activity.startActivityForResult(intent, requestCode)
-            activity.finish()
+           // activity.finish()
         }
     }
 
@@ -113,12 +104,12 @@ class ImageGridActivity : BaseActivity(), View.OnClickListener {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     if (tv_date.visibility == View.VISIBLE) {
-                        tv_date.animation = AnimationUtils.loadAnimation(this@ImageGridActivity, R.anim.fade_out)
+                        tv_date.animation = AnimationUtils.loadAnimation(this@ImageCameraActivity, R.anim.fade_out)
                         tv_date.visibility = View.GONE
                     }
                 } else {
                     if (tv_date.visibility == View.GONE) {
-                        tv_date.animation = AnimationUtils.loadAnimation(this@ImageGridActivity, R.anim.fade_in)
+                        tv_date.animation = AnimationUtils.loadAnimation(this@ImageCameraActivity, R.anim.fade_in)
                         tv_date.visibility = View.VISIBLE
                     }
                     val gridLayoutManager = recycler.layoutManager as GridLayoutManager
@@ -149,21 +140,6 @@ class ImageGridActivity : BaseActivity(), View.OnClickListener {
     }
 */
 
-    private fun initPopWindow() {
-        mImageFolderAdapter = ImageFolderAdapter(this, null)
-        mFolderPopupWindow = FolderPopUpWindow(this, mImageFolderAdapter)
-        mFolderPopupWindow.setOnItemClickListener(object : FolderPopUpWindow.OnItemClickListener {
-            override fun onItemClick(adapterView: AdapterView<*>, view: View, position: Int, l: Long) {
-                mImageFolderAdapter.selectIndex = position
-                mFolderPopupWindow.dismiss()
-                val imageFolder = adapterView.adapter?.getItem(position) as ImageFolder
-                adapter.refreshData(imageFolder.images)
-                tv_dir.text = imageFolder.name
-            }
-        })
-        footer_bar.post({ mFolderPopupWindow.setMargin(footer_bar.height) })
-    }
-
     private fun showPopupFolderList() {
         mImageFolderAdapter.refreshData(imageFolders.toMutableList())  //刷新数据
         if (mFolderPopupWindow.isShowing) {
@@ -177,63 +153,10 @@ class ImageGridActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-/*    override fun onImageItemClick(imageItem: ImageItem, position: Int) {
-        if (pickerHelper.isMultiMode) {
-            var images = adapter.images
-            var p = position
-            if (images.size > INTENT_MAX) {//数据量过大
-                val s: Int
-                val e: Int
-                if (position < images.size / 2) {//点击position在list靠前
-                    s = Math.max(position - INTENT_MAX / 2, 0)
-                    e = Math.min(s + INTENT_MAX, images.size)
-                } else {
-                    e = Math.min(position + INTENT_MAX / 2, images.size)
-                    s = Math.max(e - INTENT_MAX, 0)
-                }
-                p = position - s
-                Log.e("hubert", "start:$s , end:$e , position:$p")
-//            images = ArrayList()
-//            for (i in s until e) {
-//                images.add(adapter.images[i])
-//            }
-                //等同于上面，IDE提示换成的Kotlin的高阶函数
-                images = (s until e).mapTo(ArrayList()) { adapter.images[it] }
-            }
-            ImagePreviewActivity.startForResult(this, REQUEST_PREVIEW, p, images)
-        } else {
-            pickerHelper.selectedImages.clear()
-            pickerHelper.selectedImages.add(imageItem)
-            if (pickerHelper.isCrop) {//需要裁剪
-                ImageCropActivity.start(this, REQUEST_CROP)
-            } else {
-                setResult()
-            }
-        }
-    }
-
-    override fun onCheckChanged(selected: Int, limit: Int) {
-        if (selected == 0) {
-            btn_ok.isEnabled = false
-            btn_ok.text = getString(R.string.ip_complete)
-            btn_ok.setTextColor(resources.getColor(R.color.ip_text_secondary_inverted))
-            btn_preview.isEnabled = false
-            btn_preview.text = getString(R.string.ip_preview)
-            btn_preview.setTextColor(resources.getColor(R.color.ip_text_secondary_inverted))
-        } else {
-            btn_ok.isEnabled = true
-            btn_ok.text = getString(R.string.ip_select_complete, selected, limit)
-            btn_ok.setTextColor(resources.getColor(R.color.ip_text_primary_inverted))
-            btn_preview.isEnabled = true
-            btn_preview.text = getString(R.string.ip_preview_count, selected)
-            btn_preview.setTextColor(resources.getColor(R.color.ip_text_primary_inverted))
-        }
-    }*/
-
      fun onCameraClick() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA),
-                    ImageGridActivity.REQUEST_PERMISSION_CAMERA)
+                    ImageCameraActivity.REQUEST_PERMISSION_CAMERA)
         } else {
             takeImageFile = CameraUtil.takePicture(this, REQUEST_CAMERA)
         }
@@ -241,16 +164,7 @@ class ImageGridActivity : BaseActivity(), View.OnClickListener {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == REQUEST_PERMISSION_STORAGE) {
-/*
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                imageDataSource.loadImage(this)
-            } else {
-                showToast("权限被禁止，无法选择本地图片")
-            }
-*/
-
-        } else if (requestCode == REQUEST_PERMISSION_CAMERA) {
+        if (requestCode == REQUEST_PERMISSION_CAMERA) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 takeImageFile = CameraUtil.takePicture(this, REQUEST_CAMERA)
             }
@@ -262,7 +176,7 @@ class ImageGridActivity : BaseActivity(), View.OnClickListener {
         if (requestCode == REQUEST_CAMERA) {//相机返回
             if (resultCode == Activity.RESULT_OK) {
                 Log.e("hubert", takeImageFile.absolutePath)
-                //广播通知新增图片
+
                 val mediaScanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
                 mediaScanIntent.data = Uri.fromFile(takeImageFile)
                 sendBroadcast(mediaScanIntent)
@@ -273,8 +187,7 @@ class ImageGridActivity : BaseActivity(), View.OnClickListener {
 
                 if (pickerHelper.isCrop) {//需要裁剪
                     ImagePreviewActivity.startForResult(this, REQUEST_PREVIEW, 0, pickerHelper.selectedImages)
-                    finish()
-                   // ImageCropActivity.start(this, REQUEST_CROP)
+
                 }
                 /*else {
                     setResult()

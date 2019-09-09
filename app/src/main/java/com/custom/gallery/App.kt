@@ -3,13 +3,8 @@ package com.custom.gallery
 import android.app.Application
 import com.custom.library.ImagePicker
 
-/**
- * Created by hubert
- *
- * Created on 2017/10/24.
- */
-class App : Application() {
 
+class App : Application() {
 
     companion object {
         lateinit var app: App

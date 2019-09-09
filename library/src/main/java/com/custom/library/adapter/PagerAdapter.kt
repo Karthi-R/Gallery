@@ -7,7 +7,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.custom.library.ImageDataSource
 import com.custom.library.bean.ImageFolder
-import com.custom.library.ui.ImageGridFragment
+import com.custom.library.ui.GalleryFragment
 import com.custom.library.util.Utils
 import java.util.ArrayList
 
@@ -45,9 +45,9 @@ class PagerAdapter(private val mActivity: Activity, fm: FragmentManager, folders
 
     override fun getItem(position: Int): Fragment {
 
-      //  val demoFragment = imageDataSource?.let { ImageGridFragment(mActivity, it) }
-      //  val demoFragment =  ImageGridFragment.newInstance(imageFolders,position)
-        val demoFragment =  ImageGridFragment(mActivity, imageFolders)
+      //  val demoFragment = imageDataSource?.let { GalleryFragment(mActivity, it) }
+      //  val demoFragment =  GalleryFragment.newInstance(imageFolders,position)
+        val demoFragment =  GalleryFragment(mActivity, imageFolders)
         val bundle = Bundle()
         imageFolders!![position].name
 

@@ -11,11 +11,7 @@ import com.custom.library.R
 import kotlinx.android.synthetic.main.activity_image_preview.*
 import kotlinx.android.synthetic.main.include_top_bar.*
 
-/**
- * Created by hubert
- *
- * Created on 2017/10/24.
- */
+
 class ImagePreviewDelActivity : ImagePreviewBaseActivity() {
 
     private var current: Int = 0

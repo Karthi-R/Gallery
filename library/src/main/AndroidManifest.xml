@@ -17,7 +17,7 @@
             android:theme="@style/CropTheme" />
         <activity android:name=".ui.ShadowActivity" />
         <activity
-            android:name=".ui.ImageGridActivity"
+            android:name=".ui.ImageCameraActivity"
             android:theme="@style/ImagePickerTheme" />
         <activity
             android:name=".ui.ImagePreviewActivity"
@@ -28,7 +28,7 @@
         <activity
             android:name=".ui.ImageCropActivity"
             android:theme="@style/ImagePickerTheme" />
-        <activity android:name=".ui.FolderGridActivity"
+        <activity android:name=".ui.GalleryDetailActivity"
             android:theme="@style/ImageSelectionTheme"/>
 
         <activity android:name=".ui.ImagePagerActivity" />
