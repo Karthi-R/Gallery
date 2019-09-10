@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.custom.library">
+    package="com.custom.photoView">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
@@ -8,28 +8,28 @@
     <application
         android:allowBackup="true"
         android:supportsRtl="true">
-        <activity android:name=".TextEdit.TextEditorActivity"></activity>
-        <activity android:name=".Adjustment.AdjustmentActivity" />
+        <activity android:name="com.custom.photoView.TextEdit.TextEditorActivity"></activity>
+        <activity android:name="com.custom.photoView.Adjustment.AdjustmentActivity" />
         <activity android:name=".ui.ImageEditActivity" />
         <activity
-            android:name=".ui.CropActivity"
+            android:name="com.custom.photoView.ui.CropActivity"
             android:theme="@style/CropTheme" />
-        <activity android:name=".ui.ShadowActivity" />
+        <activity android:name="com.custom.photoView.ui.ShadowActivity" />
         <activity
-            android:name=".ui.ImageCameraActivity"
+            android:name="com.custom.photoView.ui.ImageCameraActivity"
             android:theme="@style/ImagePickerTheme" />
         <activity
-            android:name=".ui.ImagePreviewActivity"
+            android:name="com.custom.photoView.ui.ImagePreviewActivity"
             android:theme="@style/ImagePickerTheme" />
         <activity
-            android:name=".ui.ImagePreviewDelActivity"
+            android:name="com.custom.photoView.ui.ImagePreviewDelActivity"
             android:theme="@style/ImagePickerTheme" />
-        <activity android:name=".ui.GalleryDetailActivity"
+        <activity android:name="com.custom.photoView.ui.GalleryDetailActivity"
             android:theme="@style/ImageSelectionTheme"/>
 
 
         <provider
-            android:name=".ImagePickerProvider"
+            android:name="com.custom.photoView.ImagePickerProvider"
             android:authorities="${applicationId}.provider"
             android:exported="false"
             android:grantUriPermissions="true">

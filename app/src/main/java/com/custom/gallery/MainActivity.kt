@@ -5,11 +5,11 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.custom.library.CropView.CropImage
-import com.custom.library.ImagePicker
-import com.custom.library.bean.ImageItem
-import com.custom.library.util.Utils
-import com.custom.library.view.GridSpacingItemDecoration
+import com.custom.photoView.CropView.CropImage
+import com.custom.photoView.ImagePicker
+import com.custom.photoView.bean.ImageItem
+import com.custom.photoView.util.Utils
+import com.custom.photoView.view.GridSpacingItemDecoration
 import kotlinx.android.synthetic.main.activity_main.*
 
 

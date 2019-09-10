@@ -1,7 +1,7 @@
 package com.custom.gallery
 
 import android.app.Application
-import com.custom.library.ImagePicker
+import com.custom.photoView.ImagePicker
 import com.facebook.stetho.Stetho
 import com.squareup.picasso.Picasso
 import timber.log.Timber

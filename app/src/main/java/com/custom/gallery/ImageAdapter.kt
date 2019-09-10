@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
-import com.custom.library.bean.ImageItem
+import com.custom.photoView.bean.ImageItem
 import java.io.File
 
 
@@ -30,7 +30,7 @@ class ImageAdapter constructor(
             listener?.onItemClick(position)
         })
         holder?.imageView?.context?.let {
-            App.picInstance.load(Uri.fromFile(File(images[position].path))).fit().centerCrop().placeholder(com.custom.library.R.drawable.ic_default_image).into(holder?.imageView)
+            App.picInstance.load(Uri.fromFile(File(images[position].path))).fit().centerCrop().placeholder(com.custom.photoView.R.drawable.ic_default_image).into(holder?.imageView)
         }
 
     }

@@ -4,8 +4,8 @@ import android.app.Activity
 import android.net.Uri
 import android.widget.ImageView
 
-import com.custom.library.R
-import com.custom.library.loader.ImageLoader
+import com.custom.photoView.R
+import com.custom.photoView.loader.ImageLoader
 import com.squareup.picasso.Picasso
 import timber.log.Timber
 import java.io.File
