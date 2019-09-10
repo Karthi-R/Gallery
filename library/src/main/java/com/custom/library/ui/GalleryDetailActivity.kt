@@ -19,6 +19,7 @@ import kotlinx.android.synthetic.main.activity_folder_grid.*
 import java.io.File
 
 
+
 class GalleryDetailActivity : BaseActivity(), View.OnClickListener, ImageDataSource.OnImagesLoadedListener {
 
     companion object {
@@ -65,6 +66,7 @@ class GalleryDetailActivity : BaseActivity(), View.OnClickListener, ImageDataSou
         loadData()
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = "Select"
 
         var upArrow = getResources().getDrawable(R.drawable.ic_arrow_back)
         upArrow.setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_ATOP)
@@ -93,6 +95,10 @@ class GalleryDetailActivity : BaseActivity(), View.OnClickListener, ImageDataSou
             intent.putExtra("Selected_position", position)
             startActivity(intent)
         }
+    }
+
+    fun setActionBarTitle(title: String) {
+        supportActionBar?.setTitle(title)
     }
 
     override fun onResume() {

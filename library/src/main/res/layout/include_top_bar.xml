@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="48dp"
-    android:background="@color/colorPrimary"
+    android:background="@color/black"
     android:clickable="true">
 
     <ImageView
@@ -13,7 +13,7 @@
         android:layout_centerVertical="true"
         android:background="@drawable/selector_back_press"
         android:padding="12dp"
-        android:tint="@color/colorAccent"
+        android:tint="@color/colorPrimary"
         app:srcCompat="@drawable/ic_arrow_back" />
 
     <View
@@ -36,17 +36,47 @@
         android:textSize="18sp"
         android:textColor="@color/text_color" />
 
-    <TextView
+    <ImageView
         android:id="@+id/crop"
-        android:visibility="gone"
-        android:layout_width="wrap_content"
+        android:layout_width="40dp"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@+id/btn_ok"
-        android:text="Crop"
-        android:padding="10dp"
-        android:textColor="@android:color/black"
-        />
+        android:layout_centerVertical="true"
+        android:background="@drawable/selector_back_press"
+        android:padding="12dp"
+        android:layout_toLeftOf="@+id/brightness_iv"
+        android:layout_marginRight="10dp"
+        android:tint="@color/colorPrimary"
+        app:srcCompat="@drawable/ic_crop_rotate" />
 
+
+
+    <ImageView
+        android:id="@+id/brightness_iv"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:background="@drawable/selector_back_press"
+        android:padding="12dp"
+        android:layout_toLeftOf="@+id/text_edit"
+        android:layout_marginRight="10dp"
+        android:tint="@color/colorPrimary"
+        app:srcCompat="@drawable/ic_brightness" />
+
+
+    <ImageView
+        android:id="@+id/text_edit"
+        android:layout_width="48dp"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:background="@drawable/selector_back_press"
+        android:padding="12dp"
+        android:visibility="gone"
+        android:layout_toLeftOf="@+id/btn_ok"
+        android:tint="@color/colorAccent"
+        app:srcCompat="@drawable/ic_text_fields" />
+
+
+<!--
     <ImageView
         android:id="@+id/edit"
         android:layout_width="48dp"
@@ -58,6 +88,7 @@
         android:layout_toLeftOf="@+id/btn_ok"
         android:tint="@color/colorAccent"
         app:srcCompat="@drawable/ic_edit" />
+-->
 
 
     <ImageView
@@ -66,7 +97,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:minHeight="30dp"
         android:minWidth="48dp"
@@ -74,7 +104,7 @@
         android:paddingLeft="16.0dp"
         android:textColor="@color/colorAccent"
         android:textSize="14sp"
-        android:tint="@color/colorAccent"
+        android:tint="@color/colorPrimary"
         app:srcCompat="@drawable/ic_check_black" />
 
 

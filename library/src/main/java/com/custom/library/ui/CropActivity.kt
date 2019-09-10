@@ -18,6 +18,7 @@ import java.io.IOException
 import android.widget.SeekBar
 
 import com.custom.library.ui.ImageEditActivity.Companion.CROP_IMAGE_REQUEST_CODE
+import com.custom.library.ui.ImagePreviewActivity.Companion.IMAGE_PREVIEW_REQUEST_CODE
 import com.custom.library.util.FileUtil.getCropCacheFolder
 import java.util.*
 import kotlin.random.Random
@@ -25,7 +26,7 @@ import kotlin.random.Random
 
 class CropActivity : AppCompatActivity(),com.custom.library.CropView.CropImageView.OnSetImageUriCompleteListener, com.custom.library.CropView.CropImageView.OnCropImageCompleteListener {
 
-
+    private var position = 0
 
     /** The crop image view library widget used in the activity  */
     private var mCropImageView: CropImageView? = null
@@ -65,6 +66,8 @@ class CropActivity : AppCompatActivity(),com.custom.library.CropView.CropImageVi
         cancel.setOnClickListener { finish() }
 
         btn_back.setOnClickListener { finish() }
+
+        position = intent.getIntExtra("position",0)
 
         val bundle = getIntent().getBundleExtra(CropImage.CROP_IMAGE_EXTRA_BUNDLE)
         mCropImageUri = bundle.getParcelable(CropImage.CROP_IMAGE_EXTRA_SOURCE)
@@ -179,7 +182,7 @@ class CropActivity : AppCompatActivity(),com.custom.library.CropView.CropImageVi
 
     /** Result with cropped image data or error if failed.  */
     protected fun setResult(uri: Uri?, error: Exception?, sampleSize: Int) {
-        val resultCode = if (error == null) CROP_IMAGE_REQUEST_CODE else CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE
+        val resultCode = if (error == null) IMAGE_PREVIEW_REQUEST_CODE else CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE
         setResult(resultCode, getResultIntent(uri, error, sampleSize))
         finish()
     }
@@ -209,10 +212,13 @@ class CropActivity : AppCompatActivity(),com.custom.library.CropView.CropImageVi
                 }
             }
         }
+
+
         val intent = Intent()
         intent.putExtras(getIntent())
         if (uri != null) {
             intent.putExtra("Path",uri.path)
+            intent.putExtra("position",position)
         }
         intent.putExtra(CropImage.CROP_IMAGE_EXTRA_RESULT, result)
         return intent

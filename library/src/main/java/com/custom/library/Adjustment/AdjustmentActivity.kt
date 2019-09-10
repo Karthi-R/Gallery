@@ -15,10 +15,13 @@ import android.graphics.BitmapFactory
 import android.graphics.Bitmap
 import com.custom.library.CropView.BitmapUtils
 import com.custom.library.ui.ImageEditActivity
+import com.custom.library.ui.ImagePreviewActivity.Companion.IMAGE_PREVIEW_REQUEST_CODE
 
 
 class AdjustmentActivity : AppCompatActivity() {
 var editedBitmap: Bitmap? = null
+    private var position = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(com.custom.library.R.layout.activity_adjustment)
@@ -28,6 +31,7 @@ var editedBitmap: Bitmap? = null
         btn_back.setOnClickListener { finish() }
 
         val path = Uri.parse(intent.getStringExtra("Path"))
+        position = intent.getIntExtra("position",0)
 
         adjustment_iv.setImageURI(path)
 
@@ -91,9 +95,10 @@ var editedBitmap: Bitmap? = null
             intent.putExtras(getIntent())
             if (uri != null) {
                 intent.putExtra("Path",uri.path)
+                intent.putExtra("position",position)
             }
 
-            setResult(ImageEditActivity.ADJUSTMENT_IMAGE_REQUEST_CODE,intent)
+            setResult(IMAGE_PREVIEW_REQUEST_CODE,intent)
             finish()
         }
 

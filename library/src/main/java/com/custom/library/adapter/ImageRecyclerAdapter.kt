@@ -76,9 +76,12 @@ class ImageRecyclerAdapter(
 
         internal fun bind(position: Int) {
             val imageItem = getItem(position)
-            ivThumb.setOnClickListener { listener?.onImageItemClick(imageItem!!, if (pickHelper.isShowCamera) position - 1 else position) }
+            ivThumb.setOnClickListener {
+                setSelection(imageItem)
+            }
             checkView.setOnClickListener {
-                if (cbCheck.isChecked) {
+                setSelection(imageItem)
+               /* if (cbCheck.isChecked) {
                     pickHelper.selectedImages.remove(imageItem)
                     mask.visibility = View.GONE
                     cbCheck.isChecked = false
@@ -91,7 +94,7 @@ class ImageRecyclerAdapter(
                         cbCheck.isChecked = true
                     }
                 }
-                listener?.onCheckChanged(pickHelper.selectedImages.size, pickHelper.limit)
+                listener?.onCheckChanged(pickHelper.selectedImages.size, pickHelper.limit)*/
             }
 
             if (pickHelper.isMultiMode) {
@@ -111,13 +114,24 @@ class ImageRecyclerAdapter(
             }
         }
 
+        private fun setSelection(imageItem: ImageItem?) {
+            if (cbCheck.isChecked) {
+                pickHelper.selectedImages.remove(imageItem)
+                mask.visibility = View.GONE
+                cbCheck.isChecked = false
+            } else {
+                if (pickHelper.selectedImages.size >= pickHelper.limit) {
+                    Toast.makeText(mActivity.applicationContext, mActivity.getString(R.string.ip_select_limit, pickHelper.limit), Toast.LENGTH_SHORT).show()
+                } else {
+                    mask.visibility = View.VISIBLE
+                    pickHelper.selectedImages.add(imageItem!!)
+                    cbCheck.isChecked = true
+                }
+            }
+            listener?.onCheckChanged(pickHelper.selectedImages.size, pickHelper.limit)
+        }
+
         private fun contains(selectedImages: ArrayList<ImageItem>, imageItem: ImageItem?): Boolean {
-//            for (item in selectedImages) {
-//                if (TextUtils.equals(item.path, imageItem.path)) {
-//                    return true
-//                }
-//            }
-//            return false
             return selectedImages.any { TextUtils.equals(it.path, imageItem?.path) }
         }
     }

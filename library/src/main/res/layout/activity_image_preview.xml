@@ -9,8 +9,7 @@
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="6dp"
-        android:layout_marginBottom="6dp"
+        android:background="@color/black"
         android:layout_below="@+id/top_bar"
         />
 
@@ -22,8 +21,8 @@
         android:id="@+id/bottom_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/black"
         android:layout_alignParentBottom="true"
-        android:background="@color/colorPrimary"
         android:orientation="vertical"
         android:visibility="gone"
         tools:visibility="visible">
@@ -38,10 +37,12 @@
 
         </androidx.recyclerview.widget.RecyclerView>
 
+<!--
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:background="#81ffffff" />
+-->
 
         <RelativeLayout
             android:layout_width="match_parent"

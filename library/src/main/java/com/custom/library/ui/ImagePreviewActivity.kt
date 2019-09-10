@@ -7,12 +7,18 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager.widget.ViewPager
+import com.custom.library.Adjustment.AdjustmentActivity
 import com.custom.library.C
+import com.custom.library.CropView.CropImage
+import com.custom.library.CropView.CropImageOptions
 import com.custom.library.R
+import com.custom.library.TextEdit.TextEditorActivity
 import com.custom.library.adapter.SmallPreviewAdapter
 import com.custom.library.bean.ImageItem
+import kotlinx.android.synthetic.main.activity_image_edit.*
 import kotlinx.android.synthetic.main.activity_image_preview.*
 import kotlinx.android.synthetic.main.include_top_bar.*
+import kotlinx.android.synthetic.main.include_top_bar.text_edit
 import uk.co.senab.photoview.PhotoViewAttacher
 
 
@@ -43,9 +49,32 @@ class ImagePreviewActivity : ImagePreviewBaseActivity(), View.OnClickListener, P
 
     private fun init() {
 
-        edit.visibility = View.VISIBLE
         btn_ok.setOnClickListener(this)
-        crop.setOnClickListener(this)
+
+        crop.setOnClickListener {
+            val intent = Intent(this, CropActivity::class.java)
+            val bundle = Bundle()
+            bundle.putParcelable(CropImage.CROP_IMAGE_EXTRA_OPTIONS, CropImageOptions())
+            intent.putExtra(CropImage.CROP_IMAGE_EXTRA_BUNDLE, bundle)
+            intent.putExtra("Path", imageItems[current].path!!)
+            intent.putExtra("position", current)
+            startActivityForResult(intent, IMAGE_PREVIEW_REQUEST_CODE)
+        }
+
+        brightness_iv.setOnClickListener {
+            val intent = Intent(this, AdjustmentActivity::class.java)
+            intent.putExtra("Path", imageItems[current].path!!)
+            intent.putExtra("position", current)
+            startActivityForResult(intent, IMAGE_PREVIEW_REQUEST_CODE)
+        }
+
+        text_edit.setOnClickListener {
+            val intent = Intent(this, TextEditorActivity::class.java)
+            intent.putExtra("Path", imageItems[current].path!!)
+            intent.putExtra("position", current)
+            startActivityForResult(intent, IMAGE_PREVIEW_REQUEST_CODE)
+        }
+/*
         edit.setOnClickListener {
 
             val intent = Intent(this, ImageEditActivity::class.java)
@@ -53,6 +82,7 @@ class ImagePreviewActivity : ImagePreviewBaseActivity(), View.OnClickListener, P
             intent.putExtra("position", current)
             startActivityForResult(intent,IMAGE_PREVIEW_REQUEST_CODE)
         }
+*/
         bottom_bar.visibility = View.VISIBLE
 
         tv_des.text = getString(R.string.ip_preview_image_count, current + 1, imageItems.size)
@@ -117,6 +147,8 @@ class ImagePreviewActivity : ImagePreviewBaseActivity(), View.OnClickListener, P
                 init()
             }
         }
+
+
     }
 
 

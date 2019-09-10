@@ -15,7 +15,10 @@ import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.custom.library.*
+import com.custom.library.C
+import com.custom.library.ImagePicker
+import com.custom.library.PickHelper
+import com.custom.library.R
 import com.custom.library.adapter.ImageFolderAdapter
 import com.custom.library.adapter.ImageRecyclerAdapter
 import com.custom.library.bean.ImageFolder
@@ -30,6 +33,10 @@ import kotlinx.android.synthetic.main.include_top_bar.*
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
+import android.graphics.PorterDuff
+
+
+
 
 
 class GalleryFragment(mActivity: Activity, imgFolderList: MutableList<ImageFolder>?) : Fragment(), View.OnClickListener, ImageRecyclerAdapter.OnImageItemClickListener {
@@ -57,10 +64,10 @@ class GalleryFragment(mActivity: Activity, imgFolderList: MutableList<ImageFolde
     private lateinit var imageFolders: List<ImageFolder>
     private lateinit var takeImageFile: File
     private var takePhoto: Boolean = false
-    var position=0
+    var position = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        position= arguments?.getInt("Selected_position")!!
+        position = arguments?.getInt("Selected_position")!!
 
         setHasOptionsMenu(true)
     }
@@ -153,19 +160,7 @@ class GalleryFragment(mActivity: Activity, imgFolderList: MutableList<ImageFolde
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.preview_menu, menu)
         val preview =  menu.findItem(R.id.preview)
-        with(preview){
-            if (pickerHelper.selectedImages.size == 0) {
-                isEnabled = false
-                title = ""
-                (resources.getColor(R.color.ip_text_secondary_inverted))
-            } else {
-                isEnabled = true
-                title = getString(R.string.preview,pickerHelper.selectedImages.size, pickerHelper.limit)
-                (resources.getColor(R.color.colorAccent))
-
-            }
-        }
-
+        menuIconColor(preview,R.color.colorAccent)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -186,7 +181,15 @@ class GalleryFragment(mActivity: Activity, imgFolderList: MutableList<ImageFolde
 
         }
 
-        return false
+        return true
+    }
+
+    fun menuIconColor(menuItem: MenuItem, color: Int) {
+        val drawable = menuItem.icon
+        if (drawable != null) {
+            drawable.mutate()
+            drawable.setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
+        }
     }
 
 
@@ -247,7 +250,13 @@ class GalleryFragment(mActivity: Activity, imgFolderList: MutableList<ImageFolde
     }
 
     override fun onCheckChanged(selected: Int, limit: Int) {
-        activity?.invalidateOptionsMenu()
+        if (selected <= 0) {
+            (activity as GalleryDetailActivity).setActionBarTitle("Select")
+        } else {
+            (activity as GalleryDetailActivity).setActionBarTitle(getString(R.string.preview, pickerHelper.selectedImages.size, pickerHelper.limit))
+        }
+
+        // activity?.invalidateOptionsMenu()
     }
 
     override fun onCameraClick() {
@@ -271,6 +280,7 @@ class GalleryFragment(mActivity: Activity, imgFolderList: MutableList<ImageFolde
             }
         }
     }
+
     fun showToast(charSequence: CharSequence) {
         Toast.makeText(this.requireActivity(), charSequence, Toast.LENGTH_SHORT).show()
     }
@@ -282,7 +292,6 @@ class GalleryFragment(mActivity: Activity, imgFolderList: MutableList<ImageFolde
         if (requestCode == REQUEST_CAMERA) {
             if (resultCode == Activity.RESULT_OK) {
                 takeImageFile = CameraUtil.takePicture(this.requireActivity(), REQUEST_CAMERA)
-                Log.e("hubert", takeImageFile.absolutePath)
 
                 val mediaScanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
                 mediaScanIntent.data = Uri.fromFile(takeImageFile)
@@ -305,7 +314,6 @@ class GalleryFragment(mActivity: Activity, imgFolderList: MutableList<ImageFolde
             }
         }
     }
-
 
 
     private fun setResult() {

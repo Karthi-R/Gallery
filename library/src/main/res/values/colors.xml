@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#b50000</color>
     <color name="colorAccent">#ed1b24</color>
     <color name="text_color">#000</color>
+    <color name="black">#000</color>
 
     <color name="ic_back_press">#323336</color>
     <color name="ip_color_primary">#393A3F</color>
