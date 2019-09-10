@@ -6,9 +6,9 @@ import android.view.ViewGroup
 import androidx.viewpager.widget.PagerAdapter
 import com.custom.photoView.ImagePicker
 import com.custom.photoView.bean.ImageItem
+import com.custom.photoView.photoTap.PhotoView
 import com.custom.photoView.util.Utils
-import uk.co.senab.photoview.PhotoView
-import uk.co.senab.photoview.PhotoViewAttacher
+
 import java.util.*
 
 class ImagePagerAdapter(
@@ -19,7 +19,7 @@ class ImagePagerAdapter(
 
     private val screenWidth: Int
     private val screenHeight: Int
-    var listener: PhotoViewAttacher.OnPhotoTapListener? = null
+    var listener: com.custom.photoView.photoTap.PhotoViewAttacher.OnPhotoTapListener? = null
 
     init {
         val dm = Utils.getScreenPix(mActivity)
@@ -37,7 +37,9 @@ class ImagePagerAdapter(
         //val photoView = CropImageView(mActivity)
         val imageItem = images[position]
         ImagePicker.imageLoader?.displayImagePreview(mActivity, imageItem.path!!, photoView, screenWidth, screenHeight)
-        photoView.setOnPhotoTapListener(listener)
+        listener?.let {
+            photoView.setOnPhotoTapListener(it)
+        }
         container.addView(photoView)
         return photoView
     }

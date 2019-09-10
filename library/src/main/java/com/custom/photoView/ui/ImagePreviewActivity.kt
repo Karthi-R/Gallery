@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AnimationUtils
+import android.widget.ImageView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager.widget.ViewPager
 import com.custom.photoView.Adjustment.AdjustmentActivity
@@ -17,7 +18,7 @@ import com.custom.photoView.adapter.SmallPreviewAdapter
 import com.custom.photoView.bean.ImageItem
 import kotlinx.android.synthetic.main.activity_image_preview.*
 import kotlinx.android.synthetic.main.include_top_bar.*
-import uk.co.senab.photoview.PhotoViewAttacher
+import com.custom.photoView.photoTap.PhotoViewAttacher
 
 
 class ImagePreviewActivity : ImagePreviewBaseActivity(), View.OnClickListener, PhotoViewAttacher.OnPhotoTapListener {
