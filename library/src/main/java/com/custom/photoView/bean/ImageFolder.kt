@@ -17,7 +17,9 @@ data class ImageFolder(var name: String?,
     override fun equals(other: Any?): Boolean {
         try {
             val item = other as ImageFolder?
-            return this.path!!.equals(item!!.path!!, ignoreCase = true) && this.name!!.equals(item.name!!, ignoreCase = true)
+            if (item != null) {
+                return this.path.equals(item.path, ignoreCase = true) && this.name!!.equals(item.name, ignoreCase = true)
+            }
         } catch (e: ClassCastException) {
             e.printStackTrace()
         }

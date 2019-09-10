@@ -250,7 +250,7 @@ object CropImage {
         if (!includeDocuments) {
             for (intent in intents) {
                 if (intent
-                                .component!!
+                                .component
                                 .className == "com.android.documentsui.DocumentsActivity") {
                     intents.remove(intent)
                     break
@@ -423,7 +423,7 @@ object CropImage {
             mOptions.validate()
 
             val intent = Intent()
-            intent.setClass(context, cls!!)
+            intent.setClass(context, cls)
             val bundle = Bundle()
             bundle.putParcelable(CROP_IMAGE_EXTRA_SOURCE, mSource)
             bundle.putParcelable(CROP_IMAGE_EXTRA_OPTIONS, mOptions)

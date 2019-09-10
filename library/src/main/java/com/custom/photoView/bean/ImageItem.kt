@@ -29,7 +29,9 @@ data class ImageItem(
     override fun equals(other: Any?): Boolean {
         if (other is ImageItem) {
             val item = other as ImageItem?
-            return this.path.equals(item!!.path, ignoreCase = true) && this.addTime == item.addTime
+            if (item != null) {
+                return this.path.equals(item.path, ignoreCase = true) && this.addTime == item.addTime
+            }
         }
         return super.equals(other)
     }

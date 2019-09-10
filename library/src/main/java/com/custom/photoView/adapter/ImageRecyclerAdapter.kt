@@ -109,8 +109,8 @@ class ImageRecyclerAdapter(
             } else {
                 cbCheck.visibility = View.GONE
             }
-            if (imageItem?.path != null) {
-                ImagePicker.imageLoader.displayImage(mActivity, imageItem.path!!, ivThumb, mImageSize, mImageSize)
+            imageItem?.path?.let {
+                ImagePicker.imageLoader.displayImage(mActivity, it, ivThumb, mImageSize, mImageSize)
             }
         }
 
@@ -124,7 +124,9 @@ class ImageRecyclerAdapter(
                     Toast.makeText(mActivity.applicationContext, mActivity.getString(R.string.ip_select_limit, pickHelper.limit), Toast.LENGTH_SHORT).show()
                 } else {
                     mask.visibility = View.VISIBLE
-                    pickHelper.selectedImages.add(imageItem!!)
+                    imageItem?.let {
+                        pickHelper.selectedImages.add(it)
+                    }
                     cbCheck.isChecked = true
                 }
             }

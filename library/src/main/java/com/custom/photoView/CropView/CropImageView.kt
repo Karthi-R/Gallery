@@ -648,17 +648,17 @@ class CropImageView @JvmOverloads constructor(context: Context, attrs: Attribute
                         handleCropWindowChanged(inProgress, true)
                         val listener = mOnCropOverlayReleasedListener
                         if (listener != null && !inProgress) {
-                            listener!!.onCropOverlayReleased(cropRect)
+                            listener.onCropOverlayReleased(cropRect)
                         }
                         val movedListener = mOnSetCropOverlayMovedListener
                         if (movedListener != null && inProgress) {
-                            movedListener!!.onCropOverlayMoved(cropRect)
+                            movedListener.onCropOverlayMoved(cropRect)
                         }
                     }
                 })
 
 
-        mCropOverlayView!!.setInitialAttributeValues(options)
+        mCropOverlayView.setInitialAttributeValues(options)
 
         mProgressBar = v.findViewById(R.id.CropProgressBar)
         setProgressBarVisibility()
@@ -671,7 +671,7 @@ class CropImageView @JvmOverloads constructor(context: Context, attrs: Attribute
     fun setMultiTouchEnabled(multiTouchEnabled: Boolean) {
         if (mCropOverlayView!!.setMultiTouchEnabled(multiTouchEnabled)) {
             handleCropWindowChanged(false, false)
-            mCropOverlayView!!.invalidate()
+            mCropOverlayView.invalidate()
         }
     }
 

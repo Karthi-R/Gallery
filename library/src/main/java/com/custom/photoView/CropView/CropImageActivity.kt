@@ -91,7 +91,7 @@ class CropImageActivity : AppCompatActivity(), CropImageView.OnSetImageUriComple
                         CropImage.PICK_IMAGE_PERMISSIONS_REQUEST_CODE)
             } else {
                 // no permissions required or already grunted, can start crop image activity
-                mCropImageView!!.setImageUriAsync(mCropImageUri)
+                mCropImageView?.setImageUriAsync(mCropImageUri)
             }
         }
 
@@ -109,14 +109,14 @@ class CropImageActivity : AppCompatActivity(), CropImageView.OnSetImageUriComple
 
     override fun onStart() {
         super.onStart()
-        mCropImageView!!.setOnSetImageUriCompleteListener(this)
-        mCropImageView!!.setOnCropImageCompleteListener(this)
+        mCropImageView?.setOnSetImageUriCompleteListener(this)
+        mCropImageView?.setOnCropImageCompleteListener(this)
     }
 
     override fun onStop() {
         super.onStop()
-        mCropImageView!!.setOnSetImageUriCompleteListener(null)
-        mCropImageView!!.setOnCropImageCompleteListener(null)
+        mCropImageView?.setOnSetImageUriCompleteListener(null)
+        mCropImageView?.setOnCropImageCompleteListener(null)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -212,7 +212,7 @@ class CropImageActivity : AppCompatActivity(), CropImageView.OnSetImageUriComple
                             CropImage.PICK_IMAGE_PERMISSIONS_REQUEST_CODE)
                 } else {
                     // no permissions required or already grunted, can start crop image activity
-                    mCropImageView!!.setImageUriAsync(mCropImageUri)
+                    mCropImageView?.setImageUriAsync(mCropImageUri)
                 }
             }
         }
@@ -225,7 +225,7 @@ class CropImageActivity : AppCompatActivity(), CropImageView.OnSetImageUriComple
                     && grantResults.size > 0
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // required permissions granted, start crop image activity
-                mCropImageView!!.setImageUriAsync(mCropImageUri)
+                mCropImageView?.setImageUriAsync(mCropImageUri)
             } else {
                 Toast.makeText(this, R.string.crop_image_activity_no_permissions, Toast.LENGTH_LONG).show()
                 setResultCancel()
@@ -293,7 +293,7 @@ class CropImageActivity : AppCompatActivity(), CropImageView.OnSetImageUriComple
 
     /** Rotate the image in the crop image view.  */
     protected fun rotateImage(degrees: Int) {
-        mCropImageView!!.rotateImage(degrees)
+        mCropImageView?.rotateImage(degrees)
     }
 
 
@@ -312,15 +312,21 @@ class CropImageActivity : AppCompatActivity(), CropImageView.OnSetImageUriComple
 
     /** Get intent instance to be used for the result of this activity.  */
     protected fun getResultIntent(uri: Uri?, error: Exception?, sampleSize: Int): Intent {
-        val result = CropImage.ActivityResult(
-                mCropImageView!!.imageUri!!,
-                uri!!,
-                error!!,
-                mCropImageView!!.cropPoints,
-                mCropImageView!!.cropRect!!,
-                mCropImageView!!.rotatedDegrees,
-                mCropImageView!!.wholeImageRect!!,
-                sampleSize)
+        val result = mCropImageView?.imageUri?.let {
+            uri?.let { it1 ->
+                error?.let { it2 ->
+                    CropImage.ActivityResult(
+                            it,
+                            it1,
+                            it2,
+                            mCropImageView!!.cropPoints,
+                            mCropImageView!!.cropRect!!,
+                            mCropImageView!!.rotatedDegrees,
+                            mCropImageView!!.wholeImageRect!!,
+                            sampleSize)
+                }
+            }
+        }
         val intent = Intent()
         intent.putExtras(getIntent())
         intent.putExtra(CropImage.CROP_IMAGE_EXTRA_RESULT, result)

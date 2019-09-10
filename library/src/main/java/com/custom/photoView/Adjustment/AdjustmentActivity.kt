@@ -48,8 +48,8 @@ class AdjustmentActivity : BaseActivity() {
             sb_value.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                 override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                     if (progress > 0)
-                    editedBitmap = changeBitmapContrastBrightness(bitmap, 1F, progress.toFloat())
-                    adjustment_iv!!.setImageBitmap(editedBitmap)
+                        editedBitmap = changeBitmapContrastBrightness(bitmap, 1F, progress.toFloat())
+                    adjustment_iv.setImageBitmap(editedBitmap)
                 }
 
                 override fun onStartTrackingTouch(seekBar: SeekBar) {
@@ -73,7 +73,7 @@ class AdjustmentActivity : BaseActivity() {
                 override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                     if (progress > 0)
                         editedBitmap = changeBitmapContrastBrightness(bitmap, progress.toFloat(), 1F)
-                    adjustment_iv!!.setImageBitmap(editedBitmap)
+                    adjustment_iv.setImageBitmap(editedBitmap)
                 }
 
                 override fun onStartTrackingTouch(seekBar: SeekBar) {

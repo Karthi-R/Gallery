@@ -36,7 +36,7 @@ class ImagePagerAdapter(
         val photoView = PhotoView(mActivity)
         //val photoView = CropImageView(mActivity)
         val imageItem = images[position]
-        ImagePicker.imageLoader?.displayImagePreview(mActivity, imageItem.path!!, photoView, screenWidth, screenHeight)
+        imageItem.path?.let { ImagePicker.imageLoader?.displayImagePreview(mActivity, it, photoView, screenWidth, screenHeight) }
         listener?.let {
             photoView.setOnPhotoTapListener(it)
         }

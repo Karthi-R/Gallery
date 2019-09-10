@@ -47,19 +47,17 @@ class PagerAdapter(private val mActivity: Activity, fm: FragmentManager, folders
 
         val demoFragment =  GalleryFragment(mActivity, imageFolders)
         val bundle = Bundle()
-        imageFolders!![position].name
+        imageFolders?.let { it[position].name }
 
 
         bundle.putInt("Selected_position", position)
-        if (demoFragment != null) {
-            demoFragment.setArguments(bundle)
-        }
+        demoFragment.arguments = bundle
 
-        return demoFragment!!
+        return demoFragment
     }
 
     override  fun getPageTitle(position: Int): CharSequence {
-        return imageFolders!![position].name.toString()
+        return imageFolders?.let { it[position].name }.toString()
     }
 
     override fun getItemPosition(`object`: Any): Int {

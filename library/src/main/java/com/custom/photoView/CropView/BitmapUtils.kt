@@ -105,13 +105,13 @@ internal object BitmapUtils {
         try {
             val `is` = context.contentResolver.openInputStream(uri)
             if (`is` != null) {
-                ei = ExifInterface(`is`!!)
-                `is`!!.close()
+                ei = ExifInterface(`is`)
+                `is`.close()
             }
         } catch (ignored: Exception) {
         }
 
-        return if (ei != null) rotateBitmapByExif(bitmap, ei!!) else RotateBitmapResult(bitmap, 0)
+        return if (ei != null) rotateBitmapByExif(bitmap, ei) else RotateBitmapResult(bitmap, 0)
     }
 
     /**
@@ -152,7 +152,7 @@ internal object BitmapUtils {
             // Decode bitmap with inSampleSize set
             val bitmap = decodeImage(resolver, uri, options)
 
-            return BitmapSampled(bitmap!!, options.inSampleSize)
+            return BitmapSampled(bitmap, options.inSampleSize)
 
         } catch (e: Exception) {
             throw RuntimeException(
@@ -191,7 +191,7 @@ internal object BitmapUtils {
                         1 / scale.toFloat(),
                         flipHorizontally,
                         flipVertically)
-                return BitmapSampled(cropBitmap!!, scale)
+                return BitmapSampled(cropBitmap, scale)
             } catch (e: OutOfMemoryError) {
                 scale *= 2
                 if (scale > 8) {
@@ -404,11 +404,11 @@ internal object BitmapUtils {
             if (uri == null) {
                 uri = Uri.fromFile(
                         File.createTempFile(Random.nextInt().toString(), ".jpg", FileUtil.getCropCacheFolder(context)))
-            } else if (File(uri!!.path!!).exists()) {
+            } else if (File(uri.path).exists()) {
                 needSave = false
             }
             if (needSave) {
-                writeBitmapToUri(context, bitmap, uri!!, Bitmap.CompressFormat.JPEG, 95)
+                uri?.let { writeBitmapToUri(context, bitmap, it, Bitmap.CompressFormat.JPEG, 95) }
             }
             return uri
         } catch (e: Exception) {
@@ -530,12 +530,12 @@ internal object BitmapUtils {
                 }
             } catch (e: OutOfMemoryError) {
                 if (result != null) {
-                    result!!.recycle()
+                    result.recycle()
                 }
                 throw e
             }
 
-            return BitmapSampled(result!!, sampleSize)
+            return BitmapSampled(result, sampleSize)
         } else {
             // failed to decode region, may be skia issue, try full decode and then crop
             return cropBitmap(
@@ -591,7 +591,7 @@ internal object BitmapUtils {
                     }
 
                     result = cropBitmapObjectWithScale(
-                            fullBitmap!!,
+                            fullBitmap,
                             points2,
                             degreesRotated,
                             fixAspectRatio,
@@ -602,13 +602,13 @@ internal object BitmapUtils {
                             flipVertically)
                 } finally {
                     if (result != fullBitmap) {
-                        fullBitmap!!.recycle()
+                        fullBitmap.recycle()
                     }
                 }
             }
         } catch (e: OutOfMemoryError) {
             if (result != null) {
-                result!!.recycle()
+                result.recycle()
             }
             throw e
         } catch (e: Exception) {
@@ -616,7 +616,7 @@ internal object BitmapUtils {
                     "Failed to load sampled bitmap: " + loadedImageUri + "\r\n" + e.message, e)
         }
 
-        return BitmapSampled(result!!, sampleSize)
+        return BitmapSampled(result, sampleSize)
     }
 
     /** Decode image from uri using "inJustDecodeBounds" to get the image dimensions.  */
@@ -675,7 +675,7 @@ internal object BitmapUtils {
             decoder = BitmapRegionDecoder.newInstance(stream, false)
             do {
                 try {
-                    return BitmapSampled(decoder!!.decodeRegion(rect, options), options.inSampleSize)
+                    return BitmapSampled(decoder.decodeRegion(rect, options), options.inSampleSize)
                 } catch (e: OutOfMemoryError) {
                     options.inSampleSize *= 2
                 }
@@ -687,7 +687,7 @@ internal object BitmapUtils {
         } finally {
             closeSafe(stream)
             if (decoder != null) {
-                decoder!!.recycle()
+                decoder.recycle()
             }
         }
         return BitmapSampled(null, 1)
@@ -737,9 +737,11 @@ internal object BitmapUtils {
             }
 
             val bitmapTmp = bitmap
-            bitmap = Bitmap.createBitmap(bitmap!!, rect.left, rect.top, rect.width(), rect.height())
+            bitmap = Bitmap.createBitmap(bitmap, rect.left, rect.top, rect.width(), rect.height())
             if (bitmapTmp != bitmap) {
-                bitmapTmp!!.recycle()
+                if (bitmapTmp != null) {
+                    bitmapTmp.recycle()
+                }
             }
         }
         return bitmap
@@ -806,7 +808,7 @@ internal object BitmapUtils {
     private fun closeSafe(closeable: Closeable?) {
         if (closeable != null) {
             try {
-                closeable!!.close()
+                closeable.close()
             } catch (ignored: IOException) {
             }
 

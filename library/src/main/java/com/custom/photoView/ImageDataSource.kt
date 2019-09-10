@@ -49,10 +49,9 @@ class ImageDataSource(private val activity: FragmentActivity) : LoaderManager.Lo
         val bundle = Bundle()
         if (path == null) {
             currentMode = LOADER_ALL
-            loaderManager.initLoader(LOADER_ALL, bundle, this)//加载所有的图片
+            loaderManager.initLoader(LOADER_ALL, bundle, this)
         } else {
             currentMode = LOADER_CATEGORY
-            //加载指定目录的图片
             bundle.putString("path", path)
             loaderManager.initLoader(LOADER_CATEGORY, bundle, this)
         }
@@ -137,9 +136,9 @@ class ImageDataSource(private val activity: FragmentActivity) : LoaderManager.Lo
     }
 
     fun destroyLoader() {
-        if (currentMode != null) {
-            activity.supportLoaderManager.destroyLoader(currentMode!!)
-        }
+            currentMode?.let {
+                activity.supportLoaderManager.destroyLoader(it)
+            }
     }
 
 

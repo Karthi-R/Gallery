@@ -16,11 +16,6 @@ import com.custom.photoView.bean.ImageItem
 import com.custom.photoView.util.CameraUtil
 import java.io.File
 
-/**
- * Created by hubert
- *
- * Created on 2017/10/12.
- */
 class ImageCameraActivity : BaseActivity(), View.OnClickListener {
     companion object {
 
@@ -32,7 +27,7 @@ class ImageCameraActivity : BaseActivity(), View.OnClickListener {
         val INTENT_MAX = 1000
 
         /**
-         * @param takePhoto 是否直接开启拍照
+         * @param takePhoto
          */
         fun startForResult(activity: Activity, requestCode: Int, takePhoto: Boolean) {
             val intent = Intent(activity, ImageCameraActivity::class.java)
@@ -52,99 +47,18 @@ class ImageCameraActivity : BaseActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_image_grid)
-        //是否直接打开相机
         takePhoto = intent.extras[C.EXTRA_TAKE_PHOTO] as Boolean
         if (takePhoto) {
             onCameraClick()
         }
 
-      //  initView()
-      //  initPopWindow()
-       // loadData()
     }
 
-/*
-    private fun loadData() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), REQUEST_PERMISSION_STORAGE)
-        } else {
-            imageDataSource.loadImage(this)
-        }
-    }
-*/
 
     override fun onResume() {
         super.onResume()
-        //数据刷新
-       // adapter.notifyDataSetChanged()
-        //onCheckChanged(pickerHelper.selectedImages.size, pickerHelper.limit)
     }
 
-/*
-    private fun initView() {
-        ll_dir.setOnClickListener(this)
-        btn_ok.setOnClickListener(this)
-        btn_back.setOnClickListener(this)
-        btn_preview.setOnClickListener(this)
-
-        recycler.layoutManager = GridLayoutManager(this, 3)
-        recycler.addItemDecoration(GridSpacingItemDecoration(3, Utils.dp2px(this, 2f), false))
-        adapter = ImageRecyclerAdapter(this, pickerHelper)
-        adapter.listener = this
-        recycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    if (tv_date.visibility == View.VISIBLE) {
-                        tv_date.animation = AnimationUtils.loadAnimation(this@ImageCameraActivity, R.anim.fade_out)
-                        tv_date.visibility = View.GONE
-                    }
-                } else {
-                    if (tv_date.visibility == View.GONE) {
-                        tv_date.animation = AnimationUtils.loadAnimation(this@ImageCameraActivity, R.anim.fade_in)
-                        tv_date.visibility = View.VISIBLE
-                    }
-                    val gridLayoutManager = recycler.layoutManager as GridLayoutManager
-                    val position = gridLayoutManager.findFirstCompletelyVisibleItemPosition()
-                    val addTime = adapter.getItem(position)?.addTime
-                    Log.d("hubert", "图片，position：$position ,addTime: $addTime")
-                    if (addTime != null) {
-                        val calendar = Calendar.getInstance()
-                        calendar.timeInMillis = addTime * 1000
-                        if (isSameDate(calendar.time, Calendar.getInstance().time)) {
-                            tv_date.text = "本周"
-                        } else {
-                            val format = SimpleDateFormat("yyyy/MM", Locale.getDefault())
-                            tv_date.text = format.format(calendar.time)
-                        }
-                    }
-                }
-            }
-        })
-
-        if (pickerHelper.isMultiMode) {
-            btn_ok.visibility = View.VISIBLE
-            btn_preview.visibility = View.VISIBLE
-        } else {
-            btn_ok.visibility = View.GONE
-            btn_preview.visibility = View.GONE
-        }
-    }
-*/
-
-   /* private fun showPopupFolderList() {
-        mImageFolderAdapter.refreshData(imageFolders.toMutableList())  //刷新数据
-        if (mFolderPopupWindow.isShowing) {
-            mFolderPopupWindow.dismiss()
-        } else {
-            mFolderPopupWindow.showAtLocation(footer_bar, Gravity.NO_GRAVITY, 0, 0)
-            //默认选择当前选择的上一个，当目录很多时，直接定位到已选中的条目
-            var index = mImageFolderAdapter.selectIndex
-            index = if (index == 0) index else index - 1
-            mFolderPopupWindow.setSelection(index)
-        }
-    }*/
 
      fun onCameraClick() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {

@@ -54,7 +54,7 @@ class SmallPreviewAdapter(
             } else {
                 v_frame.visibility = View.GONE
             }
-            ImagePicker.imageLoader.displayImage(mActivity, images[position].path!!, iv_small, iv_small.width, iv_small.height)
+            images[position].path?.let { ImagePicker.imageLoader.displayImage(mActivity, it, iv_small, iv_small.width, iv_small.height) }
 
         }
     }
