@@ -129,10 +129,6 @@ class CropImageActivity : AppCompatActivity(), CropImageView.OnSetImageUriComple
             menu.findItem(R.id.crop_image_menu_rotate_left).isVisible = true
         }
 
-        /* if (!mOptions.allowFlipping) {
-      menu.removeItem(R.id.crop_image_menu_flip);
-    }*/
-
         if (mOptions!!.cropMenuCropButtonTitle != null) {
             menu.findItem(R.id.crop_image_menu_crop).title = mOptions!!.cropMenuCropButtonTitle
         }

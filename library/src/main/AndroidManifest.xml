@@ -11,7 +11,6 @@
         <activity android:name=".TextEdit.TextEditorActivity"></activity>
         <activity android:name=".Adjustment.AdjustmentActivity" />
         <activity android:name=".ui.ImageEditActivity" />
-        <activity android:name=".ui.SaveEditedImage" />
         <activity
             android:name=".ui.CropActivity"
             android:theme="@style/CropTheme" />
@@ -25,13 +24,9 @@
         <activity
             android:name=".ui.ImagePreviewDelActivity"
             android:theme="@style/ImagePickerTheme" />
-        <activity
-            android:name=".ui.ImageCropActivity"
-            android:theme="@style/ImagePickerTheme" />
         <activity android:name=".ui.GalleryDetailActivity"
             android:theme="@style/ImageSelectionTheme"/>
 
-        <activity android:name=".ui.ImagePagerActivity" />
 
         <provider
             android:name=".ImagePickerProvider"

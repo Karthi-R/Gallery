@@ -34,7 +34,7 @@
         android:layout_toRightOf="@id/btn_back"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
         android:textSize="18sp"
-        android:textColor="@color/text_color" />
+        android:textColor="@color/colorPrimary" />
 
     <ImageView
         android:id="@+id/crop"
@@ -43,6 +43,7 @@
         android:layout_centerVertical="true"
         android:background="@drawable/selector_back_press"
         android:padding="12dp"
+        android:visibility="gone"
         android:layout_toLeftOf="@+id/brightness_iv"
         android:layout_marginRight="10dp"
         android:tint="@color/colorPrimary"
@@ -53,6 +54,7 @@
     <ImageView
         android:id="@+id/brightness_iv"
         android:layout_width="40dp"
+        android:visibility="gone"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:background="@drawable/selector_back_press"
@@ -72,7 +74,7 @@
         android:padding="12dp"
         android:visibility="gone"
         android:layout_toLeftOf="@+id/btn_ok"
-        android:tint="@color/colorAccent"
+        android:tint="@color/colorPrimary"
         app:srcCompat="@drawable/ic_text_fields" />
 
 
@@ -93,6 +95,7 @@
 
     <ImageView
         android:id="@+id/btn_ok"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -102,7 +105,6 @@
         android:minWidth="48dp"
         android:paddingRight="16.0dp"
         android:paddingLeft="16.0dp"
-        android:textColor="@color/colorAccent"
         android:textSize="14sp"
         android:tint="@color/colorPrimary"
         app:srcCompat="@drawable/ic_check_black" />
@@ -116,7 +118,7 @@
         android:layout_centerVertical="true"
         android:background="@drawable/selector_back_press"
         android:padding="12dp"
-        android:tint="@color/colorAccent"
+        android:tint="@color/colorPrimary"
         app:srcCompat="@drawable/ic_vector_delete"
         android:visibility="gone" />
 </RelativeLayout>

@@ -1,29 +1,24 @@
 package com.custom.library.Adjustment
 
 import android.content.Intent
+import android.graphics.*
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.SeekBar
-import kotlinx.android.synthetic.main.activity_adjustment.*
-import kotlinx.android.synthetic.main.activity_adjustment.brightness
-import kotlinx.android.synthetic.main.activity_adjustment.sb_value
-import android.graphics.*
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.BitmapFactory
-import android.graphics.Bitmap
 import com.custom.library.CropView.BitmapUtils
-import com.custom.library.ui.ImageEditActivity
+import com.custom.library.ui.BaseActivity
 import com.custom.library.ui.ImagePreviewActivity.Companion.IMAGE_PREVIEW_REQUEST_CODE
+import kotlinx.android.synthetic.main.activity_adjustment.*
 
 
-class AdjustmentActivity : AppCompatActivity() {
-var editedBitmap: Bitmap? = null
+class AdjustmentActivity : BaseActivity() {
+    var editedBitmap: Bitmap? = null
     private var position = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        hideStatusBar()
         setContentView(com.custom.library.R.layout.activity_adjustment)
 
         cancel.setOnClickListener { finish() }
@@ -31,12 +26,9 @@ var editedBitmap: Bitmap? = null
         btn_back.setOnClickListener { finish() }
 
         val path = Uri.parse(intent.getStringExtra("Path"))
-        position = intent.getIntExtra("position",0)
+        position = intent.getIntExtra("position", 0)
 
         adjustment_iv.setImageURI(path)
-
-       /* val drawable = adjustment_iv.getDrawable() as BitmapDrawable
-        val bitmap = drawable.bitmap*/
 
         val options = BitmapFactory.Options()
         options.inJustDecodeBounds = true
@@ -47,13 +39,17 @@ var editedBitmap: Bitmap? = null
         val bitmap = BitmapFactory.decodeFile(intent.getStringExtra("Path"), options)
 
         brightness.setOnClickListener {
+
+            selection.text = "Brightness"
             sb_value.max = 255
-            sb_value.progress = 1
+            sb_value.progress = 0
             sb_value.visibility = View.VISIBLE
+
             sb_value.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                 override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                    if (progress > 0)
                     editedBitmap = changeBitmapContrastBrightness(bitmap, 1F, progress.toFloat())
-                     adjustment_iv!!.setImageBitmap(editedBitmap)
+                    adjustment_iv!!.setImageBitmap(editedBitmap)
                 }
 
                 override fun onStartTrackingTouch(seekBar: SeekBar) {
@@ -68,12 +64,15 @@ var editedBitmap: Bitmap? = null
         }
 
         contrast.setOnClickListener {
+            selection.text = "Contrast"
             sb_value.max = 10
             sb_value.visibility = View.VISIBLE
-            sb_value.progress = 1
+            sb_value.progress = 0
+
             sb_value.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                 override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                    editedBitmap = changeBitmapContrastBrightness(bitmap, progress.toFloat(), 1F)
+                    if (progress > 0)
+                        editedBitmap = changeBitmapContrastBrightness(bitmap, progress.toFloat(), 1F)
                     adjustment_iv!!.setImageBitmap(editedBitmap)
                 }
 
@@ -89,22 +88,22 @@ var editedBitmap: Bitmap? = null
         }
 
         save.setOnClickListener {
-            val uri = editedBitmap?.let { it1 -> BitmapUtils.writeTempStateStoreBitmap(this, it1,null) }
+            val uri = editedBitmap?.let { it1 -> BitmapUtils.writeTempStateStoreBitmap(this, it1, null) }
 
             val intent = Intent()
             intent.putExtras(getIntent())
             if (uri != null) {
-                intent.putExtra("Path",uri.path)
-                intent.putExtra("position",position)
+                intent.putExtra("Path", uri.path)
+                intent.putExtra("position", position)
             }
 
-            setResult(IMAGE_PREVIEW_REQUEST_CODE,intent)
+            setResult(IMAGE_PREVIEW_REQUEST_CODE, intent)
             finish()
         }
 
     }
 
-    fun changeBitmapContrastBrightness(mBitmap:Bitmap, contrast: Float, brightness: Float): Bitmap? {
+    fun changeBitmapContrastBrightness(mBitmap: Bitmap, contrast: Float, brightness: Float): Bitmap? {
         if (mBitmap == null) {
             return null
         }

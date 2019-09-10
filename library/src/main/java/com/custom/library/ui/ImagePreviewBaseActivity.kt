@@ -1,6 +1,8 @@
 package com.custom.library.ui
 
 import android.os.Bundle
+import android.view.Window
+import android.view.WindowManager
 import com.custom.library.ImagePicker
 import com.custom.library.PickHelper
 import com.custom.library.R
@@ -18,6 +20,9 @@ abstract class ImagePreviewBaseActivity : BaseActivity(), PhotoViewAttacher.OnPh
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        hideStatusBar()
+
         setContentView(R.layout.activity_image_preview)
         initView()
     }

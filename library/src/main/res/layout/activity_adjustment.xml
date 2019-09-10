@@ -69,7 +69,17 @@
         android:layout_width="match_parent"
         android:layout_below="@+id/header"
         android:layout_height="match_parent"
+        android:layout_above="@+id/selection"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/selection"
+        android:textColor="@color/colorPrimary"
         android:layout_above="@+id/sb_value"
+        android:padding="5dp"
+        android:layout_marginLeft="5dp"
         />
 
     <SeekBar

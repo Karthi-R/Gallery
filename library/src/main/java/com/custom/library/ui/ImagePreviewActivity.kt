@@ -15,10 +15,8 @@ import com.custom.library.R
 import com.custom.library.TextEdit.TextEditorActivity
 import com.custom.library.adapter.SmallPreviewAdapter
 import com.custom.library.bean.ImageItem
-import kotlinx.android.synthetic.main.activity_image_edit.*
 import kotlinx.android.synthetic.main.activity_image_preview.*
 import kotlinx.android.synthetic.main.include_top_bar.*
-import kotlinx.android.synthetic.main.include_top_bar.text_edit
 import uk.co.senab.photoview.PhotoViewAttacher
 
 
@@ -31,6 +29,10 @@ class ImagePreviewActivity : ImagePreviewBaseActivity(), View.OnClickListener, P
     companion object {
 
         const val IMAGE_PREVIEW_REQUEST_CODE = 601
+        const val CROP_IMAGE_REQUEST_CODE = 501
+        const val ADJUSTMENT_IMAGE_REQUEST_CODE = 502
+        const val TEXT_EDIT_IMAGE_REQUEST_CODE = 503
+
 
         fun startForResult(activity: Activity, requestCode: Int, position: Int, imageItems: ArrayList<ImageItem>) {
             val intent = Intent(activity, ImagePreviewActivity::class.java)
@@ -48,6 +50,10 @@ class ImagePreviewActivity : ImagePreviewBaseActivity(), View.OnClickListener, P
     }
 
     private fun init() {
+
+        crop.visibility =View.VISIBLE
+        btn_ok.visibility =View.VISIBLE
+        brightness_iv.visibility =View.VISIBLE
 
         btn_ok.setOnClickListener(this)
 
@@ -74,15 +80,7 @@ class ImagePreviewActivity : ImagePreviewBaseActivity(), View.OnClickListener, P
             intent.putExtra("position", current)
             startActivityForResult(intent, IMAGE_PREVIEW_REQUEST_CODE)
         }
-/*
-        edit.setOnClickListener {
 
-            val intent = Intent(this, ImageEditActivity::class.java)
-            intent.putExtra("Path", imageItems[current].path!!)
-            intent.putExtra("position", current)
-            startActivityForResult(intent,IMAGE_PREVIEW_REQUEST_CODE)
-        }
-*/
         bottom_bar.visibility = View.VISIBLE
 
         tv_des.text = getString(R.string.ip_preview_image_count, current + 1, imageItems.size)
@@ -139,9 +137,9 @@ class ImagePreviewActivity : ImagePreviewBaseActivity(), View.OnClickListener, P
 
         if (requestCode == IMAGE_PREVIEW_REQUEST_CODE) {
 
-            if (data != null){
-               val path = data.getStringExtra("Path")
-                val position = data.getIntExtra("position",0)
+            if (data != null) {
+                val path = data.getStringExtra("Path")
+                val position = data.getIntExtra("position", 0)
                 pickHelper.selectedImages[position].path = path
                 imageItems[position].path = path
                 init()

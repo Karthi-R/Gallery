@@ -8,13 +8,13 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import com.custom.library.CropView.BitmapUtils
-import com.custom.library.ui.ImageEditActivity
 import com.custom.library.util.Utils.calculateInSampleSize
 
 import kotlinx.android.synthetic.main.activity_text_editor.*
 import android.graphics.Bitmap
 import android.view.MotionEvent
 import android.view.View
+import com.custom.library.ui.ImagePreviewActivity
 import kotlinx.android.synthetic.main.activity_text_editor.btn_back
 import kotlinx.android.synthetic.main.activity_text_editor.cancel
 import kotlinx.android.synthetic.main.activity_text_editor.save
@@ -89,7 +89,7 @@ class TextEditorActivity : AppCompatActivity(){
                 intent.putExtra("Path",uri.path)
             }
 
-            setResult(ImageEditActivity.TEXT_EDIT_IMAGE_REQUEST_CODE,intent)
+            setResult(ImagePreviewActivity.TEXT_EDIT_IMAGE_REQUEST_CODE,intent)
             finish()
 
         }

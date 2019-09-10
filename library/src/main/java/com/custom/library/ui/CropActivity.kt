@@ -4,27 +4,24 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.PorterDuff
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.View
+import android.widget.SeekBar
+import androidx.appcompat.app.AppCompatActivity
 import com.custom.library.CropView.CropImage
 import com.custom.library.CropView.CropImageOptions
 import com.custom.library.CropView.CropImageView
+import com.custom.library.ui.ImagePreviewActivity.Companion.IMAGE_PREVIEW_REQUEST_CODE
+import com.custom.library.util.FileUtil.getCropCacheFolder
 import kotlinx.android.synthetic.main.activity_crop.*
 import java.io.File
 import java.io.IOException
-import android.widget.SeekBar
-
-import com.custom.library.ui.ImageEditActivity.Companion.CROP_IMAGE_REQUEST_CODE
-import com.custom.library.ui.ImagePreviewActivity.Companion.IMAGE_PREVIEW_REQUEST_CODE
-import com.custom.library.util.FileUtil.getCropCacheFolder
-import java.util.*
 import kotlin.random.Random
 
 
-class CropActivity : AppCompatActivity(),com.custom.library.CropView.CropImageView.OnSetImageUriCompleteListener, com.custom.library.CropView.CropImageView.OnCropImageCompleteListener {
+class CropActivity : BaseActivity(), com.custom.library.CropView.CropImageView.OnSetImageUriCompleteListener, com.custom.library.CropView.CropImageView.OnCropImageCompleteListener {
 
     private var position = 0
 
@@ -56,24 +53,24 @@ class CropActivity : AppCompatActivity(),com.custom.library.CropView.CropImageVi
         }
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        hideStatusBar()
         setContentView(com.custom.library.R.layout.activity_crop)
 
-        mCropImageView =  findViewById(com.custom.library.R.id.mCropImageView)
+        mCropImageView = findViewById(com.custom.library.R.id.mCropImageView)
 
         cancel.setOnClickListener { finish() }
 
         btn_back.setOnClickListener { finish() }
 
-        position = intent.getIntExtra("position",0)
+        position = intent.getIntExtra("position", 0)
 
         val bundle = getIntent().getBundleExtra(CropImage.CROP_IMAGE_EXTRA_BUNDLE)
         mCropImageUri = bundle.getParcelable(CropImage.CROP_IMAGE_EXTRA_SOURCE)
         mOptions = bundle.getParcelable(CropImage.CROP_IMAGE_EXTRA_OPTIONS)
 
-        val path=intent.getStringExtra("Path")
+        val path = intent.getStringExtra("Path")
 
         mCropImageView?.setImageUriAsync(Uri.fromFile(File(path)))
 
@@ -140,13 +137,14 @@ class CropActivity : AppCompatActivity(),com.custom.library.CropView.CropImageVi
         super.onBackPressed()
         setResultCancel()
     }
+
     override fun onSetImageUriComplete(view: CropImageView, uri: Uri, error: Exception) {
         if (error == null) {
             if (mOptions!!.initialCropWindowRectangle != null) {
-                mCropImageView!!.cropRect=(mOptions!!.initialCropWindowRectangle)
+                mCropImageView!!.cropRect = (mOptions!!.initialCropWindowRectangle)
             }
             if (mOptions!!.initialRotation > -1) {
-                mCropImageView!!.rotatedDegrees=(mOptions!!.initialRotation)
+                mCropImageView!!.rotatedDegrees = (mOptions!!.initialRotation)
             }
         } else {
             setResult(null, error, 1)
@@ -217,8 +215,8 @@ class CropActivity : AppCompatActivity(),com.custom.library.CropView.CropImageVi
         val intent = Intent()
         intent.putExtras(getIntent())
         if (uri != null) {
-            intent.putExtra("Path",uri.path)
-            intent.putExtra("position",position)
+            intent.putExtra("Path", uri.path)
+            intent.putExtra("position", position)
         }
         intent.putExtra(CropImage.CROP_IMAGE_EXTRA_RESULT, result)
         return intent

@@ -4,12 +4,11 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.PorterDuff
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.view.animation.AnimationUtils
-import android.widget.AdapterView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
@@ -19,21 +18,18 @@ import com.custom.library.C
 import com.custom.library.ImagePicker
 import com.custom.library.PickHelper
 import com.custom.library.R
-import com.custom.library.adapter.ImageFolderAdapter
 import com.custom.library.adapter.ImageRecyclerAdapter
 import com.custom.library.bean.ImageFolder
 import com.custom.library.bean.ImageItem
 import com.custom.library.util.CameraUtil
 import com.custom.library.util.Utils
 import com.custom.library.util.isSameDate
-import com.custom.library.view.FolderPopUpWindow
 import com.custom.library.view.GridSpacingItemDecoration
 import kotlinx.android.synthetic.main.activity_image_grid.*
 import kotlinx.android.synthetic.main.include_top_bar.*
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
-import android.graphics.PorterDuff
 
 
 
@@ -59,9 +55,6 @@ class GalleryFragment(mActivity: Activity, imgFolderList: MutableList<ImageFolde
     private val pickerHelper: PickHelper = ImagePicker.pickHelper
     private val imgFolderList = imgFolderList
     private lateinit var adapter: ImageRecyclerAdapter
-    private lateinit var mFolderPopupWindow: FolderPopUpWindow
-    private lateinit var mImageFolderAdapter: ImageFolderAdapter
-    private lateinit var imageFolders: List<ImageFolder>
     private lateinit var takeImageFile: File
     private var takePhoto: Boolean = false
     var position = 0
@@ -198,31 +191,6 @@ class GalleryFragment(mActivity: Activity, imgFolderList: MutableList<ImageFolde
         btn_ok.setOnClickListener(this)
         btn_back.setOnClickListener(this)
         btn_preview.setOnClickListener(this)
-
-        mImageFolderAdapter = ImageFolderAdapter(this.requireActivity(), null)
-        mFolderPopupWindow = FolderPopUpWindow(this.requireActivity(), mImageFolderAdapter)
-        mFolderPopupWindow.setOnItemClickListener(object : FolderPopUpWindow.OnItemClickListener {
-            override fun onItemClick(adapterView: AdapterView<*>, view: View, position: Int, l: Long) {
-                // initView()
-                mImageFolderAdapter.selectIndex = position
-                mFolderPopupWindow.dismiss()
-                val imageFolder = adapterView.adapter?.getItem(position) as ImageFolder
-                adapter.refreshData(imageFolder.images)
-                tv_dir.text = imageFolder.name
-            }
-        })
-    }
-
-    private fun showFolderList() {
-        mImageFolderAdapter.refreshData(imageFolders.toMutableList())
-        if (mFolderPopupWindow.isShowing) {
-            mFolderPopupWindow.dismiss()
-        } else {
-            mFolderPopupWindow.showAtLocation(footer_bar, Gravity.NO_GRAVITY, 0, 0)
-            var index = mImageFolderAdapter.selectIndex
-            index = if (index == 0) index else index - 1
-            mFolderPopupWindow.setSelection(index)
-        }
     }
 
     override fun onImageItemClick(imageItem: ImageItem, position: Int) {
@@ -255,8 +223,6 @@ class GalleryFragment(mActivity: Activity, imgFolderList: MutableList<ImageFolde
         } else {
             (activity as GalleryDetailActivity).setActionBarTitle(getString(R.string.preview, pickerHelper.selectedImages.size, pickerHelper.limit))
         }
-
-        // activity?.invalidateOptionsMenu()
     }
 
     override fun onCameraClick() {
@@ -325,7 +291,6 @@ class GalleryFragment(mActivity: Activity, imgFolderList: MutableList<ImageFolde
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.ll_dir -> showFolderList()
             R.id.btn_ok -> setResult()
             R.id.btn_preview -> ImagePreviewActivity.startForResult(this.requireActivity(), REQUEST_PREVIEW, 0, pickerHelper.selectedImages)
             R.id.btn_back -> {

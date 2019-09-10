@@ -7,18 +7,13 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.Gravity
 import android.view.View
-import android.widget.AdapterView
 import androidx.core.app.ActivityCompat
 import com.custom.library.*
-import com.custom.library.adapter.ImageFolderAdapter
 import com.custom.library.adapter.ImageRecyclerAdapter
 import com.custom.library.bean.ImageFolder
 import com.custom.library.bean.ImageItem
 import com.custom.library.util.CameraUtil
-import com.custom.library.view.FolderPopUpWindow
-import kotlinx.android.synthetic.main.activity_image_grid.*
 import java.io.File
 
 /**
@@ -50,8 +45,6 @@ class ImageCameraActivity : BaseActivity(), View.OnClickListener {
     private val pickerHelper: PickHelper = ImagePicker.pickHelper
     private val imageDataSource = ImageDataSource(this)
     private lateinit var adapter: ImageRecyclerAdapter
-    private lateinit var mFolderPopupWindow: FolderPopUpWindow
-    private lateinit var mImageFolderAdapter: ImageFolderAdapter
     private lateinit var imageFolders: List<ImageFolder>
     private lateinit var takeImageFile: File
     private var takePhoto: Boolean = false
@@ -140,7 +133,7 @@ class ImageCameraActivity : BaseActivity(), View.OnClickListener {
     }
 */
 
-    private fun showPopupFolderList() {
+   /* private fun showPopupFolderList() {
         mImageFolderAdapter.refreshData(imageFolders.toMutableList())  //刷新数据
         if (mFolderPopupWindow.isShowing) {
             mFolderPopupWindow.dismiss()
@@ -151,7 +144,7 @@ class ImageCameraActivity : BaseActivity(), View.OnClickListener {
             index = if (index == 0) index else index - 1
             mFolderPopupWindow.setSelection(index)
         }
-    }
+    }*/
 
      fun onCameraClick() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
@@ -215,7 +208,7 @@ class ImageCameraActivity : BaseActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.ll_dir -> showPopupFolderList()
+          //  R.id.ll_dir -> showPopupFolderList()
             R.id.btn_ok -> setResult()
             R.id.btn_preview -> ImagePreviewActivity.startForResult(this, REQUEST_PREVIEW, 0, pickerHelper.selectedImages)
             R.id.btn_back -> {
