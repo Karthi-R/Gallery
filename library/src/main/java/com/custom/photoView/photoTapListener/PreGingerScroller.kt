@@ -1,13 +1,13 @@
-package com.custom.photoView.photoGesture
+package com.custom.photoView.photoTapListener
 
 import android.content.Context
 import android.widget.Scroller
 
-import com.custom.photoView.photoGesture.ScrollerProxy
+import com.custom.photoView.photoTapListener.ScrollerProxy
 
 class PreGingerScroller(context: Context) : ScrollerProxy() {
 
-    private val mScroller: Scroller
+    private var mScroller: Scroller
 
     init {
         mScroller = Scroller(context)
@@ -26,11 +26,15 @@ class PreGingerScroller(context: Context) : ScrollerProxy() {
         mScroller.forceFinished(finished)
     }
 
-    override val isFinished: Boolean = mScroller.isFinished
+    override fun isFinished(): Boolean {
+        return mScroller.isFinished
+    }
 
+    override fun getCurrX(): Int {
+        return mScroller.currX
+    }
 
-    override val currX: Int = mScroller.currX
-    override val currY: Int = mScroller.currY
-
-
+    override fun getCurrY(): Int {
+        return mScroller.currY
+    }
 }

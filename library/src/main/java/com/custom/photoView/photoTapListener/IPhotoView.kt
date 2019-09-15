@@ -1,4 +1,4 @@
-package com.custom.photoView.photoGesture
+package com.custom.photoView.photoTapListener
 
 
 import android.graphics.Bitmap
@@ -17,7 +17,9 @@ interface IPhotoView {
      *
      * @return - RectF of Displayed Drawable
      */
-    val displayRect: RectF
+    abstract fun getDisplayRect(): RectF
+   // abstract fun getDisplayMatrix(matrix: Matrix)
+
 
     /**
      * @return The current minimum scale level. What this value represents depends on the current
@@ -28,7 +30,7 @@ interface IPhotoView {
      *
      * @param minimumScale minimum allowed scale
      */
-    val minimumScale: Float
+    abstract fun getMinimumScale(): Float
 
     /**
      * @return The current medium scale level. What this value represents depends on the current
@@ -39,7 +41,7 @@ interface IPhotoView {
      *
      * @param mediumScale medium scale preset
      */
-    val mediumScale: Float
+    abstract fun getMediumScale(): Float
 
     /**
      * @return The current maximum scale level. What this value represents depends on the current
@@ -50,7 +52,7 @@ interface IPhotoView {
      *
      * @param maximumScale maximum allowed scale preset
      */
-    var maximumScale: Float
+    abstract fun getMaximumScale(): Float
 
     /**
      * Returns the current scale value
@@ -62,7 +64,7 @@ interface IPhotoView {
      *
      * @param scale - Value to scale to
      */
-    var scale: Float
+    abstract fun getScale(): Float
 
     /**
      * Return the current scale type in use by the ImageView.
@@ -75,7 +77,7 @@ interface IPhotoView {
      *
      * @param scaleType - The desired scaling mode.
      */
-    val  scaleType: ImageView.ScaleType
+    abstract fun getScaleType(): ImageView.ScaleType
 
     /**
      * Extracts currently visible area to Bitmap object, if there is no image loaded yet or the
@@ -83,7 +85,7 @@ interface IPhotoView {
      *
      * @return currently visible area as bitmap or null
      */
-    val visibleRectangleBitmap: Bitmap
+    abstract fun getVisibleRectangleBitmap(): Bitmap
 
     /**
      * Will return instance of IPhotoView (eg. PhotoViewAttacher), can be used to provide better
@@ -91,7 +93,7 @@ interface IPhotoView {
      *
      * @return IPhotoView implementation instance if available, null if not
      */
-    val iPhotoViewImplementation: IPhotoView
+    abstract fun getIPhotoViewImplementation(): IPhotoView
 
     /**
      * Returns true if the PhotoView is set to allow zooming of Photos.
@@ -134,6 +136,28 @@ interface IPhotoView {
      * @param maximumScale maximum allowed scale preset
      */
     fun setScaleLevels(minimumScale: Float, mediumScale: Float, maximumScale: Float)
+
+    /**
+     * Sets the minimum scale level. What this value represents depends on the current [ ].
+     *
+     * @param minimumScale minimum allowed scale
+     */
+    abstract fun setMinimumScale(minimumScale: Float)
+
+
+    /**
+     * Sets the medium scale level. What this value represents depends on the current [android.widget.ImageView.ScaleType].
+     *
+     * @param mediumScale medium scale preset
+     */
+    abstract fun setMediumScale(mediumScale: Float)
+
+    /**
+     * Sets the maximum scale level. What this value represents depends on the current [ ].
+     *
+     * @param maximumScale maximum allowed scale preset
+     */
+    abstract fun setMaximumScale(maximumScale: Float)
 
     /**
      * Register a callback to be invoked when the Photo displayed by this view is long-pressed.
@@ -179,13 +203,21 @@ interface IPhotoView {
      */
     fun setRotationBy(rotationDegree: Float)
 
+
+    /**
+     * Changes the current scale to the specified value.
+     *
+     * @param scale - Value to scale to
+     */
+    abstract fun setScale(scale: Float)
+
     /**
      * Changes the current scale to the specified value.
      *
      * @param scale   - Value to scale to
      * @param animate - Whether to animate the scale
      */
-    fun setScale(scale: Float, animate: Boolean)
+    abstract fun setScale(scale: Float, animate: Boolean)
 
     /**
      * Changes the current scale to the specified value, around the given focal point.
@@ -195,7 +227,17 @@ interface IPhotoView {
      * @param focalY  - Y Focus Point
      * @param animate - Whether to animate the scale
      */
-    fun setScale(scale: Float, focalX: Float, focalY: Float, animate: Boolean)
+    abstract fun setScale(scale: Float, focalX: Float, focalY: Float, animate: Boolean)
+
+
+    /**
+     * Controls how the image should be resized or moved to match the size of the ImageView. Any
+     * scaling or panning will happen within the confines of this [ ].
+     *
+     * @param scaleType - The desired scaling mode.
+     */
+    abstract fun setScaleType(scaleType: ImageView.ScaleType)
+
 
     /**
      * Allows you to enable/disable the zoom functionality on the ImageView. When disable the

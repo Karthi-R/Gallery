@@ -18,10 +18,10 @@ import com.custom.photoView.adapter.SmallPreviewAdapter
 import com.custom.photoView.bean.ImageItem
 import kotlinx.android.synthetic.main.activity_image_preview.*
 import kotlinx.android.synthetic.main.include_top_bar.*
-import com.custom.photoView.photoTap.PhotoViewAttacher
+import com.custom.photoView.photoGesture.PhotoViewAttacher
 
 
-class ImagePreviewActivity : ImagePreviewBaseActivity(), View.OnClickListener, PhotoViewAttacher.OnPhotoTapListener {
+class ImagePreviewActivity : ImagePreviewBaseActivity(), View.OnClickListener, com.custom.photoView.photoTapListener.PhotoViewAttacher.OnPhotoTapListener {
 
     private lateinit var imageItems: ArrayList<ImageItem>
     private var current: Int = 0
@@ -187,7 +187,7 @@ class ImagePreviewActivity : ImagePreviewBaseActivity(), View.OnClickListener, P
         changeTopAndBottomBar()
     }
 
-    override fun onPhotoTap(view: View?, x: Float, y: Float) {
+    override fun onPhotoTap(view: View, x: Float, y: Float) {
         changeTopAndBottomBar()
     }
 

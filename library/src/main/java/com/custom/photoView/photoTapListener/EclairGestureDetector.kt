@@ -1,19 +1,21 @@
-package com.custom.photoView.photoGesture
+package com.custom.photoView.photoTapListener
 
 
 import android.annotation.TargetApi
 import android.content.Context
 import android.view.MotionEvent
 
-import com.custom.photoView.photoGesture.Compat
-import com.custom.photoView.photoGesture.CupcakeGestureDetector
+import com.custom.photoView.photoTapListener.Compat
+import com.custom.photoView.photoTapListener.CupcakeGestureDetector
 
 @TargetApi(5)
 open class EclairGestureDetector(context: Context) : CupcakeGestureDetector(context) {
+    private val INVALID_POINTER_ID = -1
     private var mActivePointerId = INVALID_POINTER_ID
     private var mActivePointerIndex = 0
 
-    internal override fun getActiveX(ev: MotionEvent): Float {
+
+    override fun getActiveX(ev: MotionEvent): Float {
         try {
             return ev.getX(mActivePointerIndex)
         } catch (e: Exception) {
@@ -22,7 +24,7 @@ open class EclairGestureDetector(context: Context) : CupcakeGestureDetector(cont
 
     }
 
-    internal override fun getActiveY(ev: MotionEvent): Float {
+    override fun getActiveY(ev: MotionEvent): Float {
         try {
             return ev.getY(mActivePointerIndex)
         } catch (e: Exception) {
@@ -65,10 +67,5 @@ open class EclairGestureDetector(context: Context) : CupcakeGestureDetector(cont
             return true
         }
 
-    }
-
-    companion object {
-
-        private val INVALID_POINTER_ID = -1
     }
 }

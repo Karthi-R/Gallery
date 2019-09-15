@@ -9,10 +9,10 @@ import com.custom.photoView.R
 import com.custom.photoView.adapter.ImagePagerAdapter
 import kotlinx.android.synthetic.main.activity_image_preview.*
 import kotlinx.android.synthetic.main.include_top_bar.*
-import com.custom.photoView.photoTap.PhotoViewAttacher
+import com.custom.photoView.photoTapListener.PhotoViewAttacher
 
 
-abstract class ImagePreviewBaseActivity : BaseActivity(), PhotoViewAttacher.OnPhotoTapListener {
+abstract class ImagePreviewBaseActivity : BaseActivity(), PhotoViewAttacher.OnPhotoTapListener{
 
 
     protected lateinit var imagePagerAdapter: ImagePagerAdapter

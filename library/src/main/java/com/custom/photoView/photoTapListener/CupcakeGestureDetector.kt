@@ -1,4 +1,4 @@
-package com.custom.photoView.photoGesture
+package com.custom.photoView.photoTapListener
 
 
 import android.content.Context
@@ -6,21 +6,19 @@ import android.view.MotionEvent
 import android.view.VelocityTracker
 import android.view.ViewConfiguration
 
-import com.custom.photoView.photoGesture.GestureDetector
-import com.custom.photoView.photoGesture.OnGestureListener
+import com.custom.photoView.photoTapListener.GestureDetector
+import com.custom.photoView.photoTapListener.OnGestureListener
 
 //import uk.co.senab.photoview.log.LogManager;
 
 open class CupcakeGestureDetector(context: Context) : GestureDetector {
 
     protected lateinit var mListener: OnGestureListener
+    private val LOG_TAG = "CupcakeGestureDetector"
     internal var mLastTouchX: Float = 0.toFloat()
     internal var mLastTouchY: Float = 0.toFloat()
-    internal val mTouchSlop: Float
-    internal val mMinimumVelocity: Float
-
-    private var mVelocityTracker: VelocityTracker? = null
-    private var mIsDragging: Boolean = false
+    internal var mTouchSlop: Float = 0.0f
+    internal var mMinimumVelocity: Float = 0.0f
 
     override fun setOnGestureListener(listener: OnGestureListener) {
         this.mListener = listener
@@ -33,6 +31,9 @@ open class CupcakeGestureDetector(context: Context) : GestureDetector {
         mTouchSlop = configuration.scaledTouchSlop.toFloat()
     }
 
+    private var mVelocityTracker: VelocityTracker? = null
+    private var mIsDragging: Boolean = false
+
     internal open fun getActiveX(ev: MotionEvent): Float {
         return ev.x
     }
@@ -41,11 +42,6 @@ open class CupcakeGestureDetector(context: Context) : GestureDetector {
         return ev.y
     }
 
-    override val isScaling: Boolean = false
-    override val isDragging: Boolean = mIsDragging
-
-
-/*
     override fun isScaling(): Boolean {
         return false
     }
@@ -53,7 +49,6 @@ open class CupcakeGestureDetector(context: Context) : GestureDetector {
     override fun isDragging(): Boolean {
         return mIsDragging
     }
-*/
 
     override fun onTouchEvent(ev: MotionEvent): Boolean {
         when (ev.action) {
@@ -133,10 +128,6 @@ open class CupcakeGestureDetector(context: Context) : GestureDetector {
         }
 
         return true
-    }
-
-    companion object {
-        private val LOG_TAG = "CupcakeGestureDetector"
     }
 }
 

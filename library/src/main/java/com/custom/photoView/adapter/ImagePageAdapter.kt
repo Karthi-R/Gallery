@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.viewpager.widget.PagerAdapter
 import com.custom.photoView.ImagePicker
 import com.custom.photoView.bean.ImageItem
-import com.custom.photoView.photoTap.PhotoView
+import com.custom.photoView.photoTapListener.PhotoView
 import com.custom.photoView.util.Utils
 
 import java.util.*
@@ -19,7 +19,7 @@ class ImagePagerAdapter(
 
     private val screenWidth: Int
     private val screenHeight: Int
-    var listener: com.custom.photoView.photoTap.PhotoViewAttacher.OnPhotoTapListener? = null
+    var listener: com.custom.photoView.photoTapListener.PhotoViewAttacher.OnPhotoTapListener? = null
 
     init {
         val dm = Utils.getScreenPix(mActivity)

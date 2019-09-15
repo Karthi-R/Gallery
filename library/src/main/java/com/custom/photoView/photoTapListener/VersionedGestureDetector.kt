@@ -1,4 +1,4 @@
-package com.custom.photoView.photoGesture
+package com.custom.photoView.photoTapListener
 
 import android.content.Context
 import android.os.Build

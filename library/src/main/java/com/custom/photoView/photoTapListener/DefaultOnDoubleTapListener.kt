@@ -1,4 +1,4 @@
-package com.custom.photoView.photoGesture
+package com.custom.photoView.photoTapListener
 
 import android.graphics.RectF
 import android.view.GestureDetector
@@ -38,11 +38,10 @@ class DefaultOnDoubleTapListener
         if (this.photoViewAttacher == null)
             return false
 
-        val imageView = photoViewAttacher!!.imageView
+        val imageView : ImageView = photoViewAttacher!!.imageView!!
 
-/*
-        if (null != photoViewAttacher!!.onPhotoTapListener) {
-            val displayRect = photoViewAttacher!!.displayRect
+        if (null != photoViewAttacher!!.getOnPhotoTapListener()) {
+            val displayRect = photoViewAttacher!!.getDisplayRect()
 
             if (null != displayRect) {
                 val x = e.x
@@ -54,19 +53,16 @@ class DefaultOnDoubleTapListener
                     val xResult = (x - displayRect.left) / displayRect.width()
                     val yResult = (y - displayRect.top) / displayRect.height()
 
-                    imageView?.let { photoViewAttacher!!.onPhotoTapListener!!.onPhotoTap(it, xResult, yResult) }
+                    photoViewAttacher!!.getOnPhotoTapListener()!!.onPhotoTap(imageView, xResult, yResult)
                     return true
                 } else {
-                    photoViewAttacher!!.onPhotoTapListener!!.onOutsidePhotoTap()
+                    photoViewAttacher!!.getOnPhotoTapListener()!!.onOutsidePhotoTap()
                 }
             }
         }
-*/
-/*
-        if (null != photoViewAttacher!!.onViewTapListener) {
-            imageView?.let { photoViewAttacher!!.onViewTapListener!!.onViewTap(it, e.x, e.y) }
+        if (null != photoViewAttacher!!.getOnViewTapListener()) {
+            photoViewAttacher!!.getOnViewTapListener()!!.onViewTap(imageView, e.x, e.y)
         }
-*/
 
         return false
     }
@@ -76,16 +72,16 @@ class DefaultOnDoubleTapListener
             return false
 
         try {
-            val scale = photoViewAttacher!!.scale
+            val scale = photoViewAttacher!!.getScale()
             val x = ev.x
             val y = ev.y
 
-            if (scale < photoViewAttacher!!.mediumScale) {
-                photoViewAttacher!!.setScale(photoViewAttacher!!.mediumScale, x, y, true)
-            } else if (scale >= photoViewAttacher!!.mediumScale && scale < photoViewAttacher!!.maximumScale) {
-                photoViewAttacher!!.setScale(photoViewAttacher!!.maximumScale, x, y, true)
+            if (scale < photoViewAttacher!!.getMediumScale()) {
+                photoViewAttacher!!.setScale(photoViewAttacher!!.getMediumScale(), x, y, true)
+            } else if (scale >= photoViewAttacher!!.getMediumScale() && scale < photoViewAttacher!!.getMaximumScale()) {
+                photoViewAttacher!!.setScale(photoViewAttacher!!.getMaximumScale(), x, y, true)
             } else {
-                photoViewAttacher!!.setScale(photoViewAttacher!!.minimumScale, x, y, true)
+                photoViewAttacher!!.setScale(photoViewAttacher!!.getMinimumScale(), x, y, true)
             }
         } catch (e: ArrayIndexOutOfBoundsException) {
             // Can sometimes happen when getX() and getY() is called

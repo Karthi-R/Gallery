@@ -73,7 +73,7 @@ class ImagePreviewDelActivity : ImagePreviewBaseActivity() {
                 pickHelper.selectedImages.size)
     }
 
-    override fun onPhotoTap(view: View?, x: Float, y: Float) {
+    override fun onPhotoTap(view: View, x: Float, y: Float) {
         changeTopBar()
     }
 
